@@ -8,6 +8,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+
+import java.io.InputStream;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -21,8 +23,13 @@ public class PriceResource {
     @Produces(MediaType.SERVER_SENT_EVENTS)
     @SseElementType("text/plain")
     public Publisher<Integer> streamNumbers() {
-        return Flowable.interval(200, TimeUnit.MILLISECONDS)
+        return Flowable.interval(400, TimeUnit.MILLISECONDS)
                 .map(tick -> random.nextInt(99) + 1);
+    }
 
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    public InputStream pricePage() {
+        return this.getClass().getResourceAsStream("/META-INF/resources/stream.html");
     }
 }
