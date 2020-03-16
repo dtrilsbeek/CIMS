@@ -1,35 +1,40 @@
 package nl.fhict.s4;
 
 import io.reactivex.Flowable;
+import io.smallrye.reactive.messaging.annotations.Channel;
+
 import org.jboss.resteasy.annotations.SseElementType;
+import org.jboss.resteasy.annotations.cache.Cache;
 import org.reactivestreams.Publisher;
 
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import java.io.InputStream;
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 @Path("/prices")
 public class PriceResource {
-    private Random random = new Random();
-
+    
+    @Inject
+    @Channel("my-data-stream") Publisher<Double> prices; 
 
     @GET
     @Path("/stream")
     @Produces(MediaType.SERVER_SENT_EVENTS)
-    @SseElementType("text/plain")
-    public Publisher<Integer> streamNumbers() {
-        return Flowable.interval(400, TimeUnit.MILLISECONDS)
-                .map(tick -> random.nextInt(99) + 1);
+    @SseElementType(MediaType.TEXT_PLAIN)
+    public Publisher<Double> streamNumbers() {
+       return prices;
     }
 
     @GET
     @Produces(MediaType.TEXT_HTML)
+    @Cache(noStore = false, isPrivate = false, maxAge = 31_536_000)
     public InputStream pricePage() {
-        return this.getClass().getResourceAsStream("/META-INF/resources/stream.html");
+        return this
+            .getClass()
+            .getResourceAsStream("/META-INF/resources/stream.html");
     }
 }

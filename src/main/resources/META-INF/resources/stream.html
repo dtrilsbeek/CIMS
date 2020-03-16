@@ -27,9 +27,7 @@
 
     const getSource = () => {
         const source = new EventSource("/prices/stream");
-        source.onmessage = function (event) {
-            document.getElementById("content").innerHTML = event.data;
-        };
+        source.onmessage = event => document.querySelector("#content").innerHTML = event.data;
         return source;
     };
 
