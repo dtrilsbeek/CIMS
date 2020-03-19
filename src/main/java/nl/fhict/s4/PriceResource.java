@@ -1,6 +1,6 @@
 package nl.fhict.s4;
 
-import io.reactivex.Flowable;
+
 import io.smallrye.reactive.messaging.annotations.Channel;
 
 import org.jboss.resteasy.annotations.SseElementType;
