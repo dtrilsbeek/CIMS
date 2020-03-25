@@ -10,13 +10,26 @@
           href="https://cdnjs.cloudflare.com/ajax/libs/patternfly/3.24.0/css/patternfly.min.css">
     <link rel="stylesheet" type="text/css"
           href="https://cdnjs.cloudflare.com/ajax/libs/patternfly/3.24.0/css/patternfly-additions.min.css">
+    <style>
+        ul {
+            list-style: none;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
 
     <h2>Last price</h2>
     <div class="row">
-        <p class="col-md-12">The last price is <strong><span id="content">N/A</span>&nbsp;&euro;</strong>.</p>
+        <p class="col-md-12">  
+            <ul>
+                <li><h3>data</h3></li>
+                <li><strong>lat:</strong> <span id="lat">N/A</span></li>
+                <li><strong>lon:</strong> <span id="lon">N/A</span></li> 
+                <li><strong>type:</strong><span id="type">N/A</span></li>
+                <li><strong>description:</strong><span id="description">N/A</span></li> 
+            </ul>   
+        </p>
         <button id="toggle">stop</button>
     </div>
 </div>
@@ -24,10 +37,21 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
     const btnToggle = document.querySelector("#toggle");
+    const lat = document.querySelector("#lat");
+    const lon = document.querySelector("#lon");
+    const type = document.querySelector("#type");
+    const description = document.querySelector("#description");
 
     const getSource = () => {
-        const source = new EventSource("/prices/stream");
-        source.onmessage = event => document.querySelector("#content").innerHTML = event.data;
+        const source = new EventSource("/events/stream");
+
+        source.onmessage = event => {
+            const data = JSON.parse(event.data);
+            lat.textContent = data.lat;
+            lon.textContent = data.lon;
+            type.textContent = data.type;
+            description.textContent = data.description;
+        };
         return source;
     };
 
