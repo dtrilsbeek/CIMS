@@ -33,7 +33,7 @@ export default L.Marker.MovingMarker = L.Marker.extend({
     initialize: function (latlngs, durations, options) {
         L.Marker.prototype.initialize.call(this, latlngs[0], options);
 
-        this._latlngs = latlngs.map(function(e, index) {
+        this._latlngs = latlngs.map(function(e) {
             return L.latLng(e);
         });
 
