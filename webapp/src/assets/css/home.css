@@ -8,11 +8,8 @@ div {
     justify-content: center;
 }
 
-ul {
-    list-style-type: none;
-}
-
 input {
+    padding-left: 4px;
     box-shadow: .2em .2em 0 0 rgba(0, 0, 0, 0.28);
     margin: 0 0 8px 0;
 }
@@ -28,8 +25,7 @@ textarea {
     box-shadow: .2em .2em 0 0 rgba(0, 0, 0, 0.28);
 }
 
-button {
-   
+button {  
     background-color: #555555;
     color: white;
     border: none;
@@ -40,9 +36,9 @@ button {
     font-size: 16px;
     margin: 14px 2px;
     cursor: pointer;
+    transition-duration: .5s;
 }
 
 button:hover {
-    transition-duration: .5s;
     background-color: #444444;
 }

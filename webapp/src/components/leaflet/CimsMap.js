@@ -1,8 +1,10 @@
+import L from 'leaflet'
+
 /**
  * Class based on the leaflet map
  * Made it easier to innitialise with the needs for the CIMS project.
  */
-class CimsMap extends L.Map {
+export default class CimsMap extends L.Map {
 
     constructor(view, zoom = 25){
         super('map', {
@@ -18,7 +20,7 @@ class CimsMap extends L.Map {
         const tileUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
         const layer = new L.TileLayer(tileUrl,
         {
-            attribution: 'Maps © <a href=\"www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors'
+            attribution: 'Maps © <a href="www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         });
 
         this.addLayer(layer);

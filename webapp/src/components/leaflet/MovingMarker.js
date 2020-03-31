@@ -1,3 +1,5 @@
+import L from 'leaflet'
+
 /**
  * Important Do not edit this code.
  * This is the base class for our CimsMarker and give it the possibility to move accross the map
@@ -13,7 +15,7 @@ L.interpolatePosition = function(p1, p2, duration, t) {
         p1.lng + k * (p2.lng - p1.lng));
 };
 
-L.Marker.MovingMarker = L.Marker.extend({
+export default L.Marker.MovingMarker = L.Marker.extend({
 
     //state constants
     statics: {
