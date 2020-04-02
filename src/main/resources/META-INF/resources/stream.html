@@ -36,14 +36,24 @@
 </body>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const typeParam = urlParams.get('type');
+
     const btnToggle = document.querySelector("#toggle");
     const lat = document.querySelector("#lat");
     const lon = document.querySelector("#lon");
     const type = document.querySelector("#type");
     const description = document.querySelector("#description");
 
+    let path = "/events/stream";
+
+    if(typeParam !== null) {
+        path += "/" + typeParam
+    }
+
     const getSource = () => {
-        const source = new EventSource("/events/stream");
+        const source = new EventSource(path);
 
         source.onmessage = event => {
             const data = JSON.parse(event.data);

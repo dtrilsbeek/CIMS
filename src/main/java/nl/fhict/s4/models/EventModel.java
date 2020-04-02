@@ -1,9 +1,15 @@
 package nl.fhict.s4.models;
 
+import javax.ws.rs.FormParam;
+
 public class EventModel {
+    @FormParam("lat")
     private double lat;
+    @FormParam("lon")
     private double lon;
+    @FormParam("type")
     private int type;
+    @FormParam("description")
     private String description;
 
     public EventModel() {
