@@ -17,8 +17,9 @@ public class EventGenerator {
 
     @Outgoing("generated-event")                        
     public Flowable<EventModel> generate() {               
-        return Flowable.interval(5, TimeUnit.SECONDS)
-                .map(tick -> new EventModel( random.nextDouble() * 50, random.nextDouble() * 5, 1, "description"));
+        return Flowable.interval(100, TimeUnit.MILLISECONDS)
+                .onBackpressureBuffer()
+                .map(tick -> new EventModel( random.nextDouble() * 50, random.nextDouble() * 5, random.nextInt(7) + 1, "description"));
     }
 
 }

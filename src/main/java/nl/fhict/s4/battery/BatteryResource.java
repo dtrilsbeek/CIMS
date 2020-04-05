@@ -1,7 +1,8 @@
 package nl.fhict.s4.battery;
 
 
-import io.smallrye.reactive.messaging.annotations.Channel;
+
+import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.jboss.resteasy.annotations.SseElementType;
 import org.jboss.resteasy.annotations.cache.Cache;
 import org.reactivestreams.Publisher;

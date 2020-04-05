@@ -1,10 +1,11 @@
 package nl.fhict.s4;
 
+import io.smallrye.mutiny.Multi;
+import io.smallrye.mutiny.Uni;
+import io.vertx.mutiny.core.Vertx;
 
-
-
-import io.smallrye.reactive.messaging.annotations.Channel;
-import io.smallrye.reactive.messaging.annotations.Emitter;
+import org.eclipse.microprofile.reactive.messaging.Channel;
+import org.eclipse.microprofile.reactive.messaging.Emitter;
 import nl.fhict.s4.models.EventModel;
 
 import org.jboss.resteasy.annotations.Form;
@@ -12,39 +13,61 @@ import org.jboss.resteasy.annotations.SseElementType;
 import org.jboss.resteasy.annotations.cache.Cache;
 import org.reactivestreams.Publisher;
 
-
-import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import java.io.InputStream;
 
 @Path("/events")
 public class EventResource {
     
-    @Inject @Channel("events") Publisher<EventModel> events;
+    Publisher<EventModel> events;
+    Multi<EventModel> cachedEvents; 
+    Emitter<EventModel> eventEmitter;
+    Vertx vertx;
     
-    @Inject @Channel("event-create") Emitter<EventModel> eventEmitter;
+    
+    public EventResource(
+        @Channel("event-create") Emitter<EventModel> eventEmitter,
+        @Channel("events") Publisher<EventModel> events,
+        @Context Vertx vertx
+    ) {
+		this.events = events;  
+        this.eventEmitter = eventEmitter;
+        this.vertx = vertx;
+
+        cachedEvents = Multi
+            .createFrom()
+                .publisher(events)
+            .cache();
+    }
+    
 
     @GET
-    @Path("/stream")
+    @Path("/stream/{type}")
     @Produces(MediaType.SERVER_SENT_EVENTS)
     @SseElementType(MediaType.APPLICATION_JSON)
-    public Publisher<EventModel> streamEvents() {
-        return events;
+    public Multi<EventModel> events(@PathParam("type") int type) {
+        return cachedEvents
+            .transform()
+                .byFilteringItemsWith(e -> e.getType() == type);
     }
+
 
     @GET
     @Produces(MediaType.TEXT_HTML)
     @Cache(noStore = false, isPrivate = false, maxAge = 31_536_000)
-    public InputStream eventsPage() {
-        return this
-            .getClass()
-            .getResourceAsStream("/META-INF/resources/stream.html");
+    public Uni<String> eventsPage() {
+        return vertx
+            .fileSystem()
+                .readFile("/META-INF/resources/stream.html")
+                .onItem()
+                    .apply(buffer -> buffer.toString("UTF-8")); 
     }
 
 
