@@ -6,23 +6,26 @@
     <ul>
       <li>
         <h1>
-          Send
+          Add information to Kafka Topic
         </h1>
       </li>
       <li>
-         <input type="number" min="0" placeholder="Input latitude"/>
+        <input ref="latitude" type="number" min="0" placeholder="Input latitude"/>
       </li> 
       <li>
-       <input type="number" min="0" placeholder="Input longitude"/>
+         <input ref="longitude" type="number" min="0" placeholder="Input longitude"/>
       </li>
       <li>
-        <input type="number" min="0" placeholder="Input type"/>
+        <input ref="type" type="number" min="0" placeholder="Input type"/>
       </li>
       <li>
-        <textarea placeholder="Input information"/>
+        <textarea ref="information" placeholder="Input information"/>
       </li>
       <li>
-        <button>Send</button>
+        <button v-on:click='createTopicInformation()'>Send</button>
+      </li>
+      <li>
+         {{kafkaTopicInfo}}
       </li>
     </ul>
 
@@ -30,10 +33,32 @@
 </template>
 
 <script>
+import Coordinates from '../models/Coordinates.js';
+import KafkaTopicInfo from '../models/KafkaTopicInfo.js';
+
 export default {
   name: 'Home',
   props: {
     // msg: String
+  },
+  data() {
+    return {
+      kafkaTopicInfo: KafkaTopicInfo
+    }
+  },
+  methods: {
+    createTopicInformation() {
+        let refs = this.$refs;
+        
+        this.kafkaTopicInfo = new KafkaTopicInfo(
+          new Coordinates( 
+            refs.latitude.value, 
+            refs.longitude.value, 
+          ),
+          refs.type.value, 
+          refs.information.value
+        );        
+    }
   }
 }
 </script>
