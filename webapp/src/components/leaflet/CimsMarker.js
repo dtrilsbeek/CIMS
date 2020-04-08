@@ -2,16 +2,37 @@ import L from 'leaflet'
 import MovingMarker from '@/components/leaflet/MovingMarker'
 import { Icon } from 'leaflet';
 
+
 const icons = {
     fireTruck : L.icon({
         iconUrl: 'https://i.imgur.com/ZJUWWnd.png', //Imgur for now, because can't find path to assets
         iconSize:     [50, 32], // size of the icon
         iconAnchor:   [32, 32], // point of the icon which will correspond to marker's location
         popupAnchor:  [10, -20] // point from which the popup should open relative to the iconAnchor
+    }),
+    police : L.icon({
+        iconUrl: 'https://i.imgur.com/JRm5PFJ.png', 
+        iconSize:     [60, 60], 
+        iconAnchor:   [32, 32], 
+        popupAnchor:  [10, -20] 
+    }),
+    ambulance : L.icon({
+        iconUrl: 'https://i.imgur.com/8tmRG6j.png', 
+        iconSize:     [60, 60], 
+        iconAnchor:   [32, 32], 
+        popupAnchor:  [10, -20] 
+    }),
+    fire : L.icon({
+        iconUrl: 'https://i.imgur.com/kViNvxN.png', 
+        iconSize:     [60, 55], 
+        iconAnchor:   [32, 32], 
+        popupAnchor:  [10, -20] 
     })
 };
 
-// Fix for webpack not showing icon on map
+
+
+// Fix for webpack not showing markers on the map
 delete Icon.Default.prototype._getIconUrl;
 Icon.Default.mergeOptions({
 iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
@@ -54,7 +75,7 @@ export default class CimsMarker extends MovingMarker {
      * Replace the current on click function with a new one
      * @param {function} fn 
      */
-    setClick(fn){
+    setOnClick(fn){
         this.off('click');
         this.on('click', fn);
     }

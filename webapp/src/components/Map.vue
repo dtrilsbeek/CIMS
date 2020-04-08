@@ -27,11 +27,14 @@ export default {
     mounted(){
         this.map = new CimsMap(this.fontys, 25);
         this.addMarker();
+        this.map.on("click", (e) => {
+            this.markers[0].moveTo(e.latlng, 2000);
+        });
     },
 
     methods: {
         addMarker(){
-            this.markers.push(new CimsMarker('fireTruck', this.fontys).addTo(this.map));
+            this.markers.push(new CimsMarker('ambulance', this.fontys).addTo(this.map));
         }
     }
 }
