@@ -13,48 +13,37 @@
 <script>
 import CimsMap from '@/components/leaflet/CimsMap'
 import CimsMarker from '@/components/leaflet/CimsMarker'
-import 'leaflet/dist/leaflet.css' // Css for loading the map smoothly
+import 'leaflet/dist/leaflet.css'
+import EventStream from "./stream/EventStream"; // Css for loading the map smoothly
 
 export default {
     data(){
         return{
+            eventStream: null,
             map: null,
             markers: [],
             fontys: [51.451069, 5.4772183]
         }
     },
 
-    readStream() {
-        let path = "/events/stream/1";
-
-        const source = new EventSource(path);
-
-        source.onmessage = event => {
-            const data = JSON.parse(event.data);
-
-            console.log(data);
-            // lat.textContent = data.lat;
-            // lon.textContent = data.lon;
-            // type.textContent = data.type;
-            // description.textContent = data.description;
-        };
-    },
-
     mounted(){
+        this.eventStream = new EventStream();
         this.map = new CimsMap(this.fontys, 25);
         this.addMarker();
         this.map.on("click", (e) => {
             this.markers[0].moveTo(e.latlng, 2000);
         });
+        this.eventStream.readStream();
+        console.log("test");
     },
 
     methods: {
         addMarker(){
             this.markers.push(new CimsMarker('ambulance', this.fontys).addTo(this.map));
         },
-        readStream() {
-            this.readStream();
-        }
+        // readStream() {
+        //     this.readStream();
+        // }
     }
 }
 </script>
