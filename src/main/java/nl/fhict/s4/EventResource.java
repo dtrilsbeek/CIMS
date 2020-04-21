@@ -23,11 +23,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 
+@SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 @Path("/events")
 public class EventResource {
-
-	public EventResource() {
-	}
 
 	Publisher<EventModel> events;
 	Multi<EventModel> cachedEvents;
