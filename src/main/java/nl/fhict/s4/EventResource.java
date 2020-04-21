@@ -25,7 +25,10 @@ import javax.ws.rs.core.MediaType;
 
 @Path("/events")
 public class EventResource {
-    
+
+    public EventResource() {
+    }
+
     Publisher<EventModel> events;
     Multi<EventModel> cachedEvents; 
     Emitter<EventModel> eventEmitter;
