@@ -56,6 +56,7 @@ public class EventResource {
 	@Produces(MediaType.SERVER_SENT_EVENTS)
 	@SseElementType(MediaType.APPLICATION_JSON)
 	public Multi<EventModel> events(@PathParam("type") int type) {
+
 		return cachedEvents
 				.transform()
 				.byFilteringItemsWith(e -> e.getType() == type);

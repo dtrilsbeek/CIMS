@@ -7,7 +7,7 @@ export default class EventStream {
     }
 
     readStream() {
-        let path = "http://localhost:8080/events/stream/1/events/stream/1";
+        let path = "http://localhost:8080/events/stream/2";
 
         const source = new EventSource(path);
 
