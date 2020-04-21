@@ -33,7 +33,7 @@ export default {
         this.map.on("click", (e) => {
             this.markers[0].moveTo(e.latlng, 2000);
         });
-        this.eventStream.readStream();
+        this.eventStream.readStream(this.addMarkerStream);
         console.log("test");
     },
 
@@ -41,12 +41,13 @@ export default {
         addMarker(){
             this.markers.push(new CimsMarker('ambulance', this.fontys).addTo(this.map));
         },
-        // readStream() {
-        //     this.readStream();
-        // }
+        addMarkerStream(marker){
+            this.markers.push(marker.addTo(this.map));
+        },
     }
 }
 </script>
 
+<!--suppress HtmlUnknownTarget -->
 <style src="@/assets/css/map.css" scoped>
 </style>
