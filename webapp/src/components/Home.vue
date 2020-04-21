@@ -63,5 +63,4 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped src="./home.css"></style>
+<style src="@/assets/css/home.css" scoped></style>
