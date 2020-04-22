@@ -55,7 +55,12 @@ export default class CimsMarker extends MovingMarker {
      */
     constructor(icon, start, destination = start){
         super([start, start], 1000, {icon: icons[icon]});
-        this.bindPopup('popup');
+        
+        this.bindPopup(`event: ${icon} <br>
+                        information: eventinfo
+                        `
+                       );
+
         this.destination = destination;
         
         // Rotate image to destination - (Vector rotation)
