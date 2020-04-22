@@ -20,13 +20,20 @@ export default {
         return{
             map: null,
             markers: [],
-            fontys: [51.451069, 5.4772183]
+            fontys: [51.451069, 5.4772183],
+            eventSource: null
         }
     },
 
     mounted(){
         this.map = new CimsMap(this.fontys, 25);
         this.addMarker();
+        this.eventSource = new EventSource("http://localhost:8080/battery-levels/stream");
+        this.eventSource.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            const marker = this.markers[0];
+            marker.moveTo([data,data]);
+        };
     },
 
     methods: {

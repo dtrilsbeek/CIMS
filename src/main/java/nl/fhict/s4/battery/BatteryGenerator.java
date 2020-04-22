@@ -16,7 +16,7 @@ public class BatteryGenerator {
 
         return Flowable.interval(2, TimeUnit.SECONDS)
                 .onBackpressureDrop()
-                .map(tick -> this.getBatteryLevel());
+                .map(tick -> getBatteryLevel());
     }
 
     private Float getBatteryLevel() {
