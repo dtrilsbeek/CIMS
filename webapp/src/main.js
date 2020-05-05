@@ -7,8 +7,12 @@ import Routes from './routes'
 
 //const axios = require('axios');
 
+import VModal from 'vue-js-modal'
+
 Vue.use(VueRouter);
 Vue.config.productionTip = false;
+
+Vue.use(VModal, { dynamic: true, dynamicDefaults: { clickToClose: false } })
 
 const router = new VueRouter({
   routes: Routes,
