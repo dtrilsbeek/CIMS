@@ -38,9 +38,6 @@ export default {
     mounted(){
         this.eventStream = new EventStream();
         this.map = new CimsMap(this.fontys, 25);
-        this.map.on("click", (e) => {
-            console.log(e.latlng);
-        });
         this.addMarker();
         this.eventSource = new EventSource("http://localhost:8080/battery-levels/stream");
         this.eventSource.onmessage = (event) => {
@@ -48,15 +45,15 @@ export default {
             const marker = this.markers[0];
             marker.moveTo([data, marker.destination[1]]);
         };
-    },
 
         this.map.on("click", (e) => {
-            this.$root.$refs.home.show(e.latlng);
+        this.$root.$refs.home.show(e.latlng);
   
         });
+
         this.eventStream.readStream(this.addMarkerStream);
-        console.log("test");
     },
+
     methods: {
         addMarker(){
             this.markers.push(new CimsMarker('ambulance', this.fontys).addTo(this.map));
