@@ -81,7 +81,7 @@
 
       JSONget(){
         // this should match the port in src/main/resources/application.properties
-        axios.get('http://localhost:8080/events/testing', { headers: { 'Access-Control-Allow-Origin': '*' } })
+        axios.get('http://localhost:8081/events/testing', { headers: { 'Access-Control-Allow-Origin': '*' } })
                 // .then(response => (this.messagesgot = response.data.results))
                 // .catch(error => this.messagesgot = error)
                 .then(response => (
@@ -101,7 +101,7 @@
         this.object_to_send = message;
 
         // this should match the port in src/main/resources/application.properties
-        axios.post(`http://localhost:8080/events/testing`, { headers: { 'Access-Control-Allow-Origin': '*' } }, { body: message })
+        axios.post(`http://localhost:80801/events/testing`, { headers: { 'Access-Control-Allow-Origin': '*' } }, { body: message })
                 .then(response => this.response = response.data)
                 .catch(error => this.response = error);
 
