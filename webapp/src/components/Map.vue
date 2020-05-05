@@ -27,12 +27,15 @@ export default {
 
     mounted(){
         this.map = new CimsMap(this.fontys, 25);
+        this.map.on("click", (e) => {
+            console.log(e.latlng);
+        });
         this.addMarker();
         this.eventSource = new EventSource("http://localhost:8080/battery-levels/stream");
         this.eventSource.onmessage = (event) => {
             const data = JSON.parse(event.data);
             const marker = this.markers[0];
-            marker.moveTo([data,data]);
+            marker.moveTo([data, marker.destination[1]]);
         };
     },
 
