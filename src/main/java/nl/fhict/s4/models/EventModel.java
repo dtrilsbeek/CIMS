@@ -1,19 +1,28 @@
 package nl.fhict.s4.models;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+
+import javax.persistence.Entity;
 import javax.ws.rs.FormParam;
 
-public class EventModel {
+@Entity
+public class EventModel extends PanacheEntity {
     @FormParam("lat")
-    private double lat;
+    public double lat;
+
     @FormParam("lon")
-    private double lon;
+    public double lon;
+
     @FormParam("type")
-    private int type;
+    public int type;
+
+    public Status status;
+
     @FormParam("description")
-    private String description;
+    public String description;
 
     public EventModel() {
-        //default constructor
+        status = Status.ACTIVE;
     }
 
     public  EventModel(double lat, double lon, int type, String description) {
@@ -21,6 +30,11 @@ public class EventModel {
          this.lon = lon; 
          this.type = type;
          this.description = description;
+         this.status = Status.ACTIVE;
+    }
+
+    public void finish() {
+        this.status = Status.FINISHED;
     }
 
     /**
