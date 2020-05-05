@@ -47,8 +47,7 @@ export default {
         };
 
         this.map.on("click", (e) => {
-        this.$root.$refs.home.show(e.latlng);
-  
+            this.$root.$refs.home.show(e.latlng);
         });
 
         this.eventStream.readStream(this.addMarkerStream);
