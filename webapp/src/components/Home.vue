@@ -3,13 +3,13 @@
 
     <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
 
-    <modal :width="330" :height="300" name="addTopic-modal" class="modal" @before-open='beforeOpen()' @before-close='beforeClose()'>       
+    <modal :width="400" :height="500" name="addTopic-modal" class="modal" @before-open='beforeOpen()' @before-close='beforeClose()'>       
       <ul>
         <li><h1>Testing Input, Get en Post</h1></li>
 
-        <li><input type="number" min="0" v-model="lat" placeholder="Input latitude"/></li>
-        <li><input type="number" min="0" v-model="lon" placeholder="Input longitude"/></li>
-        <li><input type="number" min="0" v-model="type" placeholder="Input type"/></li>
+        <li><input type="number" v-model="lat" placeholder="Input latitude" readonly /></li>
+        <li><input type="number" v-model="lon" placeholder="Input longitude" readonly /></li>
+        <li><select v-model="type"><option v-for="number in 5" :key="number.number">{{number}}</option></select></li>
 
         <li><textarea v-model="description" placeholder="Input information"/></li>
 
@@ -120,9 +120,13 @@
         //   this.errors.push(e)
         // }
       },
-      show () {
+      show (latlng) {
+        console.log(latlng);
+        this.lat = latlng.lat;
+        this.lon = latlng.lng;
+        
         this.$modal.show('addTopic-modal');
-          //params can be added with ", { foo: 'bar' })"
+        //params can be added with ", { foo: 'bar' })"
       },
       hide () {
         this.$modal.hide('addTopic-modal');

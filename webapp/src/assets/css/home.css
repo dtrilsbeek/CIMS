@@ -15,6 +15,10 @@ input {
     margin: 0 0 8px 0;
 }
 
+select {
+    padding-left: 4px;
+}
+
 ul, ul * {
     width: 300px;
     margin: auto;

@@ -7,7 +7,6 @@
           <li>Nieuws</li>
       </ul>
       <aside class="info">info
-          <button v-on:click='showAddTopicPopup()'>Add topic</button>
           <home/>
       </aside>
   </div>
@@ -41,7 +40,8 @@ export default {
         this.addMarker();
 
         this.map.on("click", (e) => {
-            this.markers[0].moveTo(e.latlng, 2000);
+            this.$root.$refs.home.show(e.latlng);
+  
         });
         this.eventStream.readStream(this.addMarkerStream);
         console.log("test");
@@ -54,10 +54,6 @@ export default {
         addMarkerStream(marker){
             this.markers.push(marker.addTo(this.map));
         },
-
-        showAddTopicPopup() {
-            this.$root.$refs.home.show();
-        }
     }
 }
 </script>
