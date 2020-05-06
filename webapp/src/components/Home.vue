@@ -65,6 +65,7 @@
                   console.log(error)
                   this.response = error
                 });
+        this.hide();
       },
       show (latlng) {
         console.log(latlng);
