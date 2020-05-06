@@ -52,13 +52,6 @@
 
         voorbeeld: null,
 
-        message: {
-          lat: 0,
-          lon: 0,
-          type: 0,
-          description: ""
-        },
-
         object_to_send: null,
         response: null,
 
@@ -76,17 +69,17 @@
 
     methods: {
       getMessage: function () {
-        let message = this.message;
-        message.lat = this.lat;
-        message.lon = this.lon;
-        message.type = this.type;
-        message.description = this.description;
-        return message;
+        return {
+          lat: parseFloat(this.lat),
+          lon: parseFloat(this.lon),
+          type: parseInt(this.type),
+          description: this.description
+        };
       },
 
       JSONget(){
         // this should match the port in src/main/resources/application.properties
-        axios.get('http://localhost:8081/events/testing', { headers: { 'Access-Control-Allow-Origin': '*' } })
+        axios.get('http://localhost:8080/events/testing')
                 // .then(response => (this.messagesgot = response.data.results))
                 // .catch(error => this.messagesgot = error)
                 .then(response => (
@@ -103,12 +96,15 @@
 
       // Pushes posts to the server when called.
       JSONpost(message) {
-        this.object_to_send = message;
 
         // this should match the port in src/main/resources/application.properties
-        axios.post(`http://localhost:80801/events/testing`, { headers: { 'Access-Control-Allow-Origin': '*' } }, { body: message })
+        axios.post(`http://localhost:8080/events/testing`, message)
                 .then(response => this.response = response.data)
-                .catch(error => this.response = error);
+                .catch(error => { 
+                  alert("error!"),
+                  console.log(error)
+                  this.response = error
+                });
 
         // async / await version (postPost() becomes async postPost())
         //

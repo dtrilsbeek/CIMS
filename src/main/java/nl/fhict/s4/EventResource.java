@@ -87,8 +87,8 @@ public class EventResource {
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public EventModel addEvent(@Form EventModel model) {
+	@Consumes(MediaType.APPLICATION_JSON)
+	public EventModel addEvent(EventModel model) {
 		eventEmitter.send(model);
 		return model;
 	}
@@ -102,16 +102,14 @@ public class EventResource {
 
 	@POST
 	@Path("/testing")
+	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String testingFunctie2(@Form EventModel model) {
+	public EventModel testingFunctie2(EventModel model) {
 		// currently this method doesn't work,
 		// as it is apparently not possible for the parameter data to be interpreted as an EventModel
-		try{
+
 			models.add(model);
-			return "We did it!";
-		}
-		catch (Exception e){
-			return "Mission Failed!";
-		}
+			return model;
+	
 	}
 }
