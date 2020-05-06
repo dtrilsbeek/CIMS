@@ -13,7 +13,7 @@ export default class CimsMap extends L.Map {
             preferCanvas: true
         });
         this.initLayer();
-        this.setZoom(zoom); // Changing zoom immediately to prevent map bug loading with gray screen
+        this.setZoom(zoom); // Changing zoom immediately to prevent map a bug where the map doesn't load entirely
     }
 
     initLayer(){
