@@ -2,31 +2,26 @@ package nl.fhict.s4;
 
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
-import io.vertx.core.json.Json;
 import io.vertx.mutiny.core.Vertx;
 
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
 import nl.fhict.s4.models.EventModel;
 
-import org.jboss.resteasy.annotations.Body;
-import org.jboss.resteasy.annotations.Form;
+
 import org.jboss.resteasy.annotations.SseElementType;
 import org.jboss.resteasy.annotations.cache.Cache;
 import org.reactivestreams.Publisher;
 
-import javax.enterprise.inject.Model;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import java.util.ArrayList;
-import java.util.List;
+
 
 
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
@@ -37,9 +32,6 @@ public class EventResource {
 	Multi<EventModel> cachedEvents;
 	Emitter<EventModel> eventEmitter;
 	Vertx vertx;
-
-
-	List<EventModel> models = new ArrayList<EventModel>();
 
 
 	public EventResource(
@@ -55,9 +47,6 @@ public class EventResource {
 				.createFrom()
 				.publisher(events)
 				.cache();
-
-
-		models.add(new EventModel(11, 0, 37, "LeonIsTesting"));
 	}
 
 
@@ -91,25 +80,5 @@ public class EventResource {
 	public EventModel addEvent(EventModel model) {
 		eventEmitter.send(model);
 		return model;
-	}
-
-	@GET
-	@Path("/testing")
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<EventModel> testingFunctie() {
-		return models;
-	}
-
-	@POST
-	@Path("/testing")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public EventModel testingFunctie2(EventModel model) {
-		// currently this method doesn't work,
-		// as it is apparently not possible for the parameter data to be interpreted as an EventModel
-
-			models.add(model);
-			return model;
-	
 	}
 }
