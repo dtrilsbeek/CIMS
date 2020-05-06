@@ -49,13 +49,17 @@ shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 export default class CimsMarker extends MovingMarker {
 
     /**
+     * @param {number} id
      * @param {string} icon 
      * @param {Array<number>} start lat longs
      * @param {Array<number>} [destination] lat longs
      */
-    constructor(icon, start, destination = start){
+    constructor(id, icon, start, destination = start){
         super([start, start], 1000, {icon: icons[icon]});
         
+
+        this.id = id;
+
         this.bindPopup(`event: ${icon} <br>
                         information: eventinfo
                         `

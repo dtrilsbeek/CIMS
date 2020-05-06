@@ -51,6 +51,17 @@ public class EventResource {
 
 
 	@GET
+	@Path("/stream")
+	@Produces(MediaType.SERVER_SENT_EVENTS)
+	@SseElementType(MediaType.APPLICATION_JSON)
+	public Multi<EventModel> events() {
+		return cachedEvents;
+	}
+
+
+
+
+	@GET
 	@Path("/stream/{type}")
 	@Produces(MediaType.SERVER_SENT_EVENTS)
 	@SseElementType(MediaType.APPLICATION_JSON)
