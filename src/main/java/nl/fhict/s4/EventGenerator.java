@@ -7,6 +7,7 @@ import io.reactivex.Flowable;
 import nl.fhict.s4.models.EventModel;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.transaction.Transactional;
 
 import org.eclipse.microprofile.reactive.messaging.Outgoing;
 
@@ -15,11 +16,23 @@ import org.eclipse.microprofile.reactive.messaging.Outgoing;
 public class EventGenerator {
     private final Random random = new Random();
 
-    @Outgoing("generated-event")                        
-    public Flowable<EventModel> generate() {               
-        return Flowable.interval(100, TimeUnit.MILLISECONDS)
-                .onBackpressureBuffer()
-                .map(tick -> new EventModel( random.nextDouble() * 50, random.nextDouble() * 5, random.nextInt(7) + 1, "description"));
+    @Outgoing("generated-event")
+    @Transactional
+    public Flowable<EventModel> generate() {
+
+
+        return Flowable.interval(10, TimeUnit.SECONDS)
+                .map(tick -> {
+                    var event = new EventModel(
+                                    51.2 + random.nextDouble() * (51.52 - 51.2),
+                                    5.18 + random.nextDouble() * (5.82 - 5.18),
+                                    random.nextInt(7) + 1,
+                                    "description");
+                    event.persist();
+                    return event;
+
+                        }
+                );
     }
 
 }

@@ -3,6 +3,7 @@ import MovingMarker from '@/components/leaflet/MovingMarker'
 import { Icon } from 'leaflet';
 
 import MapDao from '@/daos/MapDao.js';
+import CimsMarkerLogic from '@/logic/CimsMarkerLogic.js';
 
 const icons = {
     fireTruck : L.icon({
@@ -50,17 +51,25 @@ export default class CimsMarker extends MovingMarker {
 
 
     /**
-     * @param {number} id
-     * @param {string} icon 
-     * @param {Array<number>} start lat longs
-     * @param {Array<number>} [destination] lat longs
+     * @param {Number} id
+     * @param {String} icon 
+     * @param {String} description
+     * @param {Array<Number>} start lat longs
+     * @param {Array<Number>} [destination] lat longs
      */
-    constructor(icon, description, start, destination = start){
+    constructor(id, icon, description, start, destination = start){
         super([start, start], 1000, {icon: icons[icon]});
 
-        this.bindPopupInfo(start[0], start[1], icon, description);
+        // this.bindPopupInfo(start[0], start[1], icon, description);
       
+        this.id = id;
+        this.icon = icon;
+        this.description = description;
         this.destination = destination;
+
+        this.on('click', () => {
+            this.bindPopupInfo(this.getLatLng());
+        });
         
         // Rotate image to destination - (Vector rotation)
         // Remove from map
@@ -68,24 +77,18 @@ export default class CimsMarker extends MovingMarker {
     }
 
     /**
-     * @param {Number} lat latitude
-     * @param {Number} lng longitude
-     * @param {String} icon 
-     * @param {String} description
+     * @param latlng
      */
-    bindPopupInfo(lat, lng, icon, description) {
+    bindPopupInfo(latlng) {
+
+        let lat = latlng.lat;
+        let lng = latlng.lng;
         MapDao.getMarkerPosition(lat, lng)
             .then((response) => {
-                let address = response.address;
 
-                this.bindPopup(`
-                Event: ${icon} <br>
-                Road: ${address.road} <br>
-                Neighbourhood: ${address.neighbourhood} <br>
-                City: ${address.city} <br>
-                Description: ${description}`
-            );
-        })
+                let address = response.address;
+                this.bindPopup(CimsMarkerLogic.createPopup(address, this.icon, this.description, lat, lng));
+            });
     }
 
     /**
@@ -93,7 +96,9 @@ export default class CimsMarker extends MovingMarker {
      * @param {number} duration  milliseconds
      */
     moveTo(destination, duration = 10000){
-        super.moveTo(destination, duration);
+        super.moveTo(destination, duration)
+        //refresh popup
+        //this.bindPopupInfo(destination);
     }
 
     /**
