@@ -20,12 +20,20 @@ public class BatteryResource {
     @Inject
     @Channel("my-data-stream-2") Publisher<Double> batteryLevels;
 
+//    @GET
+//    @Path("/stream")
+//    @Produces(MediaType.SERVER_SENT_EVENTS)
+//    @SseElementType(MediaType.TEXT_PLAIN)
+//    public Publisher<Double> streamNumbers() {
+//       return batteryLevels;
+//    }
+
     @GET
     @Path("/stream")
     @Produces(MediaType.SERVER_SENT_EVENTS)
     @SseElementType(MediaType.TEXT_PLAIN)
     public Publisher<Double> streamNumbers() {
-       return batteryLevels;
+        return batteryLevels;
     }
 
     @GET

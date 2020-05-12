@@ -50,6 +50,7 @@ export default class CimsMarker extends MovingMarker {
 
 
     /**
+     * @param {number} id
      * @param {string} icon 
      * @param {Array<number>} start lat longs
      * @param {Array<number>} [destination] lat longs

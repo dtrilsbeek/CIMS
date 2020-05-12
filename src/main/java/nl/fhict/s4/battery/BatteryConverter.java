@@ -12,11 +12,18 @@ public class BatteryConverter {
 
     private static final double ACCURACY = 0.98;
 
+//    @Incoming("battery-levels")
+//    @Outgoing("my-data-stream-2")
+//    @Broadcast
+//    public double process(float batteryLevel) {
+//        return batteryLevel * ACCURACY;
+//    }
+
     @Incoming("battery-levels")
     @Outgoing("my-data-stream-2")
-    @Broadcast                                          
-    public double process(float batteryLevel) {
-        return batteryLevel * ACCURACY;
+    @Broadcast
+    public double process(Double position) {
+        return position;
     }
 
 }
