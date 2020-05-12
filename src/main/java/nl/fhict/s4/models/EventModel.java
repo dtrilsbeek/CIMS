@@ -24,7 +24,7 @@ public class EventModel extends PanacheEntity {
         status = Status.ACTIVE;
     }
 
-    public  EventModel(double lat, double lon, int type, String description) {
+    public EventModel(double lat, double lon, int type, String description) {
          this.lat = lat;
          this.lon = lon; 
          this.type = type;

@@ -60,7 +60,7 @@
       JSONpost(message) {
 
         // this should match the port in src/main/resources/application.properties
-        axios.post(`http://localhost:8080/events`, message)
+        axios.post(`http://localhost:8083/events`, message)
                 .then(response => this.response = response.data)
                 .catch(error => { 
                   alert("error!"),
