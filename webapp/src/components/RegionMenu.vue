@@ -3,7 +3,7 @@
         <img src="@/assets/images/edit-icon.png" class="region-button"
             v-on:click="toggleMenu()"/>
         <section class="region-menu" v-if="regionMenu.isActive" style="z-index: 1000;">
-            <input type="text" placeholder="Regio" v-model="regionMenu.text" v-on:blur="toggleMenu()">
+            <input type="text" placeholder="Regio" v-model="regionMenu.text">
             <ul>
                 <li v-for="region in filteredRegions" :key=region.name
                     v-on:click="switchRegion(region)">
