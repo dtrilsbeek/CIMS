@@ -13,12 +13,7 @@ import org.jboss.resteasy.annotations.SseElementType;
 import org.jboss.resteasy.annotations.cache.Cache;
 import org.reactivestreams.Publisher;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
@@ -89,6 +84,19 @@ public class EventResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public EventModel addEvent(EventModel model) {
+
+		if (model.updateId != null) {
+			EventModel update = EventModel.findById(model.updateId);
+			update.status = model.status;
+			update.description = model.description;
+			update.lat = model.lat;
+			update.lon = model.lon;
+			update.type = model.type;
+			update.persist();
+		} else {
+			model.persist();
+		}
+
 		eventEmitter.send(model);
 		return model;
 	}

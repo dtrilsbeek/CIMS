@@ -1,11 +1,7 @@
 package nl.fhict.s4.models;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
-
 import javax.persistence.Entity;
-import javax.ws.rs.FormParam;
-
-
 
 @Entity
 public class EventModel extends PanacheEntity {
@@ -19,6 +15,9 @@ public class EventModel extends PanacheEntity {
     public Status status;
 
     public String description;
+
+    public Long updateId;
+    public String updateAction;
 
     public EventModel() {
         status = Status.ACTIVE;
