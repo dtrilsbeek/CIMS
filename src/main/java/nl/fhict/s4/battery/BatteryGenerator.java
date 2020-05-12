@@ -18,8 +18,7 @@ public class BatteryGenerator {
 
     @Outgoing("generated-battery")
     public Flowable<Double> generate() {
-        return Flowable.interval(2, TimeUnit.SECONDS)
-                .onBackpressureDrop()
+        return Flowable.interval(20, TimeUnit.SECONDS)
                 .map(tick -> getLocation());
     }
 

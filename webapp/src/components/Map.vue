@@ -54,7 +54,14 @@ export default {
             
             const data = JSON.parse(event.data);
 
-            data.id = Math.floor(Math.random() * 10);
+            console.log(data);
+
+            // if(true){
+            //
+            // }
+
+
+            //data.id = Math.floor(Math.random() * 10);
                         // console.log(data);
 
 //             const marker = this.markers[0];
@@ -64,16 +71,16 @@ export default {
                 // marker.moveTo([data.lat, data.lon], 500);
 
             // if(data.type === 1) {
-                const marker = this.markers.find(m => m.id === data.id);
-                if(marker != undefined) {
-                    marker.moveTo([data.lat, data.lon], 500);
-                }
-                else {
+                //const marker = this.markers.find(m => m.id === data.id);
+                //if(marker != undefined) {
+                    //marker.moveTo([data.lat, data.lon], 500);
+                //}
+                // else {
                     const marker = new CimsMarker(data.id, 'ambulance', 'description', [data.lat, data.lon]);
                     // console.log('['+data.lat + ', ' + data.lon + ']');
-                    
+
                     this.addMarkerStream(marker);
-                } 
+                // }
             // console.log(marker);
         
             // }

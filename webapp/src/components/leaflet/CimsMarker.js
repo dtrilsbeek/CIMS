@@ -77,10 +77,7 @@ export default class CimsMarker extends MovingMarker {
     }
 
     /**
-     * @param {Number} lat latitude
-     * @param {Number} lng longitude
-     * @param {String} icon 
-     * @param {String} description
+     * @param latlng
      */
     bindPopupInfo(latlng) {
 
@@ -101,7 +98,7 @@ export default class CimsMarker extends MovingMarker {
     moveTo(destination, duration = 10000){
         super.moveTo(destination, duration)
         //refresh popup
-        this.bindPopupInfo(destination);
+        //this.bindPopupInfo(destination);
     }
 
     /**
