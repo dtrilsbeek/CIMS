@@ -30,7 +30,7 @@
 
     data: function() {
       return {
-        id: 0,
+        id: null,
         lat: 0,
         lon: 0,
         type: 0,
@@ -48,7 +48,7 @@
     methods: {
       getMessage: function () {
         return {
-          id: parseFloat(this.id),
+          id: isNaN(parseInt(this.id)) ? null : parseInt(this.id),
           lat: parseFloat(this.lat),
           lon: parseFloat(this.lon),
           type: parseInt(this.type),
@@ -59,10 +59,13 @@
       // Pushes posts to the server when called.
       JSONpost(message) {
 
+        console.log(message);
+        // console.log("test");
+
         // this should match the port in src/main/resources/application.properties
         axios.post(`http://localhost:8080/events`, message)
                 .then(response => this.response = response.data)
-                .catch(error => { 
+                .catch(error => {
                   alert("error!"),
                   console.log(error)
                   this.response = error

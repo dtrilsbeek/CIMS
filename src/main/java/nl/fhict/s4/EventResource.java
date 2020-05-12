@@ -13,6 +13,7 @@ import org.jboss.resteasy.annotations.SseElementType;
 import org.jboss.resteasy.annotations.cache.Cache;
 import org.reactivestreams.Publisher;
 
+import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -81,12 +82,13 @@ public class EventResource {
 
 
 	@POST
+	@Transactional
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public EventModel addEvent(EventModel model) {
 
-		if (model.updateId != null) {
-			EventModel update = EventModel.findById(model.updateId);
+		if (model.id != null) {
+			EventModel update = EventModel.findById(model.id);
 			update.status = model.status;
 			update.description = model.description;
 			update.lat = model.lat;
@@ -94,6 +96,7 @@ public class EventResource {
 			update.type = model.type;
 			update.persist();
 		} else {
+			model = new EventModel(model);
 			model.persist();
 		}
 
