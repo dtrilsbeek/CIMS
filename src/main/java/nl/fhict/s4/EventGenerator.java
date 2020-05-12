@@ -24,8 +24,8 @@ public class EventGenerator {
         return Flowable.interval(10, TimeUnit.SECONDS)
                 .map(tick -> {
                     var event = new EventModel(
-                                    random.nextDouble() * 50,
-                                    random.nextDouble() * 5,
+                                    51.2 + random.nextDouble() * (51.52 - 51.2),
+                                    5.18 + random.nextDouble() * (5.82 - 5.18),
                                     random.nextInt(7) + 1,
                                     "description");
                     event.persist();
