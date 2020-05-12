@@ -1,8 +1,8 @@
 <template>
   <div class="grid">
-      <div class="map-header">Eindhoven</div>
+      <region-menu v-on:move-to="moveTo($event)"></region-menu>
       <div id="map"></div>
-      <ul>
+      <ul class="map-info">
           <li>Info</li>
           <li>Nieuws</li>
       </ul>
@@ -17,13 +17,15 @@
 import CimsMap from '@/components/leaflet/CimsMap'
 import CimsMarker from '@/components/leaflet/CimsMarker'
 
-import 'leaflet/dist/leaflet.css'
-//import EventStream from "./stream/EventStream"; // Css for loading the map smoothly
+import 'leaflet/dist/leaflet.css' // Css for loading the map smoothly
+//import EventStream from "./stream/EventStream"; 
 import Home from './Home.vue'
+import RegionMenu from '@/components/RegionMenu'
 
 export default {
     components: {
         home: Home,
+        regionMenu: RegionMenu
     },
     data(){
         return{
@@ -46,6 +48,7 @@ export default {
         this.map.on('click', (e) => {
            this.$root.$refs.home.show(e.latlng);
         })
+
 
         // this.eventStream = new EventStream();
         // this.eventSource = new EventSource("http://localhost:8080/events/stream");
@@ -73,10 +76,17 @@ export default {
         addMarker(markerInfo){
             this.markers.push(new CimsMarker('ambulance', markerInfo.description, [markerInfo.lat, markerInfo.lon]).addTo(this.map));
         },
+
         addMarkerStream(marker){
             this.markers.push(marker.addTo(this.map));
         },
-    },
+
+        moveTo(bounds){
+            console.log(bounds);
+            this.map.flyToBounds(bounds);
+        }
+
+    }
 }
 </script>
 

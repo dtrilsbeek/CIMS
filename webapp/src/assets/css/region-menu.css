@@ -1,0 +1,94 @@
+/* Header */
+.map-header{
+    position: relative;
+    height: 50px;
+    line-height: 50px;
+    font-weight: bold;
+    font-size: 24px;
+    text-align: center;
+    grid-column: 1/11;
+    grid-row: 1;
+    background-color: #efefef;
+    border-bottom: .5px solid #555;
+}
+
+.map-header::first-letter{
+    text-transform: capitalize;
+}
+
+/* Edit button */
+.region-button{
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: .8;
+}
+
+.region-button:hover{
+    cursor: pointer;
+    opacity: 1;
+}
+
+/* Region selection menu */
+.region-menu{
+    border: 1px solid #555;
+    margin: 0;
+    padding: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 25%;
+    position: absolute;
+    z-index: 2;
+    background-color: #efefef;
+    box-sizing: border-box;
+}
+
+/* Input field */
+.region-menu input{
+    margin: 0 auto;
+    display: block;
+    width: 100%;
+    font-size: 32px;
+    line-height: 32px;
+    background-color: transparent;
+    border: none;
+    text-align: center;
+    border-bottom: 1px solid #555;
+    font-weight: bold;
+}
+
+.region-menu input:focus{
+    outline: none;
+}
+
+.region-menu input:focus::placeholder {
+    color: transparent;
+  }
+
+/* Filtered region list */
+.region-menu ul{
+    width: 100%;
+    display: block;
+}
+
+.region-menu ul li{
+    display: block;
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid #555;
+    font-size: 32px;
+    line-height: 32px;
+    color: black;
+    padding: 5px 0;
+    transition-duration: .2s;
+}
+
+.region-menu ul li::first-letter{
+    text-transform: capitalize;
+}
+
+.region-menu ul li:hover{
+    background-color: #dfdfdf;
+    cursor: pointer;
+}
