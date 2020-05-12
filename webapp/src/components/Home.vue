@@ -13,7 +13,13 @@
 
         <li><textarea v-model="description" placeholder="Input information"/></li>
 
-        <li><button type="button" @click="JSONpost(getMessage())">Send</button></li>
+
+        <!-- <li><input ref="city" placeholder="Input city" /></li> -->
+        <!-- <li><button type="button" @click="placeNameToCoordinates()">Test</button></li> -->
+        <li><button type="button" @click="sendData()">Send</button></li>
+
+
+        <!-- <li><button type="button" @click="JSONpost(getMessage())">Send</button></li>
         <li>
           <p v-text="object_to_send"></p>
           <h3>--------------------------------------------------</h3>
@@ -23,7 +29,7 @@
         <li><button type="button" @click="JSONget()">Get</button></li>
         <li v-for="obj in messagesgot" v-bind:key="obj.lat">
           <p v-text="obj"></p>
-        </li>
+        </li> -->
 
         <li>
           <h3>--------------------------------------------------</h3>
@@ -45,6 +51,7 @@
 
     data: function() {
       return {
+
         lat: 0,
         lon: 0,
         type: 0,
@@ -121,7 +128,6 @@
         // }
       },
       show (latlng) {
-        console.log(latlng);
         this.lat = latlng.lat;
         this.lon = latlng.lng;
         
@@ -136,7 +142,12 @@
       },
       beforeClose() {
         console.log('this will be called before the modal closes');
-      }
+      },
+      sendData() {
+        let markerInfo = this.getMessage();
+        this.$root.$refs.map.addMarker(markerInfo);
+        this.hide();
+      },
     }
   }
 </script>

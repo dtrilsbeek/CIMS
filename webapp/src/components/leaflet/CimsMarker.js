@@ -2,6 +2,7 @@ import L from 'leaflet'
 import MovingMarker from '@/components/leaflet/MovingMarker'
 import { Icon } from 'leaflet';
 
+import MapDao from '@/daos/MapDao.js';
 
 const icons = {
     fireTruck : L.icon({
@@ -41,31 +42,49 @@ shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 });
 
 
-
 /**
  * Marker that can be placed on the map to represent a vehicle or a crisis scenario.
  * This marker is based on the moving marker plugin.
  */
 export default class CimsMarker extends MovingMarker {
 
+
     /**
      * @param {string} icon 
      * @param {Array<number>} start lat longs
      * @param {Array<number>} [destination] lat longs
      */
-    constructor(icon, start, destination = start){
+    constructor(icon, description, start, destination = start){
         super([start, start], 1000, {icon: icons[icon]});
-        
-        this.bindPopup(`event: ${icon} <br>
-                        information: eventinfo
-                        `
-                       );
 
+        this.bindPopupInfo(start[0], start[1], icon, description);
+      
         this.destination = destination;
         
         // Rotate image to destination - (Vector rotation)
         // Remove from map
         // Vue integratie
+    }
+
+    /**
+     * @param {Number} lat latitude
+     * @param {Number} lng longitude
+     * @param {String} icon 
+     * @param {String} description
+     */
+    bindPopupInfo(lat, lng, icon, description) {
+        MapDao.getMarkerPosition(lat, lng)
+            .then((response) => {
+                let address = response.address;
+
+                this.bindPopup(`
+                Event: ${icon} <br>
+                Road: ${address.road} <br>
+                Neighbourhood: ${address.neighbourhood} <br>
+                City: ${address.city} <br>
+                Description: ${description}`
+            );
+        })
     }
 
     /**
