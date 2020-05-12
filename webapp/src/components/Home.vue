@@ -14,7 +14,6 @@
         <li><textarea v-model="description" placeholder="Input information"/></li>
 
         <li><button type="button" @click="JSONpost(getMessage())">Send</button></li>
-        <li><button type="button" @click="sendData()">New Marker (local)</button></li>
 
       </ul>
     </modal>
@@ -87,12 +86,7 @@
       },
       beforeClose() {
         console.log('this will be called before the modal closes');
-      },
-      sendData() {
-        let markerInfo = this.getMessage();        
-        this.$root.$refs.map.addMarker(markerInfo);
-        this.hide();
-      },
+      }
     }
   }
 </script>

@@ -19,7 +19,7 @@ import CimsMarker from '@/components/leaflet/CimsMarker'
 
 // Css for loading the map smoothly
 import 'leaflet/dist/leaflet.css'
-import EventStream from "./stream/EventStream"; 
+// import EventStream from "./stream/EventStream"; 
 import Home from './Home.vue'
 import RegionMenu from '@/components/RegionMenu'
 
@@ -30,7 +30,7 @@ export default {
     },
     data(){
         return{
-            eventStream: null,
+            // eventStream: null,
             map: null,
             markers: [],
             fontys: [51.451069, 5.4772183],
@@ -44,13 +44,13 @@ export default {
         this.map = new CimsMap(this.fontys, 25);
         // this.addMarker();
 
-        this.markers.push(new CimsMarker(0, 'ambulance', 'description', this.fontys).addTo(this.map));
+        //this.markers.push(new CimsMarker(0, 'ambulance', 'description', this.fontys).addTo(this.map));
         
         this.map.on('click', (e) => {
            this.$root.$refs.home.show(e.latlng);
         })
 
-        this.eventStream = new EventStream();
+        //this.eventStream = new EventStream();
         this.eventSource = new EventSource("http://localhost:8083/events/stream");
         this.eventSource.onmessage = (event) => {
             
@@ -58,34 +58,18 @@ export default {
 
             console.log(data);
 
-            // if(true){
-            //
-            // }
-
-
-            //data.id = Math.floor(Math.random() * 10);
-                        // console.log(data);
-
-//             const marker = this.markers[0];
-// console.log(data.type);
-
-            // const marker = this.markers.find(m => m.id === data.id);
-                // marker.moveTo([data.lat, data.lon], 500);
-
-            // if(data.type === 1) {
-                //const marker = this.markers.find(m => m.id === data.id);
-                //if(marker != undefined) {
-                    //marker.moveTo([data.lat, data.lon], 500);
-                //}
-                // else {
-                    const marker = new CimsMarker(data.id, 'ambulance', 'description', [data.lat, data.lon]);
-                    // console.log('['+data.lat + ', ' + data.lon + ']');
-
-                    this.addMarkerStream(marker);
-                // }
-            // console.log(marker);
-        
-            // }
+            if(data.type === 1) {
+                const marker = this.markers.find(m => m.id === data.id);
+                if(marker != undefined) {
+                    marker.moveTo([data.lat, data.lon], 500);
+                }
+            }
+            else {
+                const marker = new CimsMarker(data.id, 'ambulance', data.description, [data.lat, data.lon]);
+                    
+                this.addMarkerStream(marker);
+            }
+   
           
         };
 
