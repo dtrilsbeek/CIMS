@@ -100,14 +100,17 @@ public class EventResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public EventModel updateEvent(EventModel model) {
 		EventModel update = EventModel.findById(model.id);
-		update.status = model.status;
-		update.description = model.description;
-		update.lat = model.lat;
-		update.lon = model.lon;
-		update.type = model.type;
-		update.persist();
 
-		eventEmitter.send(model);
+		if (update != null) {
+			update.status = model.status;
+			update.description = model.description;
+			update.lat = model.lat;
+			update.lon = model.lon;
+			update.type = model.type;
+			update.persist();
+
+			eventEmitter.send(update);
+		}
 
 		return model;
 	}
