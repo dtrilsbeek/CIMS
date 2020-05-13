@@ -16,23 +16,25 @@ import org.eclipse.microprofile.reactive.messaging.Outgoing;
 public class EventGenerator {
     private final Random random = new Random();
 
-    @Outgoing("generated-event")
     @Transactional
+    @Outgoing("generated-event")
     public Flowable<EventModel> generate() {
 
-
         return Flowable.interval(10, TimeUnit.SECONDS)
-                .map(tick -> {
-                    var event = new EventModel(
-                                    51.2 + random.nextDouble() * (51.52 - 51.2),
-                                    5.18 + random.nextDouble() * (5.82 - 5.18),
-                                    random.nextInt(7) + 1,
-                                    "description");
-                    event.persist();
-                    return event;
+                .map(tick -> createEvent() );
+    }
 
-                        }
-                );
+    private EventModel createEvent(){
+
+        EventModel model = new EventModel(
+                51.2 + random.nextDouble() * (51.52 - 51.2),
+                5.18 + random.nextDouble() * (5.82 - 5.18),
+                random.nextInt(7) + 1,
+                "description");
+
+        model.persist();
+
+        return model;
     }
 
 }
