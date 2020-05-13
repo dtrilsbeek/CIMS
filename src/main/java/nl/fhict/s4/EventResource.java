@@ -85,22 +85,30 @@ public class EventResource {
 	@Transactional
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public EventModel addEvent(EventModel model) {
-
-		if (model.id != null) {
-			EventModel update = EventModel.findById(model.id);
-			update.status = model.status;
-			update.description = model.description;
-			update.lat = model.lat;
-			update.lon = model.lon;
-			update.type = model.type;
-			update.persist();
-		} else {
-			model = new EventModel(model);
-			model.persist();
-		}
+	public EventModel createEvent(EventModel model) {
+		model = new EventModel(model);
+		model.persist();
 
 		eventEmitter.send(model);
+
+		return model;
+	}
+
+	@PUT
+	@Transactional
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public EventModel updateEvent(EventModel model) {
+		EventModel update = EventModel.findById(model.id);
+		update.status = model.status;
+		update.description = model.description;
+		update.lat = model.lat;
+		update.lon = model.lon;
+		update.type = model.type;
+		update.persist();
+
+		eventEmitter.send(model);
+
 		return model;
 	}
 }
