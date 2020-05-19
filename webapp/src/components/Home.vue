@@ -1,66 +1,97 @@
 <template>
   <div>
 
-  <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
+    <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
 
-    <ul>
-      <li>
-        <h1>
-          Add information to Kafka Topic
-        </h1>
-      </li>
-      <li>
-        <input ref="latitude" type="number" min="0" placeholder="Input latitude"/>
-      </li> 
-      <li>
-         <input ref="longitude" type="number" min="0" placeholder="Input longitude"/>
-      </li>
-      <li>
-        <input ref="type" type="number" min="0" placeholder="Input type"/>
-      </li>
-      <li>
-        <textarea ref="information" placeholder="Input information"/>
-      </li>
-      <li>
-        <button v-on:click='createTopicInformation()'>Send</button>
-      </li>
-      <li>
-         {{kafkaTopicInfo}}
-      </li>
-    </ul>
+    <modal :width="400" :height="500" name="addTopic-modal" class="modal" @before-open='beforeOpen()' @before-close='beforeClose()'>       
+      <ul>
+        <li><h1>Add situation</h1></li>
+        <li><input type="number" v-model="id" placeholder="Input id"  /></li>
+        <li><input type="number" v-model="lat" placeholder="Input latitude" readonly /></li>
+        <li><input type="number" v-model="lon" placeholder="Input longitude" readonly /></li>
+        <li><select v-model="type"><option v-for="number in 5" :key="number.number">{{number}}</option></select></li>
 
+        <li><textarea v-model="description" placeholder="Input information"/></li>
+
+        <li><button type="button" @click="JSONpost(getMessage())">Send</button></li>
+
+      </ul>
+    </modal>
   </div>
 </template>
 
 <script>
-import Coordinates from '../models/Coordinates.js';
-import KafkaTopicInfo from '../models/KafkaTopicInfo.js';
+  import axios from 'axios'
+  export default {
+    name: 'Home',
+    props: {
+    },
 
-export default {
-  name: 'Home',
-  props: {
-    // msg: String
-  },
-  data() {
-    return {
-      kafkaTopicInfo: KafkaTopicInfo
-    }
-  },
-  methods: {
-    createTopicInformation() {
-        let refs = this.$refs;
+    data: function() {
+      return {
+        id: null,
+        lat: 0,
+        lon: 0,
+        type: 0,
+        description: "",
+      }
+    },
+
+    mounted: function () {
+    },
+
+    created() {
+      this.$root.$refs.home = this;
+    },
+
+    methods: {
+      getMessage: function () {
+        return {
+          id: isNaN(parseInt(this.id)) ? null : parseInt(this.id),
+          lat: parseFloat(this.lat),
+          lon: parseFloat(this.lon),
+          type: parseInt(this.type),
+          description: this.description
+        };
+      },
+
+      // Pushes posts to the server when called.
+      JSONpost(message) {
+
+        console.log(message);
+        // console.log("test");
+
+        // this should match the port in src/main/resources/application.properties
+        axios.post(`http://localhost:8083/events`, message)
+                .then(response => this.response = response.data)
+                .catch(error => {
+                  alert("error!"),
+                  console.log(error)
+                  this.response = error
+                });
+        this.hide();
+      },
+      show (latlng) {
+        this.lat = latlng.lat;
+        this.lon = latlng.lng;
         
-        this.kafkaTopicInfo = new KafkaTopicInfo(
-          new Coordinates( 
-            refs.latitude.value, 
-            refs.longitude.value, 
-          ),
-          refs.type.value, 
-          refs.information.value
-        );        
+        this.$modal.show('addTopic-modal');
+        //params can be added with ", { foo: 'bar' })"
+      },
+      hide () {
+        this.$modal.hide('addTopic-modal');
+      },
+      beforeOpen (/*event*/) {
+        // console.log(event.params.foo);
+      },
+      beforeClose() {
+        console.log('this will be called before the modal closes');
+      }
     }
   }
-}
 </script>
 
 <style src="@/assets/css/home.css" scoped></style>
+
+
+<!-- post request naar quarkus: localhost:xxxx/events -->
