@@ -38,7 +38,7 @@ else{
     restConfig = new RestConfig(
         'http',
         'localhost',
-        '8080');
+        '8083');
 }
 
 export default restConfig;

@@ -4,15 +4,6 @@
             <h1 class="capitalize-block">Maak een <span class="capitalize-inline">team</span></h1>
                 <form>
                     <input type="text" placeholder="naam" :class="{error: !form.name.isValid}" v-model="form.name.value" />
-                    <!-- <div class="flexbox-container">
-                        <input type="number" class="as-text" placeholder="lat" />
-                        <input type="number" class="as-text" placeholder="long" />
-                    </div> -->
-                    <!-- <select class="dropdown capitalize-block">
-                        <option value="" >Politie bureau</option>
-                        <option value="">Ziekenhuis</option>
-                        <option value="">Brandweer kazerne</option>
-                    </select> -->
                 </form>
             <button class="submit-form clickable" @click="submit">Voeg toe</button>
         </section>
@@ -23,8 +14,7 @@
 import FormField from '@/components/formvalidation/FormField'
 import {isFilledIn} from '@/components/formvalidation/FormValidation'
 import FormHelper from '@/components/formvalidation/FormHelper'
-
-
+import TeamRestConnector from '@/components/rest/TeamRestConnector'
 
 export default {
     data(){
@@ -32,7 +22,8 @@ export default {
             form: {
                 name: new FormField(isFilledIn())
             },
-            formHelper: null
+            formHelper: null,
+            restConnector: new TeamRestConnector()
         }
     },
 
@@ -43,7 +34,7 @@ export default {
     methods: {
         submit(){
             if(this.formHelper.validateForm()){
-                document.querySelector('form').submit();
+                this.restConnector.addTeam(this.form.name.value);
             }
         }
     }
