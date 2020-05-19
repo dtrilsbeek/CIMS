@@ -37,6 +37,8 @@ public class EventGenerator {
     }
 
     private EventModel createEvent() {
+        //tries to create a transaction. 
+        //If it succeeded an event will be created and saved, if it didn't the method will return null.
         try {
             transaction.begin();
             EventModel model = new EventModel(
