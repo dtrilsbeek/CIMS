@@ -52,7 +52,7 @@ export default class CimsMarker extends MovingMarker {
 
     /**
      * @param {Number} id
-     * @param {Number} type
+     * @param {String} type
      * @param {String} description
      * @param {Array<Number>} start lat longs
      * @param {Array<Number>} [destination] lat longs
@@ -63,6 +63,7 @@ export default class CimsMarker extends MovingMarker {
         // this.bindPopupInfo(start[0], start[1], icon, description);
       
         this.id = id;
+        this.type = type;
         this.description = description;
         this.destination = destination;
 
@@ -86,7 +87,7 @@ export default class CimsMarker extends MovingMarker {
             .then((response) => {
 
                 let address = response.address;
-                this.bindPopup(CimsMarkerLogic.createPopup(address, this.icon, this.description, lat, lng));
+                this.bindPopup(CimsMarkerLogic.createPopup(address, this.type, this.description, lat, lng));
             });
     }
 
