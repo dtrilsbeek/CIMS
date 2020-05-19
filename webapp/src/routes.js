@@ -1,4 +1,4 @@
-import Home from './components/Home.vue'
+import Home from './components/Teams.vue'
 import CimsMap from './components/Map.vue'
 
 export default [

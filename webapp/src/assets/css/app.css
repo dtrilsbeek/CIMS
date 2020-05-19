@@ -19,3 +19,39 @@ body {
     text-align: center;
     color: #2c3e50;
   }
+
+
+/* Helper classes for common styling */
+.capitalize-inline{
+  display: inline-block;
+}
+
+.capitalize-block{
+  display: block;
+}
+
+.capitalize-inline::first-letter, .capitalize-block::first-letter{
+  text-transform: uppercase;
+}
+
+.all-caps{
+  text-transform: uppercase;
+}
+
+.clickable:hover{
+  cursor: pointer;
+}
+
+/* Document flow */
+.image-container{
+  line-height: 0;
+}
+
+.full-size-link{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
