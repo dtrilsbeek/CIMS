@@ -1,6 +1,7 @@
 package nl.fhict.s4;
 
 import java.time.Duration;
+import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -14,14 +15,16 @@ import javax.transaction.Transactional;
 import javax.transaction.UserTransaction;
 
 import org.eclipse.microprofile.reactive.messaging.Outgoing;
+import org.jboss.logging.Logger;
 import org.reactivestreams.Publisher;
 
 
 
 @ApplicationScoped
 public class EventGenerator {
-    private final Random random = new Random();
 
+    private static final Logger LOG = Logger.getLogger(EventGenerator.class);
+    private final Random random = new Random();
     @Inject UserTransaction transaction;
     
    @Outgoing("generated-event")
@@ -33,7 +36,7 @@ public class EventGenerator {
             .every(Duration.ofSeconds(1))
             .map(t -> createEvent())
             .transform()
-            .byFilteringItemsWith(m -> m != null);
+            .byFilteringItemsWith(Objects::nonNull);
     }
 
     private EventModel createEvent() {
@@ -53,6 +56,7 @@ public class EventGenerator {
             return model;
         }
         catch(Exception e) {
+            LOG.error(e.getStackTrace());
             return null;   
         }
     }
