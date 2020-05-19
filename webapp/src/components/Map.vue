@@ -58,23 +58,29 @@ export default {
 
             console.log(data);
 
-            if(data.type === 1) {
+
+
+
+/*            if(data.type === 1) {
                 const marker = this.markers.find(m => m.id === data.id);
-                if(marker != undefined) {
+                if(marker) {
                     marker.moveTo([data.lat, data.lon], 500);
                 }
-            }
-            else {
-                const marker = new CimsMarker(data.id, 'ambulance', data.description, [data.lat, data.lon]);
+            }*/
+            // else {
+                const type = this.getIconTypeString(data.type);
+                const marker = new CimsMarker(data.id, type, data.description, [data.lat, data.lon]);
                     
                 this.addMarkerStream(marker);
-            }
+            // }
    
           
         };
 
         // this.eventStream.readStream(this.addMarkerStream);
     },
+
+
 
     created() {
          this.$root.$refs.map = this;
@@ -92,7 +98,22 @@ export default {
         moveTo(bounds){
             console.log(bounds);
             this.map.flyToBounds(bounds);
-        }
+        },
+
+        getIconTypeString(type) {
+            switch (type) {
+                case 1:
+                    return "fireTruck"
+                case 2:
+                    return "ambulance"
+                case 3:
+                    return "fire"
+                case 4:
+                    return "police"
+                default:
+                    return "ambulance"
+            }
+        },
 
     }
 }

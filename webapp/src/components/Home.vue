@@ -65,12 +65,26 @@
         axios.post(`http://localhost:8083/events`, message)
                 .then(response => this.response = response.data)
                 .catch(error => {
-                  alert("error!"),
+                  alert("error!");
                   console.log(error)
                   this.response = error
                 });
         this.hide();
       },
+
+      JSONput(message) {
+        console.log(message);
+
+        axios.put(`http://localhost:8083/events`, message)
+                .then(response => this.response = response.data)
+                .catch(error => {
+                  alert("error!");
+                  console.log(error)
+                  this.response = error
+                });
+        this.hide();
+      },
+
       show (latlng) {
         this.lat = latlng.lat;
         this.lon = latlng.lng;
