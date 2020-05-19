@@ -52,18 +52,17 @@ export default class CimsMarker extends MovingMarker {
 
     /**
      * @param {Number} id
-     * @param {String} icon 
+     * @param {Number} type
      * @param {String} description
      * @param {Array<Number>} start lat longs
      * @param {Array<Number>} [destination] lat longs
      */
-    constructor(id, icon, description, start, destination = start){
-        super([start, start], 1000, {icon: icons[icon]});
+    constructor(id, type, description, start, destination = start){
+        super([start, start], 1000, {icon: icons[type]});
 
         // this.bindPopupInfo(start[0], start[1], icon, description);
       
         this.id = id;
-        this.icon = icon;
         this.description = description;
         this.destination = destination;
 
