@@ -31,7 +31,7 @@ public class EventGenerator {
             createFrom()
             .ticks()
             .every(Duration.ofSeconds(1))
-            .map(_ -> createEvent())
+            .map(t -> createEvent())
             .transform()
             .byFilteringItemsWith(m -> m != null);
     }
