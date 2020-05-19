@@ -6,7 +6,7 @@
     <modal :width="400" :height="500" name="addTopic-modal" class="modal" @before-open='beforeOpen()' @before-close='beforeClose()'>       
       <ul>
         <li><h1>Add situation</h1></li>
-        <li><input type="number" v-model="id" placeholder="Input id"  /></li>
+        <li><input type="number" v-model="id" hidden placeholder="Input id"  /></li>
         <li><input type="number" v-model="lat" placeholder="Input latitude" readonly /></li>
         <li><input type="number" v-model="lon" placeholder="Input longitude" readonly /></li>
         <li><select v-model="type"><option v-for="number in 5" :key="number.number">{{number}}</option></select></li>
@@ -14,6 +14,7 @@
         <li><textarea v-model="description" placeholder="Input information"/></li>
 
         <li><button type="button" @click="JSONpost(getMessage())">Send</button></li>
+        <li><button type="button" @click="JSONput(getMessage())">Move selected marker</button></li>
 
       </ul>
     </modal>
