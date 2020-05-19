@@ -13,19 +13,12 @@ public class EventModel extends PanacheEntityBase {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long id;
-
 	public double lat;
-
 	public double lon;
-
 	public int type;
-
 	public Status status;
-
 	public String description;
-
-//	public Long updateId;
-	public String updateAction;
+	public Action action;
 
 	public EventModel() {
 		status = Status.ACTIVE;
@@ -47,7 +40,7 @@ public class EventModel extends PanacheEntityBase {
 		this.description = model.description;
 		this.status = model.status;
 //		this.updateId = model.updateId;
-		this.updateAction = model.updateAction;
+		this.action = model.action;
 	}
 
 	public void finish() {

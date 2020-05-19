@@ -14,7 +14,7 @@
         <li><textarea v-model="description" placeholder="Input information"/></li>
 
         <li><button type="button" @click="JSONpost(getMessage())">Send</button></li>
-        <li><button type="button" @click="sendData()">New Marker (local)</button></li>
+        <li><button type="button" @click="JSONput(getMessage())">Move selected marker</button></li>
 
       </ul>
     </modal>
@@ -66,12 +66,26 @@
         axios.post(`http://localhost:8083/events`, message)
                 .then(response => this.response = response.data)
                 .catch(error => {
-                  alert("error!"),
+                  alert("error!");
                   console.log(error)
                   this.response = error
                 });
         this.hide();
       },
+
+      JSONput(message) {
+        console.log(message);
+
+        axios.put(`http://localhost:8083/events`, message)
+                .then(response => this.response = response.data)
+                .catch(error => {
+                  alert("error!");
+                  console.log(error)
+                  this.response = error
+                });
+        this.hide();
+      },
+
       show (latlng) {
         this.lat = latlng.lat;
         this.lon = latlng.lng;
@@ -87,12 +101,7 @@
       },
       beforeClose() {
         console.log('this will be called before the modal closes');
-      },
-      sendData() {
-        let markerInfo = this.getMessage();        
-        this.$root.$refs.map.addMarker(markerInfo);
-        this.hide();
-      },
+      }
     }
   }
 </script>
