@@ -16,8 +16,8 @@
 <script>
 import CimsMap from '@/components/leaflet/CimsMap'
 import CimsMarker from '@/components/leaflet/CimsMarker'
+import CimsRectangle from '@/components/leaflet/CimsRectangle';
 
-import L from 'leaflet';
 // Css for loading the map smoothly
 import 'leaflet/dist/leaflet.css'
 // import EventStream from "./stream/EventStream"; 
@@ -59,21 +59,11 @@ export default {
 
             // console.log(data);
 
-
-
-
-/*            if(data.type === 1) {
-                const marker = this.markers.find(m => m.id === data.id);
-                if(marker) {
-                    marker.moveTo([data.lat, data.lon], 500);
-                }
-            }*/
-            // else {
-                const type = this.getIconTypeString(data.type);
-                const marker = new CimsMarker(data.id, type, data.description, [data.lat, data.lon]);
-                    
-                this.addMarkerStream(marker);
-            // }
+            const type = this.getIconTypeString(data.type);
+            const marker = new CimsMarker(data.id, type, data.description, [data.lat, data.lon]);
+                
+            this.addMarkerStream(marker);
+       
    
         };
         // this.eventStream.readStream(this.addMarkerStream);
@@ -113,20 +103,12 @@ export default {
 
             this.map.flyToBounds(bounds);
 
-            L.rectangle(bounds, {color: 'blue', weight: 1}).on('click', function (e) {
-                // There event is event object
-                // there e.type === 'click'
-                // there e.lanlng === L.LatLng on map
-                // there e.target.getLatLngs() - your rectangle coordinates
-                // but e.target !== rect      
-                console.info(e);
-               
-            }).addTo(this.map);
+            new CimsRectangle(bounds, 'blue', 1).addTo(this.map);
 
             this.retrieveEventsByRegionBounds(bounds);      
         },
 
-        retrieveEventsByRegionBounds(bounds) {
+        retrieveEventsByRegionBounds(bounds) {  
 
             const params = {
                 sx: bounds[0][0],
