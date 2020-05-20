@@ -22,7 +22,7 @@ class RestConfig {
      * @param {String} resource the resource of the endpoint 
      */
     getUrl(resource){
-        return `${this.protocol}://${this.host}${this.port}/${this.version}/${resource}/`;
+        return `${this.protocol}://${this.host}${this.port}/${resource}/`;
     }
 }
 

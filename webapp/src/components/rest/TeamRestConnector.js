@@ -23,7 +23,7 @@ class TeamRestConnector {
         });
 
         const headers = {'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'}
-        const promise = Axios.post('http://localhost:8083/teams', toPost, {headers: headers});
+        const promise = Axios.post(this.baseUrl, toPost, {headers: headers});
         return promise;
     }
 
