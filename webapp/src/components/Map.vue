@@ -17,6 +17,7 @@
 import CimsMap from '@/components/leaflet/CimsMap'
 import CimsMarker from '@/components/leaflet/CimsMarker'
 
+import L from 'leaflet';
 // Css for loading the map smoothly
 import 'leaflet/dist/leaflet.css'
 // import EventStream from "./stream/EventStream"; 
@@ -56,7 +57,7 @@ export default {
             
             const data = JSON.parse(event.data);
 
-            console.log(data);
+            // console.log(data);
 
 
 
@@ -74,9 +75,7 @@ export default {
                 this.addMarkerStream(marker);
             // }
    
-          
         };
-
         // this.eventStream.readStream(this.addMarkerStream);
     },
 
@@ -95,11 +94,6 @@ export default {
             this.markers.push(marker.addTo(this.map));
         },
 
-        moveTo(bounds){
-            console.log(bounds);
-            this.map.flyToBounds(bounds);
-        },
-
         getIconTypeString(type) {
             switch (type) {
                 case 1:
@@ -114,6 +108,42 @@ export default {
                     return "ambulance"
             }
         },
+
+        moveTo(bounds){
+
+            this.map.flyToBounds(bounds);
+
+            L.rectangle(bounds, {color: 'blue', weight: 1}).on('click', function (e) {
+                // There event is event object
+                // there e.type === 'click'
+                // there e.lanlng === L.LatLng on map
+                // there e.target.getLatLngs() - your rectangle coordinates
+                // but e.target !== rect      
+                console.info(e);
+               
+            }).addTo(this.map);
+
+            this.retrieveEventsByRegionBounds(bounds);      
+        },
+
+        retrieveEventsByRegionBounds(bounds) {
+
+            const params = {
+                sx: bounds[0][0],
+                sy: bounds[0][1],
+                ex: bounds[1][0],
+                ey: bounds[1][1]
+            };
+
+            let urlParams = new URLSearchParams(params).toString();
+
+            let eventSource = new EventSource(`http://localhost:8083/events/byBounds?${urlParams}`);
+            eventSource.onmessage = (/*event*/) => {
+                
+                //events retrieved by region bounds
+                // const data = JSON.parse(event.data);
+            };
+        }
 
     }
 }

@@ -15,6 +15,9 @@
 </template>
 
 <script>
+import MapDao from "@/daos/MapDao.js";
+import Region from "@/components/leaflet/Region.js";
+
 export default {
     data(){
         return{
@@ -22,19 +25,10 @@ export default {
                 text: "",
                 currentRegion: "eindhoven",
                 isActive: false,
-                regions:[
-                {
-                    name: "eindhoven",
-                    bounds:[[51.4581471,5.4682512],[51.4161579,5.504405]]
-                },
-                {
-                    name: "helmond",
-                    bounds: [[51.4862591,5.5995564], [51.4542218,5.6847866]] 
-                },
-                {
-                    name: "'s-hertogenbosch",
-                    bounds: [[51.731733, 5.245634], [51.7092084,5.2897453]]
-                }
+                regions: [     
+                    new Region("eindhoven"),
+                    new Region("helmond"),
+                    new Region("'s-hertogenbosch")   
                 ]
             },
         }
@@ -48,15 +42,33 @@ export default {
         switchRegion(region){
             this.regionMenu.currentRegion = region.name;
             this.regionMenu.isActive = false;
-            this.$emit("move-to", region.bounds);
+            this.moveToBounds(region);
+            
             this.regionMenu.text = "";
+        },
+
+        moveToBounds(region) {   
+            MapDao.getRegionBounds(region.name)
+                .then(regionresults => 
+                {
+                    let regionbox = regionresults[0].boundingbox;
+
+                    //api returns box coordinates in the wrong order
+                    let bounds = [[regionbox[0],regionbox[2]],[regionbox[1],regionbox[3]]];
+                    
+                    region.bounds = bounds;
+                    this.$emit("move-to", region.bounds);            
+                })
+                .catch((error) => {
+                    console.log(error);          
+                })
         }
     },
 
     computed: {
         filteredRegions(){
             return this.regionMenu.regions.filter(
-                (region) => {
+                (region) => {           
                     return region.name.includes(this.regionMenu.text) &&
                            region.name !== this.regionMenu.currentRegion;
                 }

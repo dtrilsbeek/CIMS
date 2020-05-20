@@ -23,6 +23,26 @@ async function getMarkerPosition(lat, lon) {
     }
 }
 
+async function getRegionBounds(region) {
+
+    const params = {
+        key: key,
+        q: region,
+        format: format
+    };   
+    
+    try {
+
+        let res = await axios.get('https://us1.locationiq.com/v1/search.php?', { params });
+        
+        return res.data;        
+    }
+    catch(error) {
+        console.log(error);
+    }
+}
+
 export default {
     getMarkerPosition,
+    getRegionBounds,
 }
