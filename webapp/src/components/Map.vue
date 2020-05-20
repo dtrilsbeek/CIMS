@@ -119,11 +119,12 @@ export default {
 
             let urlParams = new URLSearchParams(params).toString();
 
-            let eventSource = new EventSource(`http://localhost:8083/events/byBounds?${urlParams}`);
-            eventSource.onmessage = (/*event*/) => {
+            let eventSource = new EventSource(`http://localhost:8083/events/stream?${urlParams}`);
+            eventSource.onmessage = event => {
                 
                 //events retrieved by region bounds
-                // const data = JSON.parse(event.data);
+                const data = JSON.parse(event.data);
+                console.log(data);
             };
         }
 
