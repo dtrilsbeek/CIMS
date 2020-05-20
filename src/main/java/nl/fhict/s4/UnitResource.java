@@ -45,7 +45,8 @@ public class UnitResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUnitById(@PathParam("id") int id) {
+    @Path("{id}")
+    public Response getUnitById(@PathParam("id") Long id) {
         //TODO: HANDLE NULL?
         //TODO: STATUS AND RETURN VALUE OF DELETE?
         Unit unit = Unit.findById(id);

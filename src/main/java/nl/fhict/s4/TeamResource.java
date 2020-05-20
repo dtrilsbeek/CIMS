@@ -49,7 +49,8 @@ public class TeamResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTeamById(@PathParam("id") int id) {
+    @Path("{id}")
+    public Response getTeamById(@PathParam("id") Long id) {
         //TODO: HANDLE NULL?
         //TODO: STATUS AND RETURN VALUE OF DELETE?
         Team team = Team.findById(id);
