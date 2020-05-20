@@ -28,7 +28,8 @@ export default {
                 regions: [     
                     new Region("eindhoven"),
                     new Region("helmond"),
-                    new Region("'s-hertogenbosch")   
+                    new Region("'s-hertogenbosch"),
+                    new Region("roermond")   
                 ]
             },
         }
@@ -62,7 +63,7 @@ export default {
                 .catch((error) => {
                     console.log(error);          
                 })
-        }
+        },
     },
 
     computed: {
