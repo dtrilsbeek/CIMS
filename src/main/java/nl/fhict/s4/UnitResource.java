@@ -43,4 +43,13 @@ public class UnitResource {
         return Response.ok(Unit.listAll()).build();
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUnitById(@PathParam("id") int id) {
+        //TODO: HANDLE NULL?
+        //TODO: STATUS AND RETURN VALUE OF DELETE?
+        Unit unit = Unit.findById(id);
+        return Response.ok(unit).build();
+    }
+
 }

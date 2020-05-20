@@ -47,4 +47,13 @@ public class TeamResource {
         return Response.ok(Team.listAll()).build();
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTeamById(@PathParam("id") int id) {
+        //TODO: HANDLE NULL?
+        //TODO: STATUS AND RETURN VALUE OF DELETE?
+        Team team = Team.findById(id);
+        return Response.ok(team).build();
+    }
+
 }
