@@ -3,15 +3,12 @@ package nl.fhict.s4;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Flowable;
 import io.smallrye.mutiny.Multi;
 import nl.fhict.s4.models.EventModel;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.transaction.Transactional;
 import javax.transaction.UserTransaction;
 
 import org.eclipse.microprofile.reactive.messaging.Outgoing;
