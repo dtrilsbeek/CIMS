@@ -54,9 +54,6 @@ public class EventResource {
 		return cachedEvents;
 	}
 
-
-
-
 	@GET
 	@Path("/stream/{type}")
 	@Produces(MediaType.SERVER_SENT_EVENTS)
@@ -68,16 +65,24 @@ public class EventResource {
 				.byFilteringItemsWith(e -> e.getType() == type);
 	}
 
-
 	@GET
-	@Produces(MediaType.TEXT_HTML)
-	@Cache(noStore = false, isPrivate = false, maxAge = 31_536_000)
-	public Uni<String> eventsPage() {
-		return vertx
-				.fileSystem()
-				.readFile("/META-INF/resources/stream.html")
-				.onItem()
-				.apply(buffer -> buffer.toString("UTF-8"));
+	@Path("/byBounds")
+	@Produces(MediaType.SERVER_SENT_EVENTS)
+	@SseElementType(MediaType.APPLICATION_JSON)
+	public Multi<EventModel> filterByBounds(
+		@QueryParam("sx") double sx,
+		@QueryParam("sy") double sy,
+		@QueryParam("ex") double ex,
+		@QueryParam("ey") double ey) {
+	
+		return cachedEvents
+			.transform()
+			.byFilteringItemsWith(e -> 
+				e.getLat() > sx &&
+				e.getLat() > sy &&
+				e.getLon() < ex &&
+				e.getLon() < ey
+			);
 	}
 
 
@@ -113,5 +118,16 @@ public class EventResource {
 		}
 
 		return model;
+	}
+
+	@GET
+	@Produces(MediaType.TEXT_HTML)
+	@Cache(noStore = false, isPrivate = false, maxAge = 31_536_000)
+	public Uni<String> eventsPage() {
+		return vertx
+				.fileSystem()
+				.readFile("/META-INF/resources/stream.html")
+				.onItem()
+				.apply(buffer -> buffer.toString("UTF-8"));
 	}
 }
