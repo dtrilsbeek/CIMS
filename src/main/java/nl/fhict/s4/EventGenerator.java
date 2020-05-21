@@ -2,6 +2,7 @@ package nl.fhict.s4;
 
 import java.time.Duration;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Random;
 
 import io.smallrye.mutiny.Multi;
@@ -31,14 +32,14 @@ public class EventGenerator {
             createFrom()
             .ticks()
             .every(Duration.ofSeconds(6))
-            .map(t -> createEvent())
-            .transform()
-            .byFilteringItemsWith(Objects::nonNull);
+            .flatMap(t -> createEvent())
+            .onOverflow()
+            .drop();      
     }
 
-    private EventModel createEvent() {
+    private Multi<EventModel> createEvent() {
         //tries to create a transaction. 
-        //If it succeeded an event will be created and saved, if it didn't the method will return null.
+        //If it succeeded an event will be created and saved, the method will return an empty Multi object
         try {
             transaction.begin();
             EventModel model = new EventModel(
@@ -50,11 +51,12 @@ public class EventGenerator {
             model.persist();
             transaction.commit();
 
-            return model;
+            return Multi.createFrom().item(model);
         }
         catch(Exception e) {
             LOG.error(e.getStackTrace());
-            return null;   
+            
+            return Multi.createFrom().empty();  
         }
     }
 
