@@ -22,6 +22,9 @@ export default {
             form: {
                 name: new FormField(isFilledIn())
             },
+            /**
+             * @type {FormHelper}
+             */
             formHelper: null,
             restConnector: new TeamRestConnector()
         }
