@@ -29,7 +29,6 @@ export default {
                     new Region("eindhoven"),
                     new Region("helmond"),
                     new Region("'s-hertogenbosch"),
-                    new Region("roermond")   
                 ]
             },
         }
@@ -56,8 +55,8 @@ export default {
 
                     //api returns box coordinates in the wrong order
                     let bounds = [[regionbox[0],regionbox[2]],[regionbox[1],regionbox[3]]];
-                    
                     region.bounds = bounds;
+                    
                     this.$emit("move-to", region.bounds);            
                 })
                 .catch((error) => {

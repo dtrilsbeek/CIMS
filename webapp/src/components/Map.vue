@@ -6,8 +6,12 @@
           <li>Info</li>
           <li>Nieuws</li>
       </ul>
-      <aside class="info">info
-          <home/>
+  
+      <aside class="info">
+            <home/>
+            info
+          <active-events :bus="bus" />
+     
       </aside>
 
   </div>
@@ -22,20 +26,24 @@ import CimsRectangle from '@/components/leaflet/CimsRectangle';
 import 'leaflet/dist/leaflet.css'
 // import EventStream from "./stream/EventStream"; 
 import Home from './Home.vue'
+import ActiveEvents from './ActiveEvents'
 import RegionMenu from '@/components/RegionMenu'
+import Vue from 'vue';
 
 export default {
     components: {
         home: Home,
-        regionMenu: RegionMenu
+        regionMenu: RegionMenu,
+        activeEvents: ActiveEvents
     },
     data(){
         return{
             // eventStream: null,
+            bus: new Vue(),
             map: null,
             markers: [],
             fontys: [51.451069, 5.4772183],
-            eventSource: null
+            eventSource: null,
         }
     },
 
@@ -63,13 +71,12 @@ export default {
             const marker = new CimsMarker(data.id, type, data.description, [data.lat, data.lon]);
                 
             this.addMarkerStream(marker);
-       
+
+            this.bus.$emit("add-event-to-stream", data);            
    
         };
         // this.eventStream.readStream(this.addMarkerStream);
     },
-
-
 
     created() {
          this.$root.$refs.map = this;
@@ -105,27 +112,13 @@ export default {
 
             new CimsRectangle(bounds, 'blue', 1).addTo(this.map);
 
-            this.retrieveEventsByRegionBounds(bounds);      
+            this.bus.$emit("retrieve-by-bounds", bounds);            
+
+
+            // this.retrieveEventsByRegionBounds(bounds);      
         },
 
-        retrieveEventsByRegionBounds(bounds) {  
-
-            const params = {
-                sx: bounds[0][0],
-                sy: bounds[0][1],
-                ex: bounds[1][0],
-                ey: bounds[1][1]
-            };
-
-            let urlParams = new URLSearchParams(params).toString();
-
-            let eventSource = new EventSource(`http://localhost:8083/events/byBounds?${urlParams}`);
-            eventSource.onmessage = (/*event*/) => {
-                
-                //events retrieved by region bounds
-                // const data = JSON.parse(event.data);
-            };
-        }
+       
 
     }
 }
