@@ -14,16 +14,15 @@
 </template>
 
 <script>
-import CimsMap from '@/components/leaflet/CimsMap'
-import CimsMarker from '@/components/leaflet/CimsMarker'
-import CimsRectangle from '@/components/leaflet/CimsRectangle';
+    import CimsMap from '@/components/leaflet/CimsMap'
+    import CimsMarker from '@/components/leaflet/CimsMarker'
+    import CimsRectangle from '@/components/leaflet/CimsRectangle';
+    // Css for loading the map smoothly
+    import 'leaflet/dist/leaflet.css'
+    import Home from './Home.vue'
+    import RegionMenu from '@/components/RegionMenu'
 
-// Css for loading the map smoothly
-import 'leaflet/dist/leaflet.css'
-import Home from './Home.vue'
-import RegionMenu from '@/components/RegionMenu'
-
-export default {
+    export default {
     components: {
         home: Home,
         regionMenu: RegionMenu
@@ -31,7 +30,7 @@ export default {
     data(){
         return{
             // eventStream: null,
-            map: null,
+            leafletMap: null,
             markers: [],
             fontys: [51.451069, 5.4772183],
             eventSource: null,
@@ -40,21 +39,28 @@ export default {
     },
 
     mounted(){
-        this.map = new CimsMap(this.fontys, 25);
+        this.leafletMap = new CimsMap(this.fontys, 25);
         
-        this.map.on('click', (e) => {
-            console.log(e);
-           this.$root.$refs.home.show(this.map, e.latlng);
+        this.leafletMap.on('click', (e) => {
+           this.$root.$refs.home.show(this, e.latlng);
         })
 
         this.eventSource = new EventSource("http://localhost:8083/events/stream");
         this.eventSource.onmessage = (event) => {
-            
+
             const data = JSON.parse(event.data);
             const type = this.getIconTypeString(data.type);
-            const marker = new CimsMarker(this, data.id, type, data.description, [data.lat, data.lon]);
-                
-            this.markers.push(marker);
+
+            if (data.isUpdate) {
+                const marker = this.markers[data.id]
+                if(marker) {
+                    marker.type = data.type;
+                    marker.description = data.description;
+                    marker.moveTo([data.lat, data.lon])
+                }
+            } else {
+                this.markers[data.id] = new CimsMarker(this, data.id, type, data.description, [data.lat, data.lon]);
+            }
         };
     },
 
@@ -63,9 +69,6 @@ export default {
     },
 
     methods: {
-        addMarker(markerInfo){
-            this.markers.push(new CimsMarker(this.markers.length, 'ambulance', markerInfo.description, [markerInfo.lat, markerInfo.lon]).addTo(this.map));
-        },
 
         setSelectedMarker(marker) {
             if (this.selectedMarker) {
@@ -91,8 +94,8 @@ export default {
         },
 
         moveTo(bounds){
-            this.map.flyToBounds(bounds);
-            new CimsRectangle(bounds, 'blue', 1).addTo(this.map);
+            this.leafletMap.flyToBounds(bounds);
+            new CimsRectangle(bounds, 'blue', 1).addTo(this.leafletMap);
             this.retrieveEventsByRegionBounds(bounds);      
         },
 

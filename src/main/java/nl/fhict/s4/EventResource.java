@@ -118,6 +118,7 @@ public class EventResource {
 		EventModel update = EventModel.findById(model.id);
 
 		if (update != null) {
+			update.isUpdate = true;
 			update.status = model.status;
 			update.description = model.description;
 			update.lat = model.lat;

@@ -47,7 +47,7 @@
     methods: {
       getMessage: function () {
         return {
-          id: isNaN(parseInt(this.id)) ? null : parseInt(this.id),
+          id: this.id,
           lat: parseFloat(this.lat),
           lon: parseFloat(this.lon),
           type: parseInt(this.type),
@@ -86,11 +86,7 @@
       },
 
       show (map, latlng) {
-        const selectedMarker = map.selectedMarker;
-        if (selectedMarker) {
-          this.id = selectedMarker.id;
-          console.log(this.id);
-        }
+        this.id = map.selectedMarker.id;
         this.lat = latlng.lat;
         this.lon = latlng.lng;
         

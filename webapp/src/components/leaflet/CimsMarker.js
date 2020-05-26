@@ -72,12 +72,12 @@ export default class CimsMarker extends MovingMarker {
         this.isActive = false;
 
         this.on('click', () => {
-            this.bindPopupInfo(this.getLatLng());
             this.map.setSelectedMarker(this);
             this.getElement().classList.add('active');
         });
 
-        this.addTo(map.map);
+        this.bindPopupInfo(this.getLatLng());
+        this.addTo(map.leafletMap);
         // Rotate image to destination - (Vector rotation)
         // Remove from map
     }
