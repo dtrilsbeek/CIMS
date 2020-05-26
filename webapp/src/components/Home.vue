@@ -6,7 +6,6 @@
     <modal :width="400" :height="500" name="addTopic-modal" class="modal" @before-open='beforeOpen()' @before-close='beforeClose()'>       
       <ul>
         <li><h1>Add situation</h1></li>
-        <li><input type="number" v-model="id" placeholder="Input id"  /></li>
         <li><input type="number" v-model="lat" placeholder="Input latitude" readonly /></li>
         <li><input type="number" v-model="lon" placeholder="Input longitude" readonly /></li>
         <li><select v-model="type"><option v-for="number in 5" :key="number.number">{{number}}</option></select></li>
@@ -86,7 +85,12 @@
         this.hide();
       },
 
-      show (latlng) {
+      show (map, latlng) {
+        const selectedMarker = map.selectedMarker;
+        if (selectedMarker) {
+          this.id = selectedMarker.id;
+          console.log(this.id);
+        }
         this.lat = latlng.lat;
         this.lon = latlng.lng;
         

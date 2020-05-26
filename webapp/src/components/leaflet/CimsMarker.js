@@ -1,9 +1,10 @@
 import L from 'leaflet'
-import MovingMarker from '@/components/leaflet/MovingMarker'
+// import MovingMarker from '@/components/leaflet/MovingMarker'
 import { Icon } from 'leaflet';
 
 import MapDao from '@/daos/MapDao.js';
 import CimsMarkerLogic from '@/logic/CimsMarkerLogic.js';
+import MovingMarker from "./MovingMarker";
 
 const icons = {
     fireTruck : L.icon({
@@ -51,29 +52,34 @@ export default class CimsMarker extends MovingMarker {
 
 
     /**
+     * @param map
      * @param {Number} id
      * @param {String} type
      * @param {String} description
      * @param {Array<Number>} start lat longs
      * @param {Array<Number>} [destination] lat longs
      */
-    constructor(id, type, description, start, destination = start){
+    constructor(map, id, type, description, start, destination = start){
         super([start, start], 1000, {icon: icons[type]});
 
         // this.bindPopupInfo(start[0], start[1], icon, description);
-      
+
+        this.map = map;
         this.id = id;
         this.type = type;
         this.description = description;
         this.destination = destination;
+        this.isActive = false;
 
         this.on('click', () => {
             this.bindPopupInfo(this.getLatLng());
+            this.map.setSelectedMarker(this);
+            this.getElement().classList.add('active');
         });
-        
+
+        this.addTo(map.map);
         // Rotate image to destination - (Vector rotation)
         // Remove from map
-        // Vue integratie
     }
 
     /**

@@ -44,7 +44,7 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
 
   keycloak:
-      image: jboss/keycloak:9.0.0
+      image: jboss/keycloak:9.0.3
       container_name: keycloak
       restart: always
       ports:
