@@ -13,10 +13,13 @@ import org.jboss.resteasy.annotations.SseElementType;
 import org.jboss.resteasy.annotations.cache.Cache;
 import org.reactivestreams.Publisher;
 
+
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.UriInfo;
 
 
 
@@ -25,7 +28,7 @@ import javax.ws.rs.core.MediaType;
 public class EventResource {
 
 	Publisher<EventModel> events;
-	Multi<EventModel> cachedEvents;
+	Multi<EventModel> eventBroadcast;
 	Emitter<EventModel> eventEmitter;
 	Vertx vertx;
 
@@ -39,10 +42,43 @@ public class EventResource {
 		this.eventEmitter = eventEmitter;
 		this.vertx = vertx;
 
-		cachedEvents = Multi
+		eventBroadcast = Multi
 				.createFrom()
-				.publisher(events)
-				.cache();
+					.publisher(events)
+				.broadcast()
+					.toAllSubscribers();
+	}
+
+
+	Multi<EventModel> addTypeFilter(MultivaluedMap<String, String> params, Multi<EventModel> stream) {
+		try {
+			Integer type = Integer.parseInt(params.getFirst("type"));
+			return stream.transform().byFilteringItemsWith(e -> e.type == type);
+		}
+		catch (Exception e) {
+			return stream;
+		}	
+	}
+
+	Multi<EventModel> addRegionFilter(MultivaluedMap<String, String> params, Multi<EventModel> stream) {
+		try {
+			double sx = Double.parseDouble(params.getFirst("sx"));
+			double sy = Double.parseDouble(params.getFirst("sy"));
+			double ex = Double.parseDouble(params.getFirst("ex"));
+			double ey = Double.parseDouble(params.getFirst("ey"));
+
+			return stream
+				.transform()
+				.byFilteringItemsWith(e -> 
+					e.getLat() > sx &&
+					e.getLat() > sy &&
+					e.getLon() < ex &&
+					e.getLon() < ey
+				);
+		}
+		catch (Exception e) {
+			return stream;
+		}
 	}
 
 
@@ -50,39 +86,14 @@ public class EventResource {
 	@Path("/stream")
 	@Produces(MediaType.SERVER_SENT_EVENTS)
 	@SseElementType(MediaType.APPLICATION_JSON)
-	public Multi<EventModel> events() {
-		return cachedEvents;
-	}
+	public Multi<EventModel> events(@Context UriInfo ui) {
+		var queryParams = ui.getQueryParameters();
+		var stream = eventBroadcast;
 
-	@GET
-	@Path("/stream/{type}")
-	@Produces(MediaType.SERVER_SENT_EVENTS)
-	@SseElementType(MediaType.APPLICATION_JSON)
-	public Multi<EventModel> events(@PathParam("type") int type) {
+		stream = addTypeFilter(queryParams, stream);
+		stream = addRegionFilter(queryParams, stream);
 
-		return cachedEvents
-				.transform()
-				.byFilteringItemsWith(e -> e.getType() == type);
-	}
-
-	@GET
-	@Path("/byBounds")
-	@Produces(MediaType.SERVER_SENT_EVENTS)
-	@SseElementType(MediaType.APPLICATION_JSON)
-	public Multi<EventModel> filterByBounds(
-		@QueryParam("sx") double sx,
-		@QueryParam("sy") double sy,
-		@QueryParam("ex") double ex,
-		@QueryParam("ey") double ey) {
-	
-		return cachedEvents
-			.transform()
-			.byFilteringItemsWith(e -> 
-				e.getLat() > sx &&
-				e.getLat() > sy &&
-				e.getLon() < ex &&
-				e.getLon() < ey
-			);
+		return stream;
 	}
 
 

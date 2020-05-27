@@ -18,12 +18,17 @@ export default {
     data() {
         return {
             events: [],
+            eventSource: null,
         }
     },
     methods: {
         retrieveEventsByRegionBounds(bounds) { 
             
             this.events = [];
+
+            if(this.eventSource != null && this.eventSource.readyState !== EventSource.CLOSED) {
+                this.eventSource.close();
+            }
 
             const params = {
                 sx: bounds[0][0],
@@ -34,16 +39,18 @@ export default {
 
             let urlParams = new URLSearchParams(params).toString();
 
-            let eventSource = new EventSource(`http://localhost:8083/events/byBounds?${urlParams}`);
-            eventSource.onmessage = (event) => {
+            this.eventSource = new EventSource(`http://localhost:8083/events/stream?${urlParams}`);
+            this.eventSource.onmessage = (event) => {
                 
                 //events retrieved by region bounds
                 const data = JSON.parse(event.data);
-                let existing = this.events.filter(x => x.id == data.id).length;
+                console.log(data.id);
                 
-                if(existing == 0) {
-                    this.events.push(data);
-                }
+                // let existing = this.events.filter(x => x.id == data.id).length;
+                
+                // if(existing == 0) {
+                //     this.events.push(data);
+                // }
                 // console.log(data);
                 
             };
@@ -52,7 +59,8 @@ export default {
 
     created() {
         this.bus.$on('retrieve-by-bounds', bounds => {
-             this.retrieveEventsByRegionBounds(bounds);
+            // console.log('efjio');
+            this.retrieveEventsByRegionBounds(bounds);
         })
         //  this.bus.$on('add-event-to-stream', data => {
                

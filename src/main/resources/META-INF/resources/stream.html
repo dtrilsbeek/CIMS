@@ -46,11 +46,7 @@
     const type = document.querySelector("#type");
     const description = document.querySelector("#description");
 
-    let path = "/events/stream";
-
-    if(typeParam !== null) {
-        path += "/" + typeParam
-    }
+    let path = "/events/stream" + window.location.search;
 
     const getSource = () => {
         const source = new EventSource(path);

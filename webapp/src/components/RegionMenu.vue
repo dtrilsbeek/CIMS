@@ -23,7 +23,7 @@ export default {
         return{
             regionMenu: {
                 text: "",
-                currentRegion: "eindhoven",
+                currentRegion: "helmond",
                 isActive: false,
                 regions: [     
                     new Region("eindhoven"),

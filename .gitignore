@@ -36,3 +36,4 @@ release.properties
 
 # Vue
 node_modules/
+.factorypath

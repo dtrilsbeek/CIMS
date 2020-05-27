@@ -60,6 +60,7 @@ export default {
         })
 
         //this.eventStream = new EventStream();
+
         this.eventSource = new EventSource("http://localhost:8083/events/stream");
         this.eventSource.onmessage = (event) => {
             
@@ -109,17 +110,11 @@ export default {
         moveTo(bounds){
 
             this.map.flyToBounds(bounds);
-
+ 
             new CimsRectangle(bounds, 'blue', 1).addTo(this.map);
 
             this.bus.$emit("retrieve-by-bounds", bounds);            
-
-
-            // this.retrieveEventsByRegionBounds(bounds);      
         },
-
-       
-
     }
 }
 </script>
