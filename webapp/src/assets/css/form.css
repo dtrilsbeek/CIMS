@@ -37,7 +37,7 @@ input.error{
     
     
     .grid{
-        background-color: rgba(0, 0, 0, .8);
+        background-color: #e3e3e3;
         width: 100%;
         height: 100%;
         position: relative;

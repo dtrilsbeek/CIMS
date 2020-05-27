@@ -18,7 +18,7 @@ public class EventModel extends PanacheEntityBase {
 	public int type;
 	public Status status;
 	public String description;
-	public Action action;
+	public boolean isUpdate;
 
 	public EventModel() {
 		status = Status.ACTIVE;
@@ -39,8 +39,7 @@ public class EventModel extends PanacheEntityBase {
 		this.type = model.type;
 		this.description = model.description;
 		this.status = model.status;
-//		this.updateId = model.updateId;
-		this.action = model.action;
+		this.isUpdate = false;
 	}
 
 	public void finish() {
