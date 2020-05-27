@@ -38,7 +38,7 @@ class FormHelper{
     clearForm(){
         for(const prop in this.form){
             const formField = this.form[prop];
-            formField.value = "";
+            formField.clear();
         }
     }
 

@@ -49,7 +49,7 @@ export function isSameAs(sameAs, customError){
 
 /**
  * Adds an error if the value does not atleast have the minimum length
- * @param {int} minLength the mininum length the input has to be 
+ * @param {Number} minLength the mininum length the input has to be 
  * @param {String} customError custom error message, overrides default message
  */
 export function minLength(minLength, customError){
@@ -63,7 +63,7 @@ export function minLength(minLength, customError){
 
 /**
  * Adds an error if the values is longer than the maximum length
- * @param {int} maxLength the maximum length that the input should not exceed
+ * @param {Number} maxLength the maximum length that the input should not exceed
  * @param {String} customError custom error message, overrides default message
  */
 export function maxLength(maxLength, customError){
@@ -77,7 +77,7 @@ export function maxLength(maxLength, customError){
 
 /**
  * Adds an error if the value is not a number
- * @param {*} customError 
+ * @param {String} customError custom error message, overrides default message
  */
 export function isPositiveInt(customError){
     return (input) => {
@@ -95,7 +95,7 @@ export function isPositiveInt(customError){
  * Adds the error message to the formField
  * @param {Object} input the form field will get the error
  * @param {String} errorMsg the default error message
- * @param {String} customError the custom error message
+ * @param {String} customError custom error message, overrides default message
  */
 function addToErrors(input, errorMsg, customError){
         const error = customError || errorMsg;

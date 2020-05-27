@@ -11,5 +11,5 @@ export default [
     {path: '/teams', component: Teams},
     {path: '/units', component: Units},
     {path: '/login', component: Login},
-    {path: '/edit', component: EditUnit},
+    {path: '/editunit', component: EditUnit},
 ];

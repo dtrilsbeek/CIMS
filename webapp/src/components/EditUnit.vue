@@ -5,8 +5,9 @@
                 <form>
                     <input type="number" placeholder="id" class="as-text" :class="{error: !form.name.isValid}" v-model="form.id.value" />     
                     <input type="text" placeholder="naam" :class="{error: !form.name.isValid}" v-model="form.name.value" />
-                    <select class="dropdown" v-model="form.teamIndex.value">
-                        <option v-for="(team,index) in teams" v-bind:key="team.name" v-bind:value="index">{{ team.name }}</option>
+                    <select class="dropdown" v-model="form.teamId.value">
+                        <option value="" disabled selected>Selecteer een team</option>
+                        <option v-for="team in teams" :key="team.name" :value="team.id">{{ team.name }}</option>
                     </select>
                 </form>
             <button class="submit-form clickable capitalize-block" @click="submit">pas aan</button>
@@ -19,6 +20,7 @@ import FormField from '@/components/formvalidation/FormField'
 import {isFilledIn} from '@/components/formvalidation/FormValidation'
 import FormHelper from '@/components/formvalidation/FormHelper'
 import TeamRestConnector from '@/components/rest/TeamRestConnector'
+import UnitRestConnector from '@/components/rest/UnitRestConnector'
 
 export default {
     data(){
@@ -26,7 +28,7 @@ export default {
             form: {
                 id: new FormField(isFilledIn()),
                 name: new FormField(isFilledIn()),
-                teamIndex: new FormField(0)
+                teamId: new FormField(isFilledIn())
             },
             teams: [],
             /**
@@ -36,13 +38,17 @@ export default {
             /**
              * @type {TeamRestConnector}
              */
-            restConnector: new TeamRestConnector()
+            teamRestConnector: new TeamRestConnector(),
+            /**
+             * @type {UnitRestConnector}
+             */
+            unitRestConnector: new UnitRestConnector()
         }
     },
 
     created(){
         this.formHelper = new FormHelper(this.form);
-        this.restConnector.getTeams().then((response) => {
+        this.teamRestConnector.getTeams().then((response) => {
             this.teams = response.data;
         });
     },
@@ -50,8 +56,7 @@ export default {
     methods: {
         submit(){
             if(this.formHelper.validateForm()){
-                alert('submitting');
-                this.restConnector.updateUnit(this.form.name.value, this.form.id.value, this.teams[this.form.teamIndex.value].id).then(() => {
+                this.unitRestConnector.updateUnit(this.form.name.value, this.form.id.value, this.form.teamId.value).then(() => {
                     this.formHelper.clearForm();
                 }).catch((ex) => {
                     console.log(ex);

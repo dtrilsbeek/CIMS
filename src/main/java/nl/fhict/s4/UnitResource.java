@@ -45,7 +45,7 @@ public class UnitResource {
         else{
             unit.name = name;
             unit.team = team;
-            return Response.accepted().build();
+            return Response.ok(unit).build();
         }
     }
 
@@ -59,10 +59,13 @@ public class UnitResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
     public Response getUnitById(@PathParam("id") Long id) {
-        //TODO: HANDLE NULL?
         //TODO: STATUS AND RETURN VALUE OF DELETE?
+        Response response = Response.noContent().build();
         Unit unit = Unit.findById(id);
-        return Response.ok(unit).build();
+        if(unit != null) {
+            response = Response.ok(unit).build();
+        }
+        return response;
     }
 
 }
