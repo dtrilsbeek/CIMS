@@ -76,7 +76,22 @@ export function maxLength(maxLength, customError){
 }
 
 /**
- * #### PRIVATE ####
+ * Adds an error if the value is not a number
+ * @param {*} customError 
+ */
+export function isPositiveInt(customError){
+    return (input) => {
+        if(! Number.isInteger(input)){
+            addToErrors(input, `${input} is not a valid Integer`, customError)
+        }
+        else if(input < 0){
+            addToErrors(input, `${input} is not a positive number`, customError);
+        }
+    }
+}
+
+/**
+ * @private
  * Adds the error message to the formField
  * @param {Object} input the form field will get the error
  * @param {String} errorMsg the default error message

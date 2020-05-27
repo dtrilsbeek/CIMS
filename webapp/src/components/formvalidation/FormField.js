@@ -19,7 +19,7 @@ class FormField{
     }
 
     /**
-     * #### Private ####
+     * @private
      * Set the default value for the form field
      */
     setDefaultValue(){
@@ -33,7 +33,7 @@ class FormField{
     }
 
     /**
-     * #### Private ####
+     * @private
      * Create the function that validates the field
      * - clears errors on every call
      * - runs all validators

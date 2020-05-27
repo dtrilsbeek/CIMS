@@ -37,7 +37,10 @@ export default {
     methods: {
         submit(){
             if(this.formHelper.validateForm()){
-                this.restConnector.addTeam(this.form.name.value);
+                const result = this.restConnector.addTeam(this.form.name.value);
+                result.then(() => {
+                    this.formHelper.clearForm();
+                });
             }
         }
     }
