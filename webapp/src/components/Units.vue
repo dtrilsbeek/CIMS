@@ -9,7 +9,7 @@
                            :class="{error: !form.name.isValid}"
                            v-model="form.name.value"
                     />
-                    <select v-model="form.teamid.value" class="dropdown">
+                    <select v-model="form.teamid.value" class="dropdown" :class="{error: !form.teamid.isValid}">
                         <option value="" disabled selected>Select a team</option>
                         <option v-for="team in listOfTeams"
                                 :key="team.id"
