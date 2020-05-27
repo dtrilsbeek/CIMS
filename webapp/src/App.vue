@@ -6,6 +6,7 @@
       | <router-link to="/">Home</router-link> |
       <router-link to="/map">map</router-link> |
       <router-link to="/teams">teams</router-link> |
+      <router-link to="/units">units</router-link> |
        <a href="http://localhost:8180/auth/realms/CIMS-users/protocol/openid-connect/auth?client_id=frontend&response_type=code&scope=openid&redirect_uri=http://localhost/map">login/register</a> |
     </div>  
     </header> 

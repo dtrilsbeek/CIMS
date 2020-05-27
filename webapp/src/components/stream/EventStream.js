@@ -22,7 +22,7 @@ export default class EventStream {
             let marker = new CimsMarker('ambulance', test);
 
             addMarker(marker);
-            console.log(data);
+            //console.log(data);
             // lat.textContent = data.lat;
             // lon.textContent = data.lon;
             // type.textContent = data.type;
