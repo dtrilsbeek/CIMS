@@ -6,14 +6,17 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import io.quarkus.panache.common.Parameters;
 import nl.fhict.s4.models.Team;
 
 @Path("teams")
 @RequestScoped
 public class TeamResource {
+    
     @DELETE
     @Path("{id}")
-    public Response deleteTeam(@PathParam("id") int id) {
+    @Transactional
+    public Response deleteTeam(@PathParam("id") long id) {
         //TODO: HANDLE NULL?
         //TODO: STATUS AND RETURN VALUE OF DELETE?
         Team.findById(id).delete();
@@ -26,6 +29,12 @@ public class TeamResource {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Transactional
     public Response addTeam(@FormParam("name") String name) {
+
+        if(Team.count("name = :name", Parameters.with("name", name)) > 0) {
+            //return a conflict response if the team already exists
+            return Response.status(409).build();
+        }
+
         Team team = new Team();
         team.name = name;
         team.persist();
