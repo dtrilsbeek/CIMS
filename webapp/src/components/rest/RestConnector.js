@@ -7,7 +7,7 @@ class RestConnector {
     }
 
     /**
-     * @param {the data to use with Axios} data 
+     * @param {Object} data the data to send with the HTTP request
      * @returns {String} the stringified data that is valid for ContentType form url encoded
      */
     toFormUrlEncoded(data){

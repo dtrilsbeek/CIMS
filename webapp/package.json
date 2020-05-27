@@ -6,7 +6,8 @@
     "dev": "vue-cli-service serve --port 80",
     "serve": "vue-cli-service serve --port 80",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "jsdoc": "./node_modules/.bin/jsdoc ./src/components/ -r"
   },
   "dependencies": {
     "core-js": "^3.6.4",
@@ -26,6 +27,7 @@
     "babel-plugin-module-resolver": "^4.0.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.1.2",
+    "jsdoc": "^3.6.4",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {
