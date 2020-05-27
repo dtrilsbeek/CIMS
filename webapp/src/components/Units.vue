@@ -9,8 +9,8 @@
                            :class="{error: !form.name.isValid}"
                            v-model="form.name.value"
                     />
-                    <select v-model="form.teamid.value">
-                        <option value="0" disabled selected>Selecteer een team</option>
+                    <select v-model="form.teamid.value" class="dropdown" :class="{error: !form.teamid.isValid}">
+                        <option value="" disabled selected>Selecteer een team</option>
                         <option v-for="team in listOfTeams"
                                 :key="team.id"
                                 :value="team.id">
@@ -37,7 +37,7 @@ export default {
         return {
             form: {
                 name: new FormField(isFilledIn()),
-                teamid: new FormField(0) // moet nog gefixed
+                teamid: new FormField(isFilledIn())
             },
             /**
              * @type {FormHelper}
