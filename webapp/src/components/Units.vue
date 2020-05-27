@@ -9,8 +9,8 @@
                            :class="{error: !form.name.isValid}"
                            v-model="form.name.value"
                     />
-                    <select v-model="form.teamid.value">
-                        <option value="0" disabled selected>Select a team</option>
+                    <select v-model="form.teamid.value" class="dropdown">
+                        <option value="" disabled selected>Select a team</option>
                         <option v-for="team in listOfTeams"
                                 :key="team.id"
                                 :value="team.id">
@@ -36,7 +36,7 @@ export default {
         return {
             form: {
                 name: new FormField(isFilledIn()),
-                teamid: new FormField(0) // moet nog gefixed
+                teamid: new FormField(isFilledIn())
             },
             /**
              * @type {FormHelper}
@@ -61,8 +61,6 @@ export default {
     methods: {
         submit(){
             if(this.formHelper.validateForm()){
-                // console.log("Name: " + this.form.name.value);
-                // console.log("TeamId: " + this.form.teamid.value);
                 this.restConnector.addUnit(this.form.name.value, this.form.teamid.value);
             }
         },
