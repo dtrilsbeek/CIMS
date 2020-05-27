@@ -9,8 +9,8 @@
                            :class="{error: !form.name.isValid}"
                            v-model="form.name.value"
                     />
-                    <select v-model="form.teamid.value">
-                        <option value="0" disabled selected>Select a team</option>
+                    <select v-model="form.teamid.value" class="dropdown" :class="{error: !form.teamid.isValid}">
+                        <option value="" disabled selected>Selecteer een team</option>
                         <option v-for="team in listOfTeams"
                                 :key="team.id"
                                 :value="team.id">
@@ -30,21 +30,23 @@ import FormField from '@/components/formvalidation/FormField'
 import {isFilledIn} from '@/components/formvalidation/FormValidation'
 import FormHelper from '@/components/formvalidation/FormHelper'
 import UnitRestConnector from "./rest/UnitRestConnector";
+import TeamRestConnector from "./rest/TeamRestConnector";
 
 export default {
     data(){
         return {
             form: {
                 name: new FormField(isFilledIn()),
-                teamid: new FormField(0) // moet nog gefixed
+                teamid: new FormField(isFilledIn())
             },
             /**
              * @type {FormHelper}
              */
             formHelper: null,
-            restConnector: new UnitRestConnector(),
+            unitRestConnector: new UnitRestConnector(),
+            teamRestConnector: new TeamRestConnector(),
 
-            listOfTeams: null,
+            listOfTeams: [],
 
             selectedOption: null
         }
@@ -61,18 +63,18 @@ export default {
     methods: {
         submit(){
             if(this.formHelper.validateForm()){
-                // console.log("Name: " + this.form.name.value);
-                // console.log("TeamId: " + this.form.teamid.value);
-                this.restConnector.addUnit(this.form.name.value, this.form.teamid.value);
+                this.unitRestConnector.addUnit(this.form.name.value, this.form.teamid.value).then(() => {
+                    this.formHelper.clearForm();
+                });
             }
         },
 
-        async getAllTeams(){
-            try {
-                const res = await this.restConnector.getTeams();
-                this.listOfTeams = res.data;
-            }
-            catch (e) {console.error(e);}
+        getAllTeams(){
+            this.teamRestConnector.getTeams().then((response) => {
+                this.listOfTeams = response.data;
+            }).catch((ex) => {
+                console.log(ex);
+            });
         }
     }
 }

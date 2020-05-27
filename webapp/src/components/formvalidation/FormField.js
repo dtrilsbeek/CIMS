@@ -18,22 +18,33 @@ class FormField{
         this.createValidateFunction();
     }
 
+
     /**
-     * #### Private ####
+     * Sets the standard value of the form field
+     * @param {Boolean} toDefault 
+     */
+    clear(toDefault = true){
+        this.value = (toDefault) ? this.defaultValue : "";
+    }
+
+    /**
+     * @private
      * Set the default value for the form field
      */
     setDefaultValue(){
         if(this.validators.length > 0 && ! (this.validators[0] instanceof Function) ){
-            this.value = this.validators[0];
+            this.defaultValue = this.validators[0];
             this.validators.shift();
         }
         else{
-            this.value = "";
+            this.defaultValue = "";
         }
+
+        this.value = this.defaultValue;
     }
 
     /**
-     * #### Private ####
+     * @private
      * Create the function that validates the field
      * - clears errors on every call
      * - runs all validators
