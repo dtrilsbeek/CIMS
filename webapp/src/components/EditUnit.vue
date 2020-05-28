@@ -42,7 +42,7 @@ export default {
             /**
              * @type {UnitRestConnector}
              */
-            unitRestConnector: new UnitRestConnector()
+            unitRestConnector: new UnitRestConnector(this.$token)
         }
     },
 

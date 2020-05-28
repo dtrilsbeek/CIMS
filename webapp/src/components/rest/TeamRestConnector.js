@@ -1,14 +1,14 @@
 import Config from '@/components/rest/RestConfig'
 import Axios from 'axios'
-import RestConnector from '@/components/rest/RestConnector'
+import AuthRestConnector from '@/components/rest/AuthRestConnector'
 
 /**
  * Makes REST http-requests to the Teams resource
  */
-class TeamRestConnector extends RestConnector {
+class TeamRestConnector extends AuthRestConnector {
 
-    constructor(){
-        super();
+    constructor(token){
+        super(token);
         this.baseUrl = Config.getUrl("teams");
         this.header = {'Content-Type': this.formUrlEncoded}
     }
@@ -24,7 +24,10 @@ class TeamRestConnector extends RestConnector {
             name: name
         });
 
-        const headers = {'Content-Type':this.formUrlEncoded}
+        const headers = {
+            'Content-Type': this.formUrlEncoded,
+            'Authorization': `Bearer ${this.token}`
+        }
         const promise = Axios.post(this.baseUrl, toPost, {headers: headers});
         return promise;
     }

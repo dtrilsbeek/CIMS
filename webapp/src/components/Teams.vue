@@ -26,7 +26,7 @@ export default {
              * @type {FormHelper}
              */
             formHelper: null,
-            restConnector: new TeamRestConnector()
+            restConnector: new TeamRestConnector(this.$token)
         }
     },
 
