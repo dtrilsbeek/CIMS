@@ -1,14 +1,15 @@
 import Config from '@/components/rest/RestConfig'
 import Axios from 'axios'
-import RestConnector from '@/components/rest/RestConnector'
+import AuthRestConnector from '@/components/rest/AuthRestConnector';
+
 
 /**
  * Makes REST http-requests to the Units resource
  */
-class UnitRestConnector extends RestConnector  {
+class UnitRestConnector extends AuthRestConnector  {
 
-    constructor(){
-        super();
+    constructor(token){
+        super(token);
         this.baseUrl = Config.getUrl("units");
         this.teamUrl = Config.getUrl("teams");
         this.header = {'Content-Type': this.formUrlEncoded}
@@ -27,7 +28,13 @@ class UnitRestConnector extends RestConnector  {
             teamId: teamId
         });
 
-        const promise = Axios.post(this.baseUrl, toPost, {headers: this.header});
+
+        const headers = {
+            'Content-Type': this.formUrlEncoded,
+            'Authorization': `Bearer ${this.token}`
+        }
+
+        const promise = Axios.post(this.baseUrl, toPost, {headers: headers});
         return promise;
     }
 
@@ -44,7 +51,10 @@ class UnitRestConnector extends RestConnector  {
             unitId: unitId,
         });
 
-        const headers = {'Content-Type':this.formUrlEncoded}
+        const headers = {
+            'Content-Type': this.formUrlEncoded,
+            'Authorization': `Bearer ${this.token}`
+        }
 
         const result = Axios.put(Config.getUrl('units'), data, {headers: headers});
         return result;

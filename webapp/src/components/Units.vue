@@ -43,8 +43,8 @@ export default {
              * @type {FormHelper}
              */
             formHelper: null,
-            unitRestConnector: new UnitRestConnector(),
-            teamRestConnector: new TeamRestConnector(),
+            unitRestConnector: new UnitRestConnector(this.$token),
+            teamRestConnector: new TeamRestConnector(this.$token),
 
             listOfTeams: [],
 
