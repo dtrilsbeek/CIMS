@@ -7,11 +7,14 @@
     "serve": "vue-cli-service serve --port 80",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "jsdoc": "./node_modules/.bin/jsdoc ./src/components/ -r"
+    "jsdoc": "./node_modules/.bin/jsdoc ./src/components/ -r",
+    "test": "jest"
   },
   "dependencies": {
+    "D": "^1.0.0",
     "core-js": "^3.6.4",
     "esri-leaflet-geocoder": "^2.3.2",
+    "jest": "^26.0.1",
     "keycloak-js": "^10.0.1",
     "leaflet": "^1.6.0",
     "vue": "^2.6.11",
@@ -23,12 +26,16 @@
     "@vue/cli-plugin-babel": "~4.2.0",
     "@vue/cli-plugin-eslint": "~4.2.0",
     "@vue/cli-service": "~4.2.0",
+    "@vue/test-utils": "^1.0.3",
     "axios": "^0.19.2",
     "babel-eslint": "^10.0.3",
+    "babel-jest": "^26.0.1",
     "babel-plugin-module-resolver": "^4.0.0",
+    "babel-core": "^7.0.0-bridge.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.1.2",
     "jsdoc": "^3.6.4",
+    "vue-jest": "^3.0.5",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {

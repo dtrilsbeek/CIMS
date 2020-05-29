@@ -44,22 +44,15 @@ export default {
                 
                 //events retrieved by region bounds
                 const data = JSON.parse(event.data);
-                console.log(data.id);
                 
-                // let existing = this.events.filter(x => x.id == data.id).length;
-                
-                // if(existing == 0) {
-                //     this.events.push(data);
-                // }
-                // console.log(data);
-                
+                this.events.push(data);          
             };
         },
     },
 
     created() {
         this.bus.$on('retrieve-by-bounds', bounds => {
-            // console.log('efjio');
+
             this.retrieveEventsByRegionBounds(bounds);
         })
         //  this.bus.$on('add-event-to-stream', data => {
