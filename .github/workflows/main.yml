@@ -32,7 +32,7 @@ jobs:
             keycloak:
                 image: jboss/keycloak:9.0.3
                 volumes:
-                    - "./realm-export.json:/tmp/realm-export.json"
+                    - "/realm-export.json:/tmp/realm-export.json"
                 ports:
                     - "8180:8080"
                 env:
