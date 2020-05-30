@@ -43,7 +43,7 @@ jobs:
                     --health-interval 30s
                     --health-timeout 5s
                     --health-retries 10
-                    --start-period 1m
+                    --health-start-period 60s
 
                 env:
                     KEYCLOAK_USER: admin
