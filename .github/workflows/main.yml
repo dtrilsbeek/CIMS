@@ -50,7 +50,7 @@ jobs:
                   java-version: '11'
             - name: Test
               if: success()
-              run: ./mvnw clean test
+              run: mvn clean test
 #            - name: Package
 #              if: success()
 #              run: ./mvnw package
