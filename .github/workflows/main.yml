@@ -35,7 +35,7 @@ jobs:
                     - "./realm-export.json:/tmp/realm-export.json"
                 ports:
                     - "8180:8080"
-                environment:
+                env:
                     KEYCLOAK_USER: admin
                     KEYCLOAK_PASSWORD: admin
                     DB_VENDOR: H2
