@@ -29,27 +29,27 @@ jobs:
                 ports:
                   - 5432:5432
 
-            keycloak:
-                image: jboss/keycloak:9.0.3
+            # keycloak:
+            #     image: jboss/keycloak:9.0.3
 
-                volumes:
-                    - "/realm-export.json:/tmp/realm-export.json"
+            #     volumes:
+            #         - "/realm-export.json:/tmp/realm-export.json"
 
-                ports:
-                    - "8180:8080"
+            #     ports:
+            #         - "8180:8080"
 
-                options: >-
-                    --health-cmd "curl --fail http://localhost:8180/auth || exit 1"
-                    --health-interval 30s
-                    --health-timeout 5s
-                    --health-retries 10
-                    --health-start-period 60s
+            #     options: >-
+            #         --health-cmd "curl --fail http://localhost:8180/auth || exit 1"
+            #         --health-interval 30s
+            #         --health-timeout 5s
+            #         --health-retries 10
+            #         --health-start-period 1m
 
-                env:
-                    KEYCLOAK_USER: admin
-                    KEYCLOAK_PASSWORD: admin
-                    DB_VENDOR: H2
-                    KEYCLOAK_IMPORT: /tmp/realm-export.json
+            #     env:
+            #         KEYCLOAK_USER: admin
+            #         KEYCLOAK_PASSWORD: admin
+            #         DB_VENDOR: H2
+            #         KEYCLOAK_IMPORT: /tmp/realm-export.json
 
         steps:
             - name: Checkout
