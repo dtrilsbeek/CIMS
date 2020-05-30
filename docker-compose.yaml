@@ -48,7 +48,7 @@ services:
         container_name: keycloak
         restart: always
         volumes:
-            - "/RealmExport.json:/tmp/realm-export.json"
+            - "./realm-export.json:/tmp/realm-export.json"
         ports:
             - "8180:8080"
         environment:
