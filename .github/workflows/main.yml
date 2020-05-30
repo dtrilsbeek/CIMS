@@ -40,9 +40,10 @@ jobs:
 
                 options: >-
                     --health-cmd "curl --fail http://localhost:8080/auth || exit 1"
-                    --health-interval 10s
+                    --health-interval 30s
                     --health-timeout 5s
                     --health-retries 10
+                    --start-period 1m
 
                 env:
                     KEYCLOAK_USER: admin
