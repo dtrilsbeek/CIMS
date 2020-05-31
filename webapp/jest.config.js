@@ -5,6 +5,10 @@ module.exports = {
         "json",
         "vue"
     ],
+    moduleDirectories: [
+        "node_modules",
+        "src"
+    ],
     transform: {
         ".*\\.(vue)$": "vue-jest",
         "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
@@ -18,4 +22,7 @@ module.exports = {
         "html",
         "text-summary"
     ],
+    moduleNameMapper: {
+        "^@/(.*)$": "<rootDir>/src/$1"
+    },
 }
