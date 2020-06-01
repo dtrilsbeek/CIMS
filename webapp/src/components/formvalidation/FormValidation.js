@@ -11,7 +11,7 @@
 export function isFilledIn(customError){
     return (input) => {
         const value = input.value;
-        if(value == null || value == ""){
+        if(value == null || /^\S+$/.test(value) == false){
             addToErrors(input, "This field is required", customError);
         }
     }
@@ -75,20 +75,6 @@ export function maxLength(maxLength, customError){
     }
 }
 
-/**
- * Adds an error if the value is not a number
- * @param {String} customError custom error message, overrides default message
- */
-export function isPositiveInt(customError){
-    return (input) => {
-        if(! Number.isInteger(input)){
-            addToErrors(input, `${input} is not a valid Integer`, customError)
-        }
-        else if(input < 0){
-            addToErrors(input, `${input} is not a positive number`, customError);
-        }
-    }
-}
 
 /**
  * @private

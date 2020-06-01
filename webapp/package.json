@@ -8,7 +8,8 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "jsdoc": "./node_modules/.bin/jsdoc ./src/components/ -r",
-    "test": "jest"
+    "test": "jest",
+    "test-single": "jest FormHelper.test.js"
   },
   "dependencies": {
     "D": "^1.0.0",

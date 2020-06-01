@@ -5,7 +5,7 @@
 class FormField{
 
     /**
-     * @param firstParam can be the default value or a validator
+     * @param firstParam can be the default value or a method from the FormValidation.js
      * @param args methods from the FormValidation.js,
      * to show what to validate in the form.
      */
@@ -21,7 +21,7 @@ class FormField{
 
     /**
      * Sets the standard value of the form field
-     * @param {Boolean} toDefault 
+     * @param {Boolean} toDefault default true
      */
     clear(toDefault = true){
         this.value = (toDefault) ? this.defaultValue : "";
