@@ -86,7 +86,9 @@
       },
 
       show (map, latlng) {
-        this.id = map.selectedMarker.id;
+        if(map.selectedMarker) {
+          this.id = map.selectedMarker.id;
+        }
         this.lat = latlng.lat;
         this.lon = latlng.lng;
         
