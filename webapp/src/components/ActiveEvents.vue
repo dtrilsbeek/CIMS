@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import config from '@/components/rest/RestConfig'
+
 export default {
 
     props: {
@@ -17,6 +19,7 @@ export default {
     },
     data() {
         return {
+            streamUrl: config.getUrl('events', 'stream'),
             events: [],
             eventSource: null,
         }
@@ -54,7 +57,7 @@ export default {
 
             let urlParams = new URLSearchParams(params).toString();
 
-            this.eventSource = new EventSource(`http://localhost:8083/events/stream?${urlParams}`);
+            this.eventSource = new EventSource(`${this.streamUrl}?${urlParams}`);
             this.eventSource.onmessage = (event) => {
                 
                 //events retrieved by region bounds

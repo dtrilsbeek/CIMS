@@ -19,10 +19,16 @@ class RestConfig {
     }
 
     /**
-     * @param {String} resource the resource of the endpoint 
+     * @param {...String} resource the nested resources that come after the base url
      */
-    getUrl(resource){
-        return `${this.protocol}://${this.host}${this.port}/${resource}/`;
+    getUrl(...resources){
+        let url = `${this.protocol}://${this.host}${this.port}`;
+        
+        resources.forEach((resource) => {
+            url += `/${resource}`;
+        });
+
+        return url;
     }
 }
 

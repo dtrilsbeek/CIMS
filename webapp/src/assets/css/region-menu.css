@@ -73,12 +73,6 @@
     font-weight: 500;
 }
 
-
-/* To prevent text overlapping the seach i */
-/* .region-menu input:focus{
-    width: 88%;
-} */
-
 .region-menu input:focus{
     outline: none;
 }

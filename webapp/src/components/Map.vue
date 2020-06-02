@@ -25,6 +25,7 @@ import Home from './Home.vue'
 import RegionMenu from '@/components/RegionMenu'
 import ActiveEvents from './ActiveEvents'
 import Vue from 'vue';
+import config from '@/components/rest/RestConfig'
 
     export default {
     components: {
@@ -35,6 +36,7 @@ import Vue from 'vue';
     data(){
         return{
             // eventStream: null,
+            streamUrl: config.getUrl('events', 'stream'),
             bus: new Vue(),
             leafletMap: null,
             markers: [],
@@ -50,7 +52,7 @@ import Vue from 'vue';
            this.$root.$refs.home.show(this, e.latlng);
         })
 
-        this.eventSource = new EventSource("http://localhost:8083/events/stream");
+        this.eventSource = new EventSource(this.streamUrl);
         this.eventSource.onmessage = (event) => {
 
             const data = JSON.parse(event.data);

@@ -28,8 +28,6 @@
   import config from '@/components/rest/RestConfig'
   export default {
     name: 'Home',
-    props: {
-    },
 
     data: function() {
       return {
@@ -40,9 +38,6 @@
         type: 0,
         description: "",
       }
-    },
-
-    mounted: function () {
     },
 
     created() {
