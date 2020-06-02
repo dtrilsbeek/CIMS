@@ -37,7 +37,7 @@
     padding: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 25%;
+    min-width: 25%;
     position: absolute;
     z-index: 2;
     background-color: #efefef;
@@ -45,18 +45,39 @@
 }
 
 /* Input field */
+.search-bar{
+    border-bottom: 1px solid #555;
+    position: relative;
+}
+
+.search-icon{
+    position: absolute;
+    height: auto;
+    width: 6%;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 4%;
+}
+
 .region-menu input{
-    margin: 0 auto;
     display: block;
     width: 100%;
     font-size: 32px;
     line-height: 32px;
     background-color: transparent;
     border: none;
+    width: 78%;
+    margin: 0 auto;
+    padding-right: 8px;
     text-align: center;
-    border-bottom: 1px solid #555;
-    font-weight: bold;
+    font-weight: 500;
 }
+
+
+/* To prevent text overlapping the seach i */
+/* .region-menu input:focus{
+    width: 88%;
+} */
 
 .region-menu input:focus{
     outline: none;

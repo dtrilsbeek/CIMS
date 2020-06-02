@@ -1,6 +1,6 @@
 <template>
-  <div>
-      Active events ({{events.length}})
+  <div class="wrapper">
+      Actieve events ({{events.length}})
       <ul class="activeEvents">
         <li v-for="event in events" :key="event.id" v-on:click="navigateToEvent(event)">
             {{event.type}}

@@ -3,7 +3,10 @@
         <img src="@/assets/images/edit-icon.png" class="region-button"
             v-on:click="toggleMenu()"/>
         <section class="region-menu" v-if="regionMenu.isActive" style="z-index: 1000;">
-            <input type="text" placeholder="Regio" v-model="regionMenu.text">
+            <div class="search-bar">
+                <img class="search-icon" src="@/assets/images/search-icon.png" />
+                <input type="text" placeholder="Zoek een regio" v-model="regionMenu.text">
+            </div>
             <ul>
                 <li v-for="region in filteredRegions" :key=region.name
                     v-on:click="switchRegion(region)">
@@ -69,7 +72,7 @@ export default {
         filteredRegions(){
             return this.regionMenu.regions.filter(
                 (region) => {           
-                    return region.name.includes(this.regionMenu.text) &&
+                    return region.name.includes(this.regionMenu.text.toLowerCase()) &&
                            region.name !== this.regionMenu.currentRegion;
                 }
             );
