@@ -2,15 +2,13 @@
   <div class="grid">
       <region-menu v-on:move-to="moveTo($event)"></region-menu>
       <div id="map"></div>
-      <ul class="map-info">
-          <li>Info</li>
-          <li>Nieuws</li>
-      </ul>
+      <div class="map-info">
+            <h4>Info</h4>
+      </div> 
   
       <aside class="info">
-            <home/>
-            info
-          <active-events :bus="bus" />
+            <home/>        
+          <active-events :bus="bus" v-on:move-to-event="moveToEvent($event)" />
      
       </aside>
 
@@ -105,6 +103,11 @@ import Vue from 'vue';
             new CimsRectangle(bounds, 'blue', 1).addTo(this.leafletMap);
             this.bus.$emit("retrieve-by-bounds", bounds);            
         },
+        moveToEvent(event) {
+            this.leafletMap.flyTo([event.lat, event.lon], 12);
+            this.markers[event.id].fire('click');
+
+        }
     }
 }
 </script>

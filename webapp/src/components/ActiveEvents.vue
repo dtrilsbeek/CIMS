@@ -1,11 +1,11 @@
 <template>
   <div>
-      <ul ref="eventScrollElement" class="activeEvents">
-        <li v-for="event in events" :key="event.id">
-            Type: {{event.type}}
+      Active events ({{events.length}})
+      <ul class="activeEvents">
+        <li v-for="event in events" :key="event.id" v-on:click="navigateToEvent(event)">
+            {{event.type}}
         </li>
       </ul>
-        Total: {{events.length}}
    </div>
 </template>
 
@@ -23,7 +23,22 @@ export default {
     },
     methods: {
         retrieveEventsByRegionBounds(bounds) { 
-            
+            // this.events.push(
+            //     {lat: 44.45,lon: 44.44,type: 'ambulance',description: 'description'
+            // })
+            //  this.events.push(
+            //     {lat: 44.45,lon: 44.44,type: 'ambulance',description: 'description'
+            // })
+            //  this.events.push(
+            //     {lat: 44.45,lon: 44.44,type: 'ambulance',description: 'description'
+            // })
+            //  this.events.push(
+            //     {lat: 44.45,lon: 44.44,type: 'ambulance',description: 'description'
+            // })
+            //  this.events.push(
+            //     {lat: 44.45,lon: 44.44,type: 'ambulance',description: 'description'
+            // })
+
             this.events = [];
 
             if(this.eventSource != null && this.eventSource.readyState !== EventSource.CLOSED) {
@@ -44,9 +59,28 @@ export default {
                 
                 //events retrieved by region bounds
                 const data = JSON.parse(event.data);
+
+                data.type = this.getIconTypeString(data.type);
                 
                 this.events.push(data);          
             };
+        },
+        navigateToEvent(event) {
+            this.$emit("move-to-event", event);            
+        },
+        getIconTypeString(type) {
+            switch (type) {
+                case 1:
+                    return "fireTruck"
+                case 2:
+                    return "ambulance"
+                case 3:
+                    return "fire"
+                case 4:
+                    return "police"
+                default:
+                    return "ambulance"
+            }
         },
     },
 
