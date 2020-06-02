@@ -1,5 +1,7 @@
 package nl.fhict.s4;
 
+import com.google.common.annotations.VisibleForTesting;
+import io.quarkus.arc.profile.IfBuildProfile;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import io.vertx.mutiny.core.Vertx;
@@ -32,6 +34,10 @@ public class EventResource {
 	Emitter<EventModel> eventEmitter;
 	Vertx vertx;
 
+	@VisibleForTesting
+	public EventResource() {
+
+	}
 
 	public EventResource(
 			@Channel("event-create") Emitter<EventModel> eventEmitter,
@@ -52,7 +58,7 @@ public class EventResource {
 
 	Multi<EventModel> addTypeFilter(MultivaluedMap<String, String> params, Multi<EventModel> stream) {
 		try {
-			Integer type = Integer.parseInt(params.getFirst("type"));
+			int type = Integer.parseInt(params.getFirst("type"));
 			return stream.transform().byFilteringItemsWith(e -> e.type == type);
 		}
 		catch (Exception e) {

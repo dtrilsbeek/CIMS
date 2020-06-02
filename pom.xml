@@ -64,6 +64,11 @@
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-vertx</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-jsonb</artifactId>
+      <scope>test</scope>
+    </dependency>
 
 <!--    Todo: maybe use reactive postgresql-->
 <!--    <dependency>-->
