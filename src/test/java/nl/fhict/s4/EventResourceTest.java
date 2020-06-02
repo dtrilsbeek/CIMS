@@ -1,7 +1,9 @@
 package nl.fhict.s4;
 
+import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import nl.fhict.s4.models.EventModel;
 
 import org.junit.jupiter.api.AfterEach;
@@ -9,16 +11,26 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.awaitility.Awaitility.await;
 
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
 import javax.json.bind.JsonbConfig;
 import javax.transaction.Transactional;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.sse.SseEventSource;
+
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static io.restassured.RestAssured.given;
 
 @QuarkusTest
+//@QuarkusTestResource(KafkaResource.class)
 public class EventResourceTest {
 
 	EventModel event;
@@ -35,14 +47,16 @@ public class EventResourceTest {
 		event.lat = 43.220011;
 		event.description = "Test Event";
 		event.persist();
+
+		System.out.println(event.id);
 	}
 
 	@AfterEach
+	@Transactional
 	public void resetDB() {
 		EventModel.deleteAll();
 	}
 
-	// test new team valid
 	@Test
 	public void testAddEvent() {
 		event = new EventModel();
@@ -53,7 +67,7 @@ public class EventResourceTest {
 
 		EventModel result = given()
 				.when()
-				.body(event)
+				.body(jsonb.toJson(event))
 				.contentType(ContentType.JSON)
 				.post("/events").then().statusCode(200)
 				.contentType(ContentType.JSON)
@@ -65,24 +79,45 @@ public class EventResourceTest {
 		assertNotNull(result.id);
 	}
 
-	// test new team invalid
+	@Test
+	public void testUpdateEvent() {
+		event = new EventModel();
+		event.id = 2L;
+		event.type = 5;
+		event.lon = 52.22349;
+		event.lat = 43.220011;
+		event.description = "Test Event 5";
 
-	// test update team valid
+		String result = given()
+				.when()
+				.body(jsonb.toJson(event))
+				.contentType(ContentType.JSON)
+				.put("/events").then().statusCode(200)
+				.contentType(ContentType.JSON)
+				.extract()
+				.response().asString();
 
-	// test update team invalid
+		EventModel resultEvent = jsonb.fromJson(result, EventModel.class);
 
-	// test get stream
+		assertEquals(5, resultEvent.type);
+	}
 
-	// test get stream invalid
-
+	private static final String PRICES_SSE_ENDPOINT = "http://localhost:8081/events/stream";
 
 	@Test
-	public void testGetEndpoint() {
-		given()
-			.when().get("/hello")
-			.then()
-			.statusCode(404);
-//			.body(is("hello"));
+	void testPricesEventStream() {
+		Client client = ClientBuilder.newClient();
+		WebTarget target = client.target(PRICES_SSE_ENDPOINT);
+
+		List<String> received = new CopyOnWriteArrayList<>();
+
+		SseEventSource source = SseEventSource.target(target).build();
+		source.register(inboundSseEvent -> {
+			received.add(inboundSseEvent.readData());
+		});
+		source.open();
+		await().atMost(100000, MILLISECONDS).until(() -> received.size() == 3);
+		source.close();
 	}
 
 }
