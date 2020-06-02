@@ -3,17 +3,20 @@
 
     <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
 
-    <modal :width="400" :height="500" name="addTopic-modal" class="modal" @before-open='beforeOpen()' @before-close='beforeClose()'>       
+    <modal :width="400" :height="500" name="addTopic-modal" class="modal" @before-open='beforeOpen()' @before-close='beforeClose()'>
+      <span class="close" @click="$modal.hide('addTopic-modal')">X</span>       
       <ul>
-        <li><h1>Add situation</h1></li>
+        <li><h1><span>Situatie</span> toevoegen</h1></li>
         <li><input type="number" v-model="lat" placeholder="Input latitude" readonly /></li>
         <li><input type="number" v-model="lon" placeholder="Input longitude" readonly /></li>
-        <li><select v-model="type"><option v-for="number in 5" :key="number.number">{{number}}</option></select></li>
+        <li><select v-model="type" class="dropdown"><option v-for="number in 5" :key="number.number">{{number}}</option></select></li>
 
         <li><textarea v-model="description" placeholder="Input information"/></li>
 
-        <li><button type="button" @click="JSONpost(getMessage())">Send</button></li>
-        <li><button type="button" @click="JSONput(getMessage())">Move selected marker</button></li>
+        <li>
+          <button type="button" @click="JSONpost(getMessage())">Send</button>
+          <button type="button" @click="JSONput(getMessage())">Move selected marker</button>
+        </li>
 
       </ul>
     </modal>
@@ -22,6 +25,7 @@
 
 <script>
   import axios from 'axios'
+  import config from '@/components/rest/RestConfig'
   export default {
     name: 'Home',
     props: {
@@ -29,6 +33,7 @@
 
     data: function() {
       return {
+        eventUrl: config.getUrl('events'),
         id: null,
         lat: 0,
         lon: 0,
@@ -62,7 +67,7 @@
         // console.log("test");
 
         // this should match the port in src/main/resources/application.properties
-        axios.post(`http://localhost:8083/events`, message)
+        axios.post(this.eventUrl, message)
                 .then(response => this.response = response.data)
                 .catch(error => {
                   alert("error!");
@@ -75,7 +80,7 @@
       JSONput(message) {
         console.log(message);
 
-        axios.put(`http://localhost:8083/events`, message)
+        axios.put(this.eventUrl, message)
                 .then(response => this.response = response.data)
                 .catch(error => {
                   alert("error!");
@@ -108,7 +113,9 @@
   }
 </script>
 
+<style src="@/assets/css/form.css" scoped></style>
 <style src="@/assets/css/home.css" scoped></style>
+
 
 
 <!-- post request naar quarkus: localhost:xxxx/events -->

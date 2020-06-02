@@ -4,19 +4,16 @@ h1 {
     text-align: center;
 }
 
-div {
-    display: flex;
-    justify-content: center;
+.modal ul{
+    padding-top: 8px;
 }
 
-input {
-    padding-left: 4px;
-    box-shadow: .2em .2em 0 0 rgba(0, 0, 0, 0.28);
-    margin: 0 0 8px 0;
+.modal ul h1{
+    margin-bottom: 24px;
 }
 
-select {
-    padding-left: 4px;
+.modal input, .modal textarea{
+    margin: 12px 0;
 }
 
 ul, ul * {
@@ -25,31 +22,40 @@ ul, ul * {
 }
 
 textarea {
+    border-radius: 4px;
+    border: 2px solid #444;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
     resize: none;
     height: 80px;
     margin-top: 4px;
     box-shadow: .2em .2em 0 0 rgba(0, 0, 0, 0.28);
 }
 
-button {  
-    background-color: #555555;
-    color: white;
-    border: none;
-    width: 146px;
-    padding: 10px 0;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 6px 2px;
-    cursor: pointer;
-    transition-duration: .5s;
-}
-
-button:hover {
-    background-color: #444444;
+button {
+    width: 48%;
+    font-weight: 500;
+    height: 50px;
+    display: block;
+    margin-bottom: 8px;
 }
 
 li {
     font-size: 13px;
+}
+
+.close{
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    font-weight: bolder;
+}
+
+.close:hover{
+    cursor: pointer;
+    color: #bb0000;
+}
+
+.modal select.dropdown{
+    width: 100%;
 }
