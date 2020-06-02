@@ -39,5 +39,6 @@ describe('ActiveEvents', () => {
         let expectedHtml = `Total: ${compEvents.length}`;
  
         expect(wrapper.find('div').text()).toContain(expectedHtml);
+        expect(wrapper.find('ul').exists).toBeTruthy();
     })
 });
