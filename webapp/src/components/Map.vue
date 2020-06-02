@@ -7,7 +7,7 @@
       </div> 
   
       <aside class="info">
-            <home/>        
+            <home :bus="bus" />        
           <active-events :bus="bus" v-on:move-to-event="moveToEvent($event)" />
      
       </aside>
@@ -33,7 +33,7 @@ import config from '@/components/rest/RestConfig'
         regionMenu: RegionMenu,
         activeEvents: ActiveEvents
     },
-    data(){
+    data() {
         return{
             // eventStream: null,
             streamUrl: config.getUrl('events', 'stream'),
@@ -46,13 +46,9 @@ import config from '@/components/rest/RestConfig'
         }
     },
 
-    mounted(){
+    mounted() {
         this.bus.$emit("retrieve-current-region-bounds");            
         this.createEventSource();
-    },
-
-    created() {
-         this.$root.$refs.map = this;
     },
 
     methods: {
@@ -61,7 +57,6 @@ import config from '@/components/rest/RestConfig'
             if (this.selectedMarker) {
                 this.selectedMarker.getElement().classList.remove('active');
             }
-
             this.selectedMarker = marker;
         },
 
@@ -115,7 +110,7 @@ import config from '@/components/rest/RestConfig'
             
             this.leafletMap = new CimsMap(this.initialPosition, 13);
             this.leafletMap.on('click', (e) => {
-                this.$root.$refs.home.show(this, e.latlng);
+                this.$root.$refs.home.show(this.selectedMarker.id, e.latlng);
             });      
         },
 

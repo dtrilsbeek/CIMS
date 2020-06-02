@@ -46,7 +46,6 @@ export default {
                 .then((bounds) => {
                     this.$emit("region-bounds", bounds);    
                 });
-
         });
     },
 

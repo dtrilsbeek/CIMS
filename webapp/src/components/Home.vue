@@ -6,17 +6,17 @@
     <modal :width="400" :height="500" name="addTopic-modal" class="modal" @before-open='beforeOpen()' @before-close='beforeClose()'>
       <span class="close" @click="$modal.hide('addTopic-modal')">X</span>       
       <ul>
-        <li><h1><span>Situatie</span> toevoegen</h1></li>
-        <li><input type="number" v-model="lat" placeholder="Input latitude" readonly /></li>
-        <li><input type="number" v-model="lon" placeholder="Input longitude" readonly /></li>
-        <li><select v-model="type" class="dropdown"><option v-for="number in 5" :key="number.number">{{number}}</option></select></li>
+        <li><h1>Add situation</h1></li>
 
-        <li><textarea v-model="description" placeholder="Input information"/></li>
+        <li><input type="number" v-model="event.lat" placeholder="Input latitude" ></li>
+        <li><input type="number" v-model="event.lon" placeholder="Input longitude" ></li>
 
-        <li>
-          <button type="button" @click="JSONpost(getMessage())">Send</button>
-          <button type="button" @click="JSONput(getMessage())">Move selected marker</button>
-        </li>
+        <li><select v-model="event.type"><option v-for="number in 5" :key="number.number">{{number}}</option></select></li>
+
+        <li><textarea v-model="event.description" placeholder="Input information"/></li>
+
+        <li><button type="button" v-on:click="addEvent()">Send</button></li>
+        <li><button type="button" v-on:click="putEvent()">Move selected marker</button></li>
 
       </ul>
     </modal>
@@ -24,74 +24,48 @@
 </template>
 
 <script>
-  import axios from 'axios'
-  import config from '@/components/rest/RestConfig'
+import Event from '@/models/Event.js';
+import ModalDao from '@/daos/ModalDao.js';
+
   export default {
     name: 'Home',
-
-    data: function() {
+    props: {
+        bus: Object
+    },
+    data() {
       return {
-        eventUrl: config.getUrl('events'),
-        id: null,
-        lat: 0,
-        lon: 0,
-        type: 0,
-        description: "",
+        event: new Event()
       }
     },
 
     created() {
-      this.$root.$refs.home = this;
+        this.$root.$refs.home = this;
     },
 
     methods: {
-      getMessage: function () {
-        return {
-          id: this.id,
-          lat: parseFloat(this.lat),
-          lon: parseFloat(this.lon),
-          type: parseInt(this.type),
-          description: this.description
-        };
-      },
+      addEvent() {
 
-      // Pushes posts to the server when called.
-      JSONpost(message) {
-
-        console.log(message);
-        // console.log("test");
-
-        // this should match the port in src/main/resources/application.properties
-        axios.post(this.eventUrl, message)
-                .then(response => this.response = response.data)
-                .catch(error => {
-                  alert("error!");
-                  console.log(error)
-                  this.response = error
-                });
+        ModalDao.addEvent(this.event)
+          .catch(error => {
+            console.log(error);
+          });
         this.hide();
       },
 
-      JSONput(message) {
-        console.log(message);
+      putEvent() {
 
-        axios.put(this.eventUrl, message)
-                .then(response => this.response = response.data)
-                .catch(error => {
-                  alert("error!");
-                  console.log(error)
-                  this.response = error
-                });
+        ModalDao.putEvent(this.event)
+          .catch(error => {
+            console.log(error);
+          });
         this.hide();
       },
 
-      show (map, latlng) {
-        if(map.selectedMarker) {
-          this.id = map.selectedMarker.id;
-        }
-        this.lat = latlng.lat;
-        this.lon = latlng.lng;
-        
+      show (selectedId, latlng) {
+        this.event.id = selectedId;
+        this.event.lat = latlng.lat;
+        this.event.lon = latlng.lng;
+
         this.$modal.show('addTopic-modal');
         //params can be added with ", { foo: 'bar' })"
       },
