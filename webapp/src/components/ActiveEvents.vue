@@ -64,7 +64,7 @@ export default {
                 const data = JSON.parse(event.data);
 
                 data.type = this.getIconTypeString(data.type);
-                
+
                 this.events.push(data);          
             };
         },

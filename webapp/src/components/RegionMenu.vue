@@ -22,6 +22,9 @@ import MapDao from "@/daos/MapDao.js";
 import Region from "@/components/leaflet/Region.js";
 
 export default {
+    props: {
+        bus: Object
+    },
     data(){
         return{
             regionMenu: {
@@ -37,6 +40,16 @@ export default {
         }
     },
 
+    created() {
+        this.bus.$on('retrieve-current-region-bounds', () => {
+            this.getRegionBounds(this.regionMenu.currentRegion)
+                .then((bounds) => {
+                    this.$emit("region-bounds", bounds);    
+                });
+
+        });
+    },
+
     methods: {
         toggleMenu(){
             this.regionMenu.isActive = ! this.regionMenu.isActive;
@@ -50,21 +63,22 @@ export default {
             this.regionMenu.text = "";
         },
 
-        moveToBounds(region) {   
-            MapDao.getRegionBounds(region.name)
-                .then(regionresults => 
-                {
-                    let regionbox = regionresults[0].boundingbox;
+        async getRegionBounds(regionName) {
+            
+            let regionresults = await MapDao.getRegionBounds(regionName);
+            let regionbox = regionresults[0].boundingbox;
 
-                    //api returns box coordinates in the wrong order
-                    let bounds = [[regionbox[0],regionbox[2]],[regionbox[1],regionbox[3]]];
-                    region.bounds = bounds;
-                    
-                    this.$emit("move-to", region.bounds);            
-                })
-                .catch((error) => {
-                    console.log(error);          
-                })
+            //api returns box coordinates in the wrong order
+            let bounds = [[regionbox[0],regionbox[2]],[regionbox[1],regionbox[3]]];
+
+            return bounds;
+        },
+
+        moveToBounds(region) {   
+            this.getRegionBounds(region.name)
+                .then((bounds) => {
+                    this.$emit("move-to", bounds);            
+                });
         },
     },
 
