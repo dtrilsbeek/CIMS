@@ -1,5 +1,7 @@
 package nl.fhict.s4;
 
+import com.google.common.annotations.VisibleForTesting;
+import io.quarkus.arc.profile.IfBuildProfile;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import io.vertx.mutiny.core.Vertx;
@@ -32,7 +34,6 @@ public class EventResource {
 	Emitter<EventModel> eventEmitter;
 	Vertx vertx;
 
-
 	public EventResource(
 			@Channel("event-create") Emitter<EventModel> eventEmitter,
 			@Channel("events") Publisher<EventModel> events,
@@ -52,7 +53,7 @@ public class EventResource {
 
 	Multi<EventModel> addTypeFilter(MultivaluedMap<String, String> params, Multi<EventModel> stream) {
 		try {
-			Integer type = Integer.parseInt(params.getFirst("type"));
+			int type = Integer.parseInt(params.getFirst("type"));
 			return stream.transform().byFilteringItemsWith(e -> e.type == type);
 		}
 		catch (Exception e) {
@@ -105,7 +106,9 @@ public class EventResource {
 		model = new EventModel(model);
 		model.persist();
 
-		eventEmitter.send(model);
+		if (eventEmitter != null) {
+			eventEmitter.send(model);
+		}
 
 		return model;
 	}
@@ -115,10 +118,13 @@ public class EventResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public EventModel updateEvent(EventModel model) {
+
+		System.out.println("input "+model.id);
 		EventModel update = EventModel.findById(model.id);
+		System.out.println("output "+update.id);
+
 
 		if (update != null) {
-			update.isUpdate = true;
 			update.status = model.status;
 			update.description = model.description;
 			update.lat = model.lat;
@@ -126,10 +132,16 @@ public class EventResource {
 			update.type = model.type;
 			update.persist();
 
+			update.isUpdate = true;
 			eventEmitter.send(update);
+
+			System.out.println(update.type);
+			return update;
 		}
 
-		return model;
+
+
+		return null;
 	}
 
 	@GET
