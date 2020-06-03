@@ -50,6 +50,8 @@
     position: relative;
 }
 
+
+
 .search-icon{
     position: absolute;
     height: auto;
@@ -76,10 +78,13 @@
 .region-menu input:focus{
     outline: none;
 }
+.region-menu input::placeholder{
+    font-style: italic;
+}
 
 .region-menu input:focus::placeholder {
     color: transparent;
-  }
+}
 
 /* Filtered region list */
 .region-menu ul{

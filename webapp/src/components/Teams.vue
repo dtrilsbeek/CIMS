@@ -1,12 +1,10 @@
 <template>
-    <div class="grid">
-        <section class="form-container">
+    <div class="wrapper">
             <h1 class="capitalize-block">Maak een <span class="capitalize-inline">team</span></h1>
                 <form>
                     <input type="text" placeholder="naam" :class="{error: !form.name.isValid}" v-model="form.name.value" />
                 </form>
             <button class="submit-form clickable" @click="submit">Voeg toe</button>
-        </section>
     </div>
 </template>
 

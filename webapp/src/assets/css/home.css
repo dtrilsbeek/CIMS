@@ -4,6 +4,7 @@
     right: 4px;
     top: 4px;
     font-weight: bolder;
+    z-index: 2;
 }
 
 .close:hover{

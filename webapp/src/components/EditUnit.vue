@@ -1,17 +1,16 @@
 <template>
-    <div class="grid">
-        <section class="form-container">
+    <div class="wrapper">
             <h1 class="capitalize-block">Pas een <span class="capitalize-inline">unit</span> aan</h1>
                 <form>
                     <input type="number" placeholder="id" class="as-text" :class="{error: !form.name.isValid}" v-model="form.id.value" />     
                     <input type="text" placeholder="naam" :class="{error: !form.name.isValid}" v-model="form.name.value" />
-                    <select class="dropdown" v-model="form.teamId.value" :class="{error: !form.teamIdd.isValid}">
+                    <select class="dropdown" v-model="form.teamId.value" :class="{error: !form.teamId.isValid}">
                         <option value="" disabled selected>Selecteer een team</option>
                         <option v-for="team in teams" :key="team.name" :value="team.id">{{ team.name }}</option>
                     </select>
                 </form>
             <button class="submit-form clickable capitalize-block" @click="submit">pas aan</button>
-        </section>
+            <h4 class="create-edit-toggle clickable" @click="toCreate()">Maak een unit</h4>
     </div>
 </template>
 
@@ -62,6 +61,10 @@ export default {
                     console.log(ex);
                 });
             }
+        },
+
+        toCreate(){
+            this.$emit('toggle');
         }
     }
 }

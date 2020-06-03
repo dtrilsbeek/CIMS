@@ -1,6 +1,5 @@
 <template>
-    <div class="grid">
-        <section class="form-container">
+    <div class="wrapper">
             <h1 class="capitalize-block">Maak een
                 <span class="capitalize-inline">unit</span>
             </h1>
@@ -21,7 +20,7 @@
             <button class="submit-form clickable" @click="submit">
                 Voeg toe
             </button>
-        </section>
+            <h4 class="create-edit-toggle clickable" @click="toEdit()">Pas een unit aan</h4>
     </div>
 </template>
 
@@ -75,6 +74,10 @@ export default {
             }).catch((ex) => {
                 console.log(ex);
             });
+        },
+
+        toEdit(){
+            this.$emit('toggle');
         }
     }
 }
