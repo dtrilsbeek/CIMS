@@ -49,10 +49,10 @@ export default {
             }
 
             const params = {
-                sx: bounds[0][0],
-                sy: bounds[0][1],
-                ex: bounds[1][0],
-                ey: bounds[1][1]
+                sx: bounds[0][1],
+                sy: bounds[0][0],
+                ex: bounds[1][1],
+                ey: bounds[1][0]
             };
 
             let urlParams = new URLSearchParams(params).toString();
