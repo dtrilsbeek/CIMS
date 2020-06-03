@@ -80,7 +80,7 @@ import config from '@/components/rest/RestConfig'
             this.eventSource.onmessage = (event) => {
 
                 const data = JSON.parse(event.data);
-                const type = this.getIconTypeString(data.type);
+                const type = data.type.name;
 
                 if (data.isUpdate) {
                     const marker = this.markers[data.id]
