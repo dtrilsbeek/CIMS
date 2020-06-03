@@ -1,9 +1,12 @@
 import axios from 'axios';
+import config from '@/components/rest/RestConfig'
+
+const url = config.getUrl('events');
 
 async function addEvent(event) {
   
     try {
-        let res = await axios.post('http://localhost:8083/events', event);
+        let res = await axios.post(url, event);
 
         return res.data;        
     }
@@ -15,7 +18,7 @@ async function addEvent(event) {
 async function putEvent(event) {
   
     try {
-        let res = await axios.put('http://localhost:8083/events', event);
+        let res = await axios.put(url, event);
 
         return res.data;        
     }
@@ -25,7 +28,6 @@ async function putEvent(event) {
 }
 
 export default {
-
     addEvent,
     putEvent
 }
