@@ -9,7 +9,7 @@ import io.vertx.mutiny.core.Vertx;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
 import nl.fhict.s4.models.EventModel;
-
+import nl.fhict.s4.models.EventType;
 
 import org.jboss.resteasy.annotations.SseElementType;
 import org.jboss.resteasy.annotations.cache.Cache;
@@ -53,7 +53,9 @@ public class EventResource {
 
 	Multi<EventModel> addTypeFilter(MultivaluedMap<String, String> params, Multi<EventModel> stream) {
 		try {
-			int type = Integer.parseInt(params.getFirst("type"));
+			long typeId = Long.parseLong(params.getFirst("type"));
+			EventType type = EventType.findById(typeId);
+
 			return stream.transform().byFilteringItemsWith(e -> e.type == type);
 		}
 		catch (Exception e) {
@@ -71,10 +73,10 @@ public class EventResource {
 			return stream
 				.transform()
 				.byFilteringItemsWith(e -> 
-					e.getLat() > sx &&
-					e.getLat() > sy &&
-					e.getLon() < ex &&
-					e.getLon() < ey
+					e.lon > sx &&
+					e.lat > sy &&
+					e.lon < ex &&
+					e.lat < ey
 				);
 		}
 		catch (Exception e) {
