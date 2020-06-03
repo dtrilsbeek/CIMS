@@ -110,7 +110,9 @@ import config from '@/components/rest/RestConfig'
             
             this.leafletMap = new CimsMap(this.initialPosition, 13);
             this.leafletMap.on('click', (e) => {
-                this.$root.$refs.home.show(this.selectedMarker.id, e.latlng);
+                if(this.selectedMarker) {
+                    this.$root.$refs.home.show(this.selectedMarker.id, e.latlng);
+                }
             });      
         },
 
