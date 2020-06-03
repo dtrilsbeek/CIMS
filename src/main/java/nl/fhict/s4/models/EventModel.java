@@ -16,7 +16,7 @@ public class EventModel extends PanacheEntityBase {
 	public double lat;
 	public double lon;
 
-	@JoinColumn(nullable = true)
+	@JoinColumn(nullable = false)
     @ManyToOne
 	public EventType type;
 
