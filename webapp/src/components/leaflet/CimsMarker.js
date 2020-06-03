@@ -62,8 +62,6 @@ export default class CimsMarker extends MovingMarker {
     constructor(map, id, type, description, start, destination = start){
         super([start, start], 1000, {icon: icons[type]});
 
-        // this.bindPopupInfo(start[0], start[1], icon, description);
-
         this.map = map;
         this.id = id;
         this.type = type;
@@ -78,8 +76,6 @@ export default class CimsMarker extends MovingMarker {
 
         this.bindPopupInfo(this.getLatLng());
         this.addTo(map.leafletMap);
-        // Rotate image to destination - (Vector rotation)
-        // Remove from map
     }
 
     /**
@@ -103,8 +99,6 @@ export default class CimsMarker extends MovingMarker {
      */
     moveTo(destination, duration = 10000){
         super.moveTo(destination, duration)
-        //refresh popup
-        //this.bindPopupInfo(destination);
     }
 
     /**
