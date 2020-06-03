@@ -87,7 +87,7 @@ import config from '@/components/rest/RestConfig'
                     if(marker) {
                         marker.type = data.type;
                         marker.description = data.description;
-                        marker.moveTo([data.lat, data.lon])
+                        marker.moveTo([data.lat, data.lon], 1500);
                     }
                 } else {
                     this.markers[data.id] = new CimsMarker(this, data.id, type, data.description, [data.lat, data.lon]);
@@ -110,9 +110,9 @@ import config from '@/components/rest/RestConfig'
             
             this.leafletMap = new CimsMap(this.initialPosition, 13);
             this.leafletMap.on('click', (e) => {
-                if(this.selectedMarker) {
-                    this.$root.$refs.home.show(this.selectedMarker.id, e.latlng);
-                }
+                const selected = this.selectedMarker ? this.selectedMarker.id : null;
+
+                this.$root.$refs.home.show(selected, e.latlng);
             });      
         },
 
