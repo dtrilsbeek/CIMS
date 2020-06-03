@@ -54,9 +54,8 @@ public class EventResource {
 	Multi<EventModel> addTypeFilter(MultivaluedMap<String, String> params, Multi<EventModel> stream) {
 		try {
 			long typeId = Long.parseLong(params.getFirst("type"));
-			EventType type = EventType.findById(typeId);
 
-			return stream.transform().byFilteringItemsWith(e -> e.type == type);
+			return stream.transform().byFilteringItemsWith(e -> e.type.id == typeId);
 		}
 		catch (Exception e) {
 			return stream;
@@ -121,9 +120,8 @@ public class EventResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public EventModel updateEvent(EventModel model) {
 
-		System.out.println("input "+model.id);
 		EventModel update = EventModel.findById(model.id);
-		System.out.println("output "+update.id);
+
 
 
 		if (update != null) {
