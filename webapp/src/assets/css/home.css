@@ -1,49 +1,4 @@
-h1 {
-    font-size: 25px;
-    margin: 2px 2px 2px 2px;
-    text-align: center;
-}
-
-.modal ul{
-    padding-top: 8px;
-}
-
-.modal ul h1{
-    margin-bottom: 24px;
-}
-
-.modal input, .modal textarea{
-    margin: 12px 0;
-}
-
-ul, ul * {
-    width: 300px;
-    margin: auto;
-}
-
-textarea {
-    border-radius: 4px;
-    border: 2px solid #444;
-    font-size: 16px;
-    font-family: Arial, Helvetica, sans-serif;
-    resize: none;
-    height: 80px;
-    margin-top: 4px;
-    box-shadow: .2em .2em 0 0 rgba(0, 0, 0, 0.28);
-}
-
-button {
-    width: 48%;
-    font-weight: 500;
-    height: 50px;
-    display: block;
-    margin-bottom: 8px;
-}
-
-li {
-    font-size: 13px;
-}
-
+/* X - button in the modal to close */
 .close{
     position: absolute;
     right: 4px;
@@ -56,8 +11,72 @@ li {
     color: #bb0000;
 }
 
-.modal select.dropdown{
-    width: 100%;
-    font-size: 16px;
+
+.side-bar{
+    border-radius: 4px;
+    width: 65px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: -80px;
 }
+
+
+/* Navigation bar next to modal*/
+.side-bar ul li{
+    position: relative;
+    padding: 2px 0;
+    display: block;
+    text-align: center;
+    color: white;
+    font-size: 50px;
+    border-bottom: 1px solid silver;
+    background-color: rgba(0,0,0, .6);
+    transition-duration: .2s;
+}
+
+.side-bar ul li:first-child{
+    border-radius: 4px 4px 0 0;
+}
+
+.side-bar ul li:last-child{
+    border-radius: 0 0 4px 4px;
+}
+
+.side-bar ul li:hover{
+    cursor: pointer;
+    background-color: rgba(0,0,0, .8);
+}
+
+.side-bar ul li.active{
+    background-color: rgba(0,0,0, .8);
+}
+
+.side-bar ul li img{
+    width: 50%;
+    height: auto;
+}
+
+
+/* Tooltips when hovering on the menu */
+.side-bar ul li .tooltip{
+    display: none;
+    position: absolute;
+    background-color: rgba(0,0,0, .8);
+    color: white;
+    text-align: center;
+    padding: 6px 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+    min-width: 120%;
+    top: 50%;
+    left: 100%;
+    transform: translateY(-50%);
+    border-left: 1px solid silver;
+}
+
+.side-bar ul li:hover .tooltip, .side-bar ul li.active .tooltip{
+    display: block;
+}
+
 

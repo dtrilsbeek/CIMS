@@ -3,15 +3,13 @@
       <region-menu :bus="bus" v-on:region-bounds="setInitialPosition($event)" v-on:move-to="moveTo($event)"></region-menu>
       <div id="map"></div>
       <div class="map-info">
-            <h4>Info</h4>
+        <h4>Info</h4>
       </div> 
   
-      <aside class="info">
-            <home :bus="bus" />        
+      <aside class="info">      
+          <menu-modal :bus="bus" />  
           <active-events :bus="bus" v-on:move-to-event="moveToEvent($event)" />
-     
       </aside>
-
   </div>
 </template>
 
@@ -21,7 +19,7 @@ import CimsMarker from '@/components/leaflet/CimsMarker'
 import CimsRectangle from '@/components/leaflet/CimsRectangle';
 // Css for loading the map smoothly
 import 'leaflet/dist/leaflet.css'
-import Home from './Home.vue'
+import Modal from '@/components/Home.vue'
 import RegionMenu from '@/components/RegionMenu'
 import ActiveEvents from './ActiveEvents'
 import Vue from 'vue';
@@ -29,7 +27,7 @@ import config from '@/components/rest/RestConfig'
 
     export default {
     components: {
-        home: Home,
+        menuModal: Modal,
         regionMenu: RegionMenu,
         activeEvents: ActiveEvents
     },

@@ -5,7 +5,7 @@
                 <form>
                     <input type="number" placeholder="id" class="as-text" :class="{error: !form.name.isValid}" v-model="form.id.value" />     
                     <input type="text" placeholder="naam" :class="{error: !form.name.isValid}" v-model="form.name.value" />
-                    <select class="dropdown" v-model="form.teamId.value" :class="{error: !form.teamid.isValid}">
+                    <select class="dropdown" v-model="form.teamId.value" :class="{error: !form.teamIdd.isValid}">
                         <option value="" disabled selected>Selecteer een team</option>
                         <option v-for="team in teams" :key="team.name" :value="team.id">{{ team.name }}</option>
                     </select>

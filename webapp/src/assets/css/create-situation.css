@@ -1,0 +1,55 @@
+h1 {
+    font-size: 25px;
+    margin: 2px 2px 2px 2px;
+    text-align: center;
+}
+
+ ul{
+    padding-top: 8px;
+}
+
+ul h1{
+    margin-bottom: 24px;
+}
+
+input, textarea{
+    margin: 12px 0;
+}
+
+ul, ul * {
+    width: 300px;
+    margin: auto;
+}
+
+textarea {
+    border-radius: 4px;
+    border: 2px solid #444;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    resize: none;
+    height: 80px;
+    margin-top: 4px;
+    box-shadow: .2em .2em 0 0 rgba(0, 0, 0, 0.28);
+}
+
+button {
+    width: 48%;
+    font-weight: 500;
+    height: 50px;
+    display: block;
+    margin-top: 8px;
+    margin-bottom: 12px;
+}
+
+li {
+    font-size: 13px;
+}
+
+select.dropdown{
+    width: 100%;
+    font-size: 16px;
+}
+
+input,select, textarea{
+    margin-bottom: 8px;
+}

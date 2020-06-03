@@ -1,24 +1,18 @@
 <template>
   <div>
-
-    <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
-
     <modal :width="400" :height="500" name="addTopic-modal" class="modal" @before-open='beforeOpen()' @before-close='beforeClose()'>
+      <aside class="side-bar">
+        <ul>
+          <li @click="switchComponent(2)" :class="{active: componentIndex == 2}"><img src="@/assets/images/team-icon.png" alt=""><div class="tooltip">Teams</div></li>
+          <li @click="switchComponent(1)" :class="{active: componentIndex == 1}"><img src="@/assets/images/unit-icon.png" alt=""><div class="tooltip">Units</div></li>
+          <li><img src="@/assets/images/management-icon.png" alt=""><div class="tooltip">Teams & Units</div></li>
+          <li @click="switchComponent(0)" :class="{active: componentIndex == 0}"><img src="@/assets/images/event-icon.png" alt=""><div class="tooltip">Events</div></li>
+        </ul>
+      </aside>
       <span class="close" @click="$modal.hide('addTopic-modal')">X</span>       
-      <ul>
-        <li><h1>Add situation</h1></li>
 
-        <li><input type="number" v-model="event.lat" placeholder="Input latitude" ></li>
-        <li><input type="number" v-model="event.lon" placeholder="Input longitude" ></li>
+        <component v-bind:is="activeComponent"> </component>
 
-        <li><select v-model="event.type"><option v-for="number in 5" :key="number.number">{{number}}</option></select></li>
-
-        <li><textarea v-model="event.description" placeholder="Input information"/></li>
-
-        <li><button type="button" v-on:click="addEvent()">Send</button></li>
-        <li><button type="button" v-on:click="putEvent()">Move selected marker</button></li>
-
-      </ul>
     </modal>
   </div>
 </template>
@@ -26,15 +20,25 @@
 <script>
 import Event from '@/models/Event.js';
 import ModalDao from '@/daos/ModalDao.js';
+import CreateSituation from '@/components/CreateSituation.vue'
+import EditUnit from '@/components/EditUnit.vue'
+import Teams from '@/components/Teams.vue'
+
 
   export default {
-    name: 'Home',
     props: {
         bus: Object
     },
+    components: {
+      createSituation: CreateSituation,
+      editUnit: EditUnit,
+      teams: Teams
+    },
     data() {
       return {
-        event: new Event()
+        event: new Event(),
+        components: ['create-situation', 'edit-unit', 'teams'],
+        componentIndex: 0
       }
     },
 
@@ -43,6 +47,10 @@ import ModalDao from '@/daos/ModalDao.js';
     },
 
     methods: {
+      switchComponent(index){
+        this.componentIndex = index; 
+      },
+
       addEvent() {
 
         ModalDao.addEvent(this.event)
@@ -53,7 +61,6 @@ import ModalDao from '@/daos/ModalDao.js';
       },
 
       putEvent() {
-
         ModalDao.putEvent(this.event)
           .catch(error => {
             console.log(error);
@@ -78,11 +85,16 @@ import ModalDao from '@/daos/ModalDao.js';
       beforeClose() {
         console.log('this will be called before the modal closes');
       }
+    },
+
+    computed: {
+      activeComponent() {
+        return this.components[this.componentIndex];
+      }
     }
   }
 </script>
 
-<style src="@/assets/css/form.css" scoped></style>
 <style src="@/assets/css/home.css" scoped></style>
 
 

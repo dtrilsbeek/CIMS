@@ -1,5 +1,5 @@
-import Home from './components/Home.vue'
 import CimsMap from './components/Map.vue'
+import Home from './components/Home.vue'
 import Teams from './components/Teams.vue'
 import Units from './components/Units';
 import EditUnit from './components/EditUnit.vue';
