@@ -7,7 +7,7 @@
       </div> 
   
       <aside class="info">      
-          <menu-modal :bus="bus" />  
+          <menu-modal :bus="bus" ref="modal" />  
           <active-events :bus="bus" v-on:move-to-event="moveToEvent($event)" />
       </aside>
   </div>
@@ -108,7 +108,8 @@ import config from '@/components/rest/RestConfig'
             
             this.leafletMap = new CimsMap(this.initialPosition, 13);
             this.leafletMap.on('click', (e) => {
-                this.$root.$refs.home.show(this.selectedMarker.id, e.latlng);
+                let selectedMarker = this.selectedMarker || null;
+                this.$refs.modal.show(selectedMarker, e.latlng);
             });      
         },
 

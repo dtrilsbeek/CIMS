@@ -1,10 +1,4 @@
-h1 {
-    font-size: 25px;
-    margin: 2px 2px 2px 2px;
-    text-align: center;
-}
-
- ul{
+ul{
     padding-top: 8px;
 }
 
@@ -34,8 +28,6 @@ textarea {
 
 button {
     width: 48%;
-    font-weight: 500;
-    height: 50px;
     display: block;
     margin-top: 8px;
     margin-bottom: 12px;

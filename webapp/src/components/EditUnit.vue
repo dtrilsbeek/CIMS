@@ -9,7 +9,10 @@
                         <option v-for="team in teams" :key="team.name" :value="team.id">{{ team.name }}</option>
                     </select>
                 </form>
-            <button class="submit-form clickable capitalize-block" @click="submit">pas aan</button>
+            <button class="clickable capitalize-block" @click="submit" :class="{disabled: !selectedMarker}">
+                pas aan
+                <div class="disabled-tooltip">Geen marker geselecteerd</div>
+            </button>
             <h4 class="create-edit-toggle clickable" @click="toCreate()">Maak een unit</h4>
     </div>
 </template>
@@ -45,7 +48,17 @@ export default {
         }
     },
 
-    created(){
+    props: {
+        selectedMarker: {
+            type: [Object,Boolean],
+            required: true
+        }
+    },
+
+    mounted(){
+        if(this.selectedMarker != null){
+            this.form.id.value = this.selectedMarker.id;
+        }
         this.formHelper = new FormHelper(this.form);
         this.teamRestConnector.getTeams().then((response) => {
             this.teams = response.data;

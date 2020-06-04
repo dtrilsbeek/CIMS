@@ -10,9 +10,8 @@
         </ul>
       </aside>
       <span class="close" @click="$modal.hide('addTopic-modal')">X</span>       
-
-        <component v-bind:is="activeComponent"> </component>
-
+        <component :is="activeComponent" :selectedMarker="selectedMarker" :event="event"> </component>
+        <!-- <unit-menu ninjas="apple"> </unit-menu> -->
     </modal>
   </div>
 </template>
@@ -36,16 +35,14 @@ import Teams from '@/components/Teams.vue'
     },
     data() {
       return {
+        name: "name",
+        selectedMarker: false,
         event: new Event(),
         components: ['create-situation', 'unit-menu', 'teams'],
         componentIndex: 0
       }
     },
-
-    created() {
-        this.$root.$refs.home = this;
-    },
-
+    
     methods: {
       switchComponent(index){
         this.componentIndex = index; 
@@ -68,8 +65,12 @@ import Teams from '@/components/Teams.vue'
         this.hide();
       },
 
-      show (selectedId, latlng) {
-        this.event.id = selectedId;
+      show (selectedMarker, latlng) {
+        console.log(selectedMarker);
+        if(selectedMarker != null){
+          this.selectedMarker = selectedMarker;
+          this.event.id = selectedMarker.id;
+        }
         this.event.lat = latlng.lat;
         this.event.lon = latlng.lng;
 

@@ -90,7 +90,7 @@ input{
 
 h1{
     text-align: center;
-    font-size: 2em;
+    font-size: 32px;
     color: #333;
 }
 
@@ -121,3 +121,49 @@ input.as-text::-webkit-inner-spin-button {
 input.as-text[type=number] {
     -moz-appearance: textfield;
 }
+
+
+.disabled{
+    position: relative;
+    color: #777777;
+    background-color: #AAAAAA;
+}
+
+.disabled:hover{
+    color: #777777;
+    background-color: #AAAAAA;
+    cursor: not-allowed;
+}
+
+body .wrapper .disabled, .disabled:focus{
+    border: none !important;
+}
+
+
+.disabled-tooltip{
+    display: none;
+    background-color: #333;
+    color: white;
+    -moz-border-top-colors: 100%;
+    position: absolute;
+    padding: 2px 0;
+    top:100%;
+    box-shadow: 2px 2px 2px 2px silver;
+}
+
+.disabled:hover .disabled-tooltip{
+    display: block;
+    width: 100%;
+}
+
+ .disabled-tooltip::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    transform: rotate(180deg);
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #333 transparent transparent transparent;
+  }
