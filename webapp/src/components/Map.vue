@@ -60,21 +60,6 @@ import config from '@/components/rest/RestConfig'
             this.selectedMarker = marker;
         },
 
-        getIconTypeString(type) {
-            switch (type) {
-                case 1:
-                    return "fireTruck"
-                case 2:
-                    return "ambulance"
-                case 3:
-                    return "fire"
-                case 4:
-                    return "police"
-                default:
-                    return "ambulance"
-            }
-        },
-
         createEventSource() {
             this.eventSource = new EventSource("http://localhost:8083/events/stream");
             this.eventSource.onmessage = (event) => {

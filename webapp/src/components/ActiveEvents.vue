@@ -63,28 +63,14 @@ export default {
                 //events retrieved by region bounds
                 const data = JSON.parse(event.data);
 
-                data.type = this.getIconTypeString(data.type);
+                data.type = data.type.name;
 
                 this.events.push(data);          
             };
         },
         navigateToEvent(event) {
             this.$emit("move-to-event", event);            
-        },
-        getIconTypeString(type) {
-            switch (type) {
-                case 1:
-                    return "fireTruck"
-                case 2:
-                    return "ambulance"
-                case 3:
-                    return "fire"
-                case 4:
-                    return "police"
-                default:
-                    return "ambulance"
-            }
-        },
+        }
     },
 
     created() {
