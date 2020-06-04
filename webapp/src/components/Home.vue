@@ -11,7 +11,16 @@
         <li><input type="number" v-model="event.lat" placeholder="Input latitude" ></li>
         <li><input type="number" v-model="event.lon" placeholder="Input longitude" ></li>
 
-        <li><select v-model="event.type"><option v-for="number in 5" :key="number.number">{{number}}</option></select></li>
+        <li>
+          <select v-model="event.type" class="dropdown" >
+            <option value="" disabled selected>Selecteer een type</option>
+            <option v-for="type in types"
+                    :key="type.id"
+                    :value="type.id">
+                {{type.name}}
+            </option>
+          </select>
+        </li>
 
         <li><textarea v-model="event.description" placeholder="Input information"/></li>
 
@@ -26,6 +35,7 @@
 <script>
 import Event from '@/models/Event.js';
 import ModalDao from '@/daos/ModalDao.js';
+import TypeRestConnector from "./rest/TypeRestConnector";
 
   export default {
     name: 'Home',
@@ -34,7 +44,10 @@ import ModalDao from '@/daos/ModalDao.js';
     },
     data() {
       return {
-        event: new Event()
+        event: new Event(),
+        typeRestConnector: new TypeRestConnector(this.$token),
+        types: [],
+
       }
     },
 
@@ -43,6 +56,11 @@ import ModalDao from '@/daos/ModalDao.js';
     },
 
     methods: {
+      getAllTypes() {
+        this.typeRestConnector.getTypes().then(res => {
+          this.types = res.data; 
+        }).catch(e => console.error(e));
+      },
       addEvent() {
 
         ModalDao.addEvent(this.event)
@@ -72,8 +90,8 @@ import ModalDao from '@/daos/ModalDao.js';
       hide () {
         this.$modal.hide('addTopic-modal');
       },
-      beforeOpen (/*event*/) {
-        // console.log(event.params.foo);
+      async beforeOpen (/*event*/) {
+         this.getAllTypes();
       },
       beforeClose() {
         console.log('this will be called before the modal closes');
