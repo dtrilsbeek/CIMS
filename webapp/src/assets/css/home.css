@@ -4,7 +4,7 @@ h1 {
     text-align: center;
 }
 
-.modal ul{
+/* .modal ul{
     padding-top: 8px;
 }
 
@@ -14,9 +14,9 @@ h1 {
 
 .modal input, .modal textarea{
     margin: 12px 0;
-}
+} */
 
-ul, ul * {
+/* ul, ul * {
     width: 300px;
     margin: auto;
 }
@@ -42,7 +42,7 @@ button {
 
 li {
     font-size: 13px;
-}
+} */
 
 .close{
     position: absolute;
@@ -56,8 +56,8 @@ li {
     color: #bb0000;
 }
 
-.modal select.dropdown{
+/* .modal select.dropdown{
     width: 100%;
     font-size: 16px;
 }
-
+ */

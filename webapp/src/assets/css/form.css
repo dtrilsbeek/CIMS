@@ -19,10 +19,15 @@ input.error, select.error, textarea.error{
         cursor: pointer;
         transition-duration: .3s;
     }
+
+    .form-button {
+        width: 70%;
+    }
+
     
     .dropdown{
         margin-top: 8px; 
-        border-radius: 8px;
+        border-radius: 2px;
         font-weight: bold;
         box-sizing: border-box;
         padding: 8px 0;
@@ -73,10 +78,25 @@ input.error, select.error, textarea.error{
         width: 70%;
         height: 30px;
         padding: 18px 4px 18px 8px;
-        border-radius: 5px;
+        border-radius: 2px;
         font-size: 1.5em;
     }
     
+    textarea {
+        box-sizing: border-box;
+        border: 1.5px solid #555;
+        margin-top: 18px;
+        display: block;
+        width: 70%;
+        height: 60px;
+        padding: 18px 4px 18px 8px;
+        border-radius: 2px;
+        font-size: 16px;
+        font-family: Arial, Helvetica, sans-serif;
+        resize: none;
+    }
+
+
     .flexbox-container{
         display: flex;
         width: 70%;

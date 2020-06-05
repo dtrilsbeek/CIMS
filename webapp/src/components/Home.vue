@@ -9,12 +9,12 @@
             <h1 class="capitalize-block">Maak een
                 <span class="capitalize-inline">unit</span>
             </h1>
-                <form>
-                    <input type="number" placeholder="Input latitude"
+                <form class="form">
+                    <input type="number" step="any" placeholder="Input latitude"
                            :class="{error: !form.lat.isValid}"
                            v-model="form.lat.value"
                     />
-                    <input type="number" placeholder="Input longitude"
+                    <input type="number" step="any" placeholder="Input longitude"
                            :class="{error: !form.lon.isValid}"
                            v-model="form.lon.value"
                     />
@@ -28,8 +28,8 @@
                     </select>
                     <textarea v-model="form.description.value" placeholder="Input information" :class="{error: !form.description.isValid}" />
                 </form>
-            <button type="button" v-on:click="addEvent()">Send</button>
-            <button type="button" v-on:click="putEvent()">Move selected marker</button>
+            <button type="button" class="form-button" v-on:click="addEvent()">Send</button>
+            <button type="button" class="form-button" v-on:click="putEvent()">Move selected marker</button>
       
     
 
