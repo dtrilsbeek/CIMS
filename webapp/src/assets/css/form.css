@@ -18,10 +18,14 @@ input.error, select.error, textarea.error{
         font-weight: bolder;
         cursor: pointer;
         transition-duration: .3s;
+        box-sizing: border-box;
     }
 
     .form-button {
         width: 70%;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     
