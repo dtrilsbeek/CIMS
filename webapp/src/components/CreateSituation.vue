@@ -38,7 +38,6 @@ export default {
 
     methods: {
       addEvent() {
-          this.event.id = undefined;
         ModalDao.addEvent(this.event)
           .catch(error => {
             console.log(error);

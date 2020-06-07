@@ -4,9 +4,9 @@ import config from '@/components/rest/RestConfig'
 const url = config.getUrl('events');
 
 async function addEvent(event) {
-  
+    const toPost = event.deepCopy(true);
     try {
-        let res = await axios.post(url, event);
+        let res = await axios.post(url, toPost);
 
         return res.data;        
     }
@@ -16,10 +16,8 @@ async function addEvent(event) {
 }
 
 async function putEvent(event) {
-    const toPost = event.deepCopy(true);
-  
     try {
-        let res = await axios.put(url, toPost);
+        let res = await axios.put(url, event);
 
         return res.data;        
     }
