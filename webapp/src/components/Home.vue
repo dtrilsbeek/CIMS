@@ -6,7 +6,7 @@
           <li @click="switchComponent(0)" :class="{active: componentIndex == 0}"><img src="@/assets/images/event-icon.png" alt="events"><div class="tooltip">Events</div></li>
           <li @click="switchComponent(1)" :class="{active: componentIndex == 1}"><img src="@/assets/images/unit-icon.png" alt="units"><div class="tooltip">Units</div></li>
           <li @click="switchComponent(2)" :class="{active: componentIndex == 2}"><img src="@/assets/images/team-icon.png" alt="teams"><div class="tooltip">Teams</div></li>
-          <li><img src="@/assets/images/management-icon.png" alt="team & unit management"><div class="tooltip">Teams & Units</div></li>
+          <li class="relative"><router-link to="/manageteams" class="full-size-link" /><img src="@/assets/images/management-icon.png" alt="team & unit management"><div class="tooltip">Teams & Units</div></li>
         </ul>
       </aside>
       <span class="close" @click="$modal.hide('addTopic-modal')">X</span>       

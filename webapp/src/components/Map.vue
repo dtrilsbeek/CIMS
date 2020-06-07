@@ -30,7 +30,7 @@
 
     export default {
         components: {
-            home: Home,
+            menuModal: Home,
             regionMenu: RegionMenu,
             activeEvents: ActiveEvents
         },
