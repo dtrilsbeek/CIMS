@@ -21,6 +21,7 @@ import nl.fhict.s4.models.Unit;
 public class UnitResourceTest {
     Team team1;
     Unit unit1;
+    Unit unit2;
 
     @BeforeEach
     public void initDB() {
@@ -32,6 +33,11 @@ public class UnitResourceTest {
         unit1.name = "unit1";
         unit1.team = team1;
         unit1.persist();
+
+        unit2 = new Unit();
+        unit2.name = "unit2";
+        unit2.team = team1;
+        unit2.persist();
     }
 
     @AfterEach
@@ -41,32 +47,79 @@ public class UnitResourceTest {
     }
 
     @Test
-    void getAllUnits() {
-
+    void testGetAllUnits() {
+        int typeCount = given()
+            .when()
+            .get("/units")
+            .then()
+            .statusCode(200)
+            .contentType(ContentType.JSON)
+            .extract()
+            .response()
+            .jsonPath()
+            .getList("$")
+            .size();
+        assertEquals(typeCount, 2);
     }
 
     @Test
-    void getUnitById() {
-
+    void testGetUnitById() {
+        Unit result = given()
+            .when()
+            .get("/units/" + unit1.id)
+            .then()
+            .statusCode(200)
+            .contentType(ContentType.JSON)
+            .extract()
+            .response()
+            .jsonPath()
+            .getObject("$", Unit.class);
+        assertEquals(result.name, "unit1");
     }
 
     @Test
-    void addUnit() {
-
+    void testAddUnit() {
+        Unit result = given()
+            .when()
+            .urlEncodingEnabled(true)
+            .param("name", "unit3")
+            .param("teamId", team1.id)
+            .post("/units").then()
+            .statusCode(200)
+            .contentType(ContentType.JSON)
+            .extract()
+            .response()
+            .jsonPath()
+            .getObject("$", Unit.class);
+        assertEquals(result.name, "unit3");
     }
 
     @Test
-    void addUnitNameExists() {
-
+    void testAddUnitNameExists() {
+        given()
+            .when()
+            .urlEncodingEnabled(true)
+            .param("name", "unit1")
+            .param("teamId", team1.id)
+            .post("/units/").then()
+            .statusCode(409);
     }
 
     @Test
-    void addUnitInvalidTeamId() {
+    void testAddUnitInvalidTeamId() {
+        given()
+            .when()
+            .urlEncodingEnabled(true)
+            .param("name", "unit3")
+            .param("teamId", 1234567)
+            .post("/units/").then()
+            .statusCode(409);
     }
-    
 
     @Test
-    void deleteUnit() {
-
+    void testDeleteUnit() {
+        given().delete("/units/" + unit1.id)
+            .then()
+            .statusCode(204);
     }
 }

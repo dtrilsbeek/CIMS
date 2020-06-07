@@ -1,0 +1,121 @@
+.teams-management-container {
+    margin: 0 auto;
+    width: 412px;
+}
+
+.teams-management-options {
+    width: 50%;
+    min-width: 400px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    height: 100px;
+ 
+}
+
+.team-unit-btns-container {
+    width: 50%;
+    margin: 0 39px 0 0;
+}
+
+button {
+    padding: 2px 14px;
+    font-size: 18px;
+    color: black;
+    background-color: white;
+    margin: 1px;
+    cursor: pointer;
+}
+
+button:hover {
+    color: white;
+    background-color: black;
+}
+
+.input-container { 
+    width: 50%;
+    position: relative;
+}
+
+.input-container > input {
+    border-radius: 10px;
+    font-size: 20px;  
+    width: 200px;  
+    padding: 0 0 0 9px;
+}
+
+.search-img {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: -4px;
+    top: 3.5px;
+    cursor: pointer;
+}
+
+.teams {
+    color: rgb(205, 205, 205);
+}
+
+.team {
+    border-bottom: 1px solid rgb(172, 168, 168);  
+}
+
+.team:last-child {
+    border-bottom: unset; 
+}
+
+.team-name {
+    background-color: rgb(51, 51, 51);
+    line-height: 30px;
+    text-align: left;
+    padding-left: 5px;
+    cursor: pointer;
+}
+
+.unit {
+    background-color: rgb(205, 205, 205);
+    color: rgb(51, 51, 51);
+    width: 90%; 
+    height: 24px;
+    text-align: left; 
+    padding-left: 5px; 
+    line-height: 24px; 
+    border-left: 3px solid gray;  
+    border-top: 1px solid gray;
+}
+
+.unit:hover {
+    background-color: rgb(190, 190, 190);
+}
+
+.unit-edit {
+    background: url('../../assets/images/edit-icon.png') no-repeat;
+    background-position: center center;
+    background-size: cover;
+    display: inline-block;
+    width: 20px;    
+    height: 20px;  
+    cursor: pointer;   
+    position: fixed;  
+    right: 30%;
+}
+
+.unit-remove {
+    cursor: pointer;
+    background: url('../../assets/images/trash-icon.png') no-repeat;
+    background-position: center center;
+    background-size: cover;
+    display: inline-block;
+    width: 20px;    
+    height: 20px;  
+    cursor: pointer;   
+    position: fixed;  
+    right: 26%;
+}
