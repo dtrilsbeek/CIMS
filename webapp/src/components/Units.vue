@@ -1,15 +1,15 @@
 <template>
     <div class="wrapper">
-            <h1 class="capitalize-block">Maak een
+            <h1 class="capitalize-block">Create a
                 <span class="capitalize-inline">unit</span>
             </h1>
                 <form>
-                    <input type="text" placeholder="naam"
+                    <input type="text" placeholder="name"
                            :class="{error: !form.name.isValid}"
                            v-model="form.name.value"
                     />
                     <select v-model="form.teamid.value" class="dropdown" :class="{error: !form.teamid.isValid}">
-                        <option value="" disabled selected>Selecteer een team</option>
+                        <option value="" disabled selected>Select a team</option>
                         <option v-for="team in listOfTeams"
                                 :key="team.id"
                                 :value="team.id">
@@ -18,9 +18,9 @@
                     </select>
                 </form>
             <button class="submit-form clickable" @click="submit">
-                Voeg toe
+                Add
             </button>
-            <h4 class="create-edit-toggle clickable" @click="toEdit()">Pas een unit aan</h4>
+            <h4 class="create-edit-toggle clickable" @click="toEdit()">Edit instead</h4>
     </div>
 </template>
 

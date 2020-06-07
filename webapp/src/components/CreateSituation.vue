@@ -12,15 +12,17 @@
 
             <li><textarea  placeholder="Input information"/></li>
 
-            <li><button type="button" >Send</button></li>
-            <li><button type="button" :class="{disabled: !selectedMarker}" >
-                <div class="disabled-tooltip">Geen marker geselecteerd</div>
+            <li><button type="button" @click="addEvent()" >Send</button></li>
+            <li><button type="button" @click="putEvent()" :class="{disabled: !selectedMarker}" >
+                <div class="disabled-tooltip">No marker selected</div>
                 Move selected marker
                 </button></li>
       </ul>
 </template>
 
 <script>
+import ModalDao from '@/daos/ModalDao.js';
+
 export default {
     props:{
         selectedMarker: {
@@ -32,6 +34,29 @@ export default {
             type: Object,
             required: true
         }
+    },
+
+    methods: {
+      addEvent() {
+          this.event.id = undefined;
+        ModalDao.addEvent(this.event)
+          .catch(error => {
+            console.log(error);
+          });
+          this.hide();
+      },
+
+      putEvent() {
+        ModalDao.putEvent(this.event)
+          .catch(error => {
+            console.log(error);
+          });
+          this.hide();
+      },
+
+      hide(){
+          this.$emit('hide');
+      }
     }
 }
 </script>

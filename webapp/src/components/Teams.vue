@@ -1,10 +1,10 @@
 <template>
     <div class="wrapper">
-            <h1 class="capitalize-block">Maak een <span class="capitalize-inline">team</span></h1>
+            <h1 class="capitalize-block">Create a <span class="capitalize-inline">team</span></h1>
                 <form>
-                    <input type="text" placeholder="naam" :class="{error: !form.name.isValid}" v-model="form.name.value" />
+                    <input type="text" placeholder="name" :class="{error: !form.name.isValid}" v-model="form.name.value" />
                 </form>
-            <button class="submit-form clickable" @click="submit">Voeg toe</button>
+            <button class="submit-form clickable" @click="submit">Add</button>
     </div>
 </template>
 

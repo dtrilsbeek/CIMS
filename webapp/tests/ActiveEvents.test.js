@@ -36,7 +36,7 @@ describe('ActiveEvents', () => {
     test('Template displays correct html', () => {
 
         const compEvents = wrapper.vm.events;
-        let expectedHtml = `Actieve events (${compEvents.length})`;
+        let expectedHtml = `Active events (${compEvents.length})`;
  
         expect(wrapper.find('div').text()).toContain(expectedHtml);
         expect(wrapper.find('ul').exists).toBeTruthy();

@@ -10,15 +10,13 @@
         </ul>
       </aside>
       <span class="close" @click="$modal.hide('addTopic-modal')">X</span>       
-        <component :is="activeComponent" :selectedMarker="selectedMarker" :event="event"> </component>
-        <!-- <unit-menu ninjas="apple"> </unit-menu> -->
+        <component :is="activeComponent" :selectedMarker="selectedMarker" :event="event" @hide="hide()"> </component>
     </modal>
   </div>
 </template>
 
 <script>
 import Event from '@/models/Event.js';
-import ModalDao from '@/daos/ModalDao.js';
 import CreateSituation from '@/components/CreateSituation.vue'
 import UnitMenu from '@/components/UnitMenu.vue'
 import Teams from '@/components/Teams.vue'
@@ -46,23 +44,6 @@ import Teams from '@/components/Teams.vue'
     methods: {
       switchComponent(index){
         this.componentIndex = index; 
-      },
-
-      addEvent() {
-
-        ModalDao.addEvent(this.event)
-          .catch(error => {
-            console.log(error);
-          });
-        this.hide();
-      },
-
-      putEvent() {
-        ModalDao.putEvent(this.event)
-          .catch(error => {
-            console.log(error);
-          });
-        this.hide();
       },
 
       show (selectedMarker, latlng) {

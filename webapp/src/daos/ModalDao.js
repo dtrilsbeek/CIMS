@@ -16,9 +16,10 @@ async function addEvent(event) {
 }
 
 async function putEvent(event) {
+    const toPost = event.deepCopy(true);
   
     try {
-        let res = await axios.put(url, event);
+        let res = await axios.put(url, toPost);
 
         return res.data;        
     }

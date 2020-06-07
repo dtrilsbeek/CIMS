@@ -11,7 +11,7 @@
 export function isFilledIn(customError){
     return (input) => {
         const value = input.value;
-        if(value == null || /^\S+$/.test(value) == false){
+        if(value == null ||  /^[^\s]+(\s+[^\s]+)*$/.test(value) == false){
             addToErrors(input, "This field is required", customError);
         }
     }
