@@ -31,7 +31,7 @@ class UnitRestConnector extends AuthRestConnector  {
 
         const headers = {
             'Content-Type': this.formUrlEncoded,
-            'Authorization': `Bearer ${this.token}`
+            // 'Authorization': `Bearer ${this.token}`
         }
 
         const promise = Axios.post(this.baseUrl, toPost, {headers: headers});
@@ -53,7 +53,7 @@ class UnitRestConnector extends AuthRestConnector  {
 
         const headers = {
             'Content-Type': this.formUrlEncoded,
-            'Authorization': `Bearer ${this.token}`
+            // 'Authorization': `Bearer ${this.token}`
         }
 
         const result = Axios.put(Config.getUrl('units'), data, {headers: headers});
