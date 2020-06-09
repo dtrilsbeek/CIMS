@@ -1,10 +1,10 @@
 <template>
     <div class="wrapper">
             <h1 class="capitalize-block">Create a <span class="capitalize-inline">team</span></h1>
-                <form>
-                    <input type="text" placeholder="name" :class="{error: !form.name.isValid}" v-model="form.name.value" />
-                </form>
-            <button class="submit-form clickable" @click="submit">Add</button>
+            <form>
+                <input type="text" placeholder="name" :class="{error: !form.name.isValid}" v-model="form.name.value" />
+                <button class="submit-form clickable" @click="submit">Add</button>
+            </form> 
     </div>
 </template>
 
@@ -47,3 +47,9 @@ export default {
 </script>
 
 <style src="@/assets/css/form.css" scoped></style>
+<style scoped>
+    form {
+        width: 33%;
+        min-width: 400px;
+    }
+</style>

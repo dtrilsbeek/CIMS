@@ -1,38 +1,22 @@
 <template>
-        <ul>
-            <li><h1>Add <span>Situation</span></h1></li>
-            <li>
-                <input type="number" class="as-text"  step="any" 
-                  placeholder="Input latitude"
-                  :class="{error: !form.lat.isValid}"
-                  v-model="form.lat.value"
-              
-              />
-             </li>
-            <li>
-              <input type="number" class="as-text"  step="any" 
-                placeholder="Input longitude"
-                :class="{error: !form.lon.isValid}"
-                v-model="form.lon.value"
-              />
-            </li>
-            <li>
-                <select v-model="form.typeId.value" class="dropdown" :class="{error: !form.typeId.isValid}">
-                    <option value="" disabled selected>Selecteer een type</option>
-                    <option v-for="type in types"
-                            :key="type.id"
-                            :value="type.id">
-                        {{type.name}}
-                    </option>
-                </select>
-            </li>
+  <div class="wrapper">
+    <h1>Add <span>Situation</span></h1>
+    <form>
+      <input type="number" class="as-text"  step="any" placeholder="Input latitude" :class="{error: !form.lat.isValid}"  v-model="form.lat.value" />
+        
+      <input type="number" class="as-text"  step="any" placeholder="Input longitude" :class="{error: !form.lon.isValid}"  v-model="form.lon.value"  />
+      
+      <select v-model="form.typeId.value" class="dropdown" :class="{error: !form.typeId.isValid}">
+        <option value="" disabled selected>Selecteer een type</option>
+        <option v-for="type in types" :key="type.id" :value="type.id">{{type.name}}</option>
+      </select>
 
-            <li><textarea  v-model="form.description.value" placeholder="Input information" :class="{error: !form.description.isValid}" /></li>
+      <textarea  v-model="form.description.value" placeholder="Input information" :class="{error: !form.description.isValid}" />
 
-            <li><button type="button" @click="addEvent()" >Send</button></li>
-    
-            <li><h4 class="create-edit-toggle clickable" @click="toEdit()">Edit instead</h4></li>
-      </ul>
+      <button type="button" @click="addEvent()" >Send</button>
+    </form>
+    <h4 class="create-edit-toggle clickable" @click="toEdit()">Edit instead</h4>
+  </div>
 </template>
 
 <script>

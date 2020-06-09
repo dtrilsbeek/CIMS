@@ -1,36 +1,28 @@
 <template>
-        <ul>
-            <li><h1>update <span>Situation</span></h1></li>
-            <li>
-                <input type="number" class="as-text"  step="any" 
-                  placeholder="Input latitude"
-                  :class="{error: !form.lat.isValid}"
-                  v-model="form.lat.value"
-              
-              />
-             </li>
-            <li>
-              <input type="number" class="as-text"  step="any" 
-                placeholder="Input longitude"
-                :class="{error: !form.lon.isValid}"
-                v-model="form.lon.value"
-              />
-            </li>
-            <li>
-                <select v-model="form.status.value" class="dropdown" :class="{error: !form.status.isValid}">
-                    <option value="" disabled selected>Selecteer een status</option>
-                    <option value="ACTIVE"  selected>actief</option>
-                    <option value="FINISHED"  selected>afgerond</option>
-                </select>
-            </li>
-
-            <li><textarea  v-model="form.description.value" placeholder="Input information" :class="{error: !form.description.isValid}" /></li>
-            <li><button type="button" @click="putEvent()" :class="{disabled: !selectedMarker}" >
+    <div class="wrapper">
+        <h1>update <span>Situation</span></h1>
+        <form>
+            <input type="number" class="as-text"  step="any" placeholder="Input latitude" :class="{error: !form.lat.isValid}" v-model="form.lat.value"  />
+          
+        
+            <input type="number" class="as-text"  step="any" placeholder="Input longitude" :class="{error: !form.lon.isValid}" v-model="form.lon.value" />
+        
+            <select v-model="form.status.value" class="dropdown" :class="{error: !form.status.isValid}">
+                <option value="" disabled selected>Selecteer een status</option>
+                <option value="ACTIVE"  selected>actief</option>
+                <option value="FINISHED"  selected>afgerond</option>
+            </select>
+            
+            <textarea  v-model="form.description.value" placeholder="Input information" :class="{error: !form.description.isValid}" />
+          
+            <button type="button" @click="putEvent()" :class="{disabled: !selectedMarker}" >
                 <div class="disabled-tooltip">No marker selected</div>
                 Move selected marker
-                </button></li>
-            <li> <h4 class="create-edit-toggle clickable" @click="toCreate()">create instead</h4></li>
-      </ul>
+            </button>
+
+            <h4 class="create-edit-toggle clickable" @click="toCreate()">create instead</h4>
+        </form>
+    </div>
 </template>
 
 <script>
