@@ -6,7 +6,7 @@ import AuthRestConnector from '@/components/rest/AuthRestConnector';
 /**
  * Makes REST http-requests to the Units resource
  */
-class UnitRestConnector extends AuthRestConnector  {
+class EventRestConnector extends AuthRestConnector  {
 
     constructor(token){
         super(token);
@@ -30,8 +30,6 @@ class UnitRestConnector extends AuthRestConnector  {
             typeId: typeId,
             description: description
         });
-
-
 
         const headers = {
             'Content-Type': this.formUrlEncoded
@@ -68,4 +66,4 @@ class UnitRestConnector extends AuthRestConnector  {
     }
 }
 
-export default UnitRestConnector
+export default EventRestConnector
