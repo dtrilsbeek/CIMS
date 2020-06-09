@@ -1,8 +1,13 @@
 <template>
     <div class="grid">
-        <region-menu :bus="bus" v-on:region-bounds="setInitialPosition($event)"
-                     v-on:move-to="moveTo($event)"></region-menu>
-        <div id="map"></div>
+        <region-menu :bus="bus" 
+                     v-on:region-bounds="setInitialPosition($event)"
+                     v-on:move-to="moveTo($event)" ref="region">
+                     
+        </region-menu>
+        <div id="map">
+            <alert-notifier ref="notifier"></alert-notifier>
+        </div>
         <div class="map-info">
             <h4>Info</h4>
         </div>
@@ -18,7 +23,8 @@
 <script>
     import CimsMap from '@/components/leaflet/CimsMap'
     import CimsMarker from '@/components/leaflet/CimsMarker'
-    import CimsRectangle from '@/components/leaflet/CimsRectangle';
+    import CimsRectangle from '@/components/leaflet/CimsRectangle'
+    import AlertNotifier from '@/components/Notifier'
     // Css for loading the map smoothly
     import 'leaflet/dist/leaflet.css'
     import Home from './Home.vue'
@@ -30,6 +36,7 @@
 
     export default {
         components: {
+            alertNotifier: AlertNotifier,
             menuModal: Home,
             regionMenu: RegionMenu,
             activeEvents: ActiveEvents
@@ -114,7 +121,13 @@
                 this.leafletMap.on('click', (e) => {
                     let selectedMarker = this.selectedMarker || null;
                     this.$refs.modal.show(selectedMarker, e.latlng);
-            }); 
+                });
+
+
+                this.leafletMap.on('dragend', () => {
+                    this.$refs.notifier.addAlert('No longer in region');
+                });
+
             },
 
             showUserInstruction(lat, lon) {

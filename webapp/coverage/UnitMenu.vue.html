@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for Teams.vue</title>
+    <title>Code coverage report for UnitMenu.vue</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="prettify.css" />
     <link rel="stylesheet" href="base.css" />
@@ -18,34 +18,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="index.html">All files</a> Teams.vue</h1>
+        <h1><a href="index.html">All files</a> UnitMenu.vue</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/11</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/11</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
@@ -92,21 +92,7 @@
 <a name='L34'></a><a href='#L34'>34</a>
 <a name='L35'></a><a href='#L35'>35</a>
 <a name='L36'></a><a href='#L36'>36</a>
-<a name='L37'></a><a href='#L37'>37</a>
-<a name='L38'></a><a href='#L38'>38</a>
-<a name='L39'></a><a href='#L39'>39</a>
-<a name='L40'></a><a href='#L40'>40</a>
-<a name='L41'></a><a href='#L41'>41</a>
-<a name='L42'></a><a href='#L42'>42</a>
-<a name='L43'></a><a href='#L43'>43</a>
-<a name='L44'></a><a href='#L44'>44</a>
-<a name='L45'></a><a href='#L45'>45</a>
-<a name='L46'></a><a href='#L46'>46</a>
-<a name='L47'></a><a href='#L47'>47</a>
-<a name='L48'></a><a href='#L48'>48</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L37'></a><a href='#L37'>37</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -116,12 +102,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -138,66 +121,50 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&lt;template&gt;
-    &lt;div class="wrapper"&gt;
-            &lt;h1 class="capitalize-block"&gt;Create a &lt;span class="capitalize-inline"&gt;team&lt;/span&gt;&lt;/h1&gt;
-                &lt;form&gt;
-                    &lt;input type="text" placeholder="name" :class="{error: !form.name.isValid}" v-model="form.name.value" /&gt;
-                &lt;/form&gt;
-            &lt;button class="submit-form clickable" @click="submit"&gt;Add&lt;/button&gt;
-    &lt;/div&gt;
+  &lt;div class="full-size"&gt;
+      &lt;edit-unit v-if="isEditing" @toggle="toggleMode()" :selected-marker="selectedMarker"&gt;&lt;/edit-unit&gt;
+      &lt;create-unit v-else @toggle="toggleMode()"&gt;&lt;/create-unit&gt;
+  &lt;/div&gt;
 &lt;/template&gt;
 &nbsp;
 &lt;script&gt;
-<span class="cstat-no" title="statement not covered" >import FormField from '@/components/formvalidation/FormField'</span>
-<span class="cstat-no" title="statement not covered" >import {isFilledIn} from '@/components/formvalidation/FormValidation'</span>
-<span class="cstat-no" title="statement not covered" >import FormHelper from '@/components/formvalidation/FormHelper'</span>
-<span class="cstat-no" title="statement not covered" >import TeamRestConnector from '@/components/rest/TeamRestConnector'</span>
+<span class="cstat-no" title="statement not covered" >import EditUnit from '@/components/EditUnit'</span>
+<span class="cstat-no" title="statement not covered" >import CreateUnit from '@/components/Units'</span>
 &nbsp;
 export default {
-<span class="fstat-no" title="function not covered" >    data(){</span>
-<span class="cstat-no" title="statement not covered" >        return {</span>
-            form: {
-                name: new FormField(isFilledIn())
-            },
-            /**
-             * @type {FormHelper}
-             */
-            formHelper: null,
-            restConnector: new TeamRestConnector(this.$token)
+    props: {
+        selectedMarker: {
+            type: [Object, Boolean],
+            required: true
         }
     },
 &nbsp;
-<span class="fstat-no" title="function not covered" >    created(){</span>
-<span class="cstat-no" title="statement not covered" >        this.formHelper = new FormHelper(this.form);</span>
+    components:{
+        editUnit: EditUnit,
+        createUnit: CreateUnit
+    },
+&nbsp;
+<span class="fstat-no" title="function not covered" >    data(){</span>
+<span class="cstat-no" title="statement not covered" >        return {</span>
+            isEditing: true
+        }
     },
 &nbsp;
     methods: {
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >        submit(){</span></span>
-<span class="cstat-no" title="statement not covered" >            if(this.formHelper.validateForm()){</span>
-<span class="cstat-no" title="statement not covered" >                const result = this.restConnector.addTeam(this.form.name.value);</span>
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >                result.then(() =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >                    this.formHelper.clearForm();</span>
-                });
-            }
+<span class="fstat-no" title="function not covered" >        toggleMode(){</span>
+<span class="cstat-no" title="statement not covered" >            this.isEditing =  ! this.isEditing;</span>
         }
     }
 }
-&lt;/script&gt;
-&nbsp;
-&lt;style src="@/assets/css/form.css" scoped&gt;&lt;/style&gt;</pre></td></tr></table></pre>
+&lt;/script&gt;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
