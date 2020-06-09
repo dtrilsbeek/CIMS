@@ -17,7 +17,7 @@
 
 <script>
 import Event from '@/models/Event.js';
-import CreateSituation from '@/components/CreateSituation.vue'
+import SituationMenu from '@/components/SituationMenu.vue'
 import UnitMenu from '@/components/UnitMenu.vue'
 import Teams from '@/components/Teams.vue'
 
@@ -27,7 +27,7 @@ import Teams from '@/components/Teams.vue'
         bus: Object
     },
     components: {
-      createSituation: CreateSituation,
+      SituationMenu: SituationMenu,
       unitMenu: UnitMenu,
       teams: Teams
     },
@@ -36,7 +36,7 @@ import Teams from '@/components/Teams.vue'
         name: "name",
         selectedMarker: false,
         event: new Event(),
-        components: ['create-situation', 'unit-menu', 'teams'],
+        components: ['situation-menu', 'unit-menu', 'teams'],
         componentIndex: 0
       }
     },
@@ -51,6 +51,7 @@ import Teams from '@/components/Teams.vue'
         if(selectedMarker != null){
           this.selectedMarker = selectedMarker;
           this.event.id = selectedMarker.id;
+          this.event.type = selectedMarker.type;
         }
         this.event.lat = latlng.lat;
         this.event.lon = latlng.lng;

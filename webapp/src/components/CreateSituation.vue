@@ -30,10 +30,8 @@
             <li><textarea  v-model="form.description.value" placeholder="Input information" :class="{error: !form.description.isValid}" /></li>
 
             <li><button type="button" @click="addEvent()" >Send</button></li>
-            <li><button type="button" @click="putEvent()" :class="{disabled: !selectedMarker}" >
-                <div class="disabled-tooltip">No marker selected</div>
-                Move selected marker
-                </button></li>
+    
+            <li><h4 class="create-edit-toggle clickable" @click="toEdit()">Edit instead</h4></li>
       </ul>
 </template>
 
@@ -99,25 +97,12 @@ export default {
           this.hide();
         }
       },
-
-      putEvent() {
-        if(this.formHelper.validateForm()) {
-          const id          = this.id;
-          const lat         = this.form.lat.value;
-          const lon         = this.form.lon.value;
-          const typeId      = this.form.typeId.value;
-          const status      = "ACTIVE"
-          const description = this.form.description.value;
-
-          this.eventRestConnector.updateEvent(id, lat, lon, typeId, status, description);
-
-          this.formHelper.clearForm();
-          this.hide();
-        }
+      toEdit(){
+          this.$emit('toggle');
       },
 
       hide(){
-          this.$emit('hide');
+          this.$modal.hide('addTopic-modal');
       }
     }
   }

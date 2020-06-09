@@ -66,7 +66,6 @@
                 this.eventSource.onmessage = (event) => {
 
                     const data = JSON.parse(event.data);
-                    const type = data.type.name;
 
                     if (data.isUpdate) {
                         const marker = this.markers[data.id]
@@ -76,7 +75,7 @@
                             marker.moveTo([data.lat, data.lon], 1500);
                         }
                     } else {
-                        this.markers[data.id] = new CimsMarker(this, data.id, type, data.description, [data.lat, data.lon]);
+                        this.markers[data.id] = new CimsMarker(this, data.id, data.type, data.description, [data.lat, data.lon]);
                     }
                 };
             },

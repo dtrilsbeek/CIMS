@@ -38,6 +38,7 @@ export default {
                 const result = this.restConnector.addTeam(this.form.name.value);
                 result.then(() => {
                     this.formHelper.clearForm();
+                    this.$modal.hide('addTopic-modal');
                 });
             }
         }

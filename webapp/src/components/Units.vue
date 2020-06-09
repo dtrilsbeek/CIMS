@@ -64,6 +64,7 @@ export default {
             if(this.formHelper.validateForm()){
                 this.unitRestConnector.addUnit(this.form.name.value, this.form.teamid.value).then(() => {
                     this.formHelper.clearForm();
+                    this.$modal.hide('addTopic-modal');
                 });
             }
         },
