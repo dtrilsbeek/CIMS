@@ -2,8 +2,6 @@ package nl.fhict.s4;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.Random;
 
 import io.quarkus.scheduler.Scheduled;
