@@ -125,7 +125,7 @@
 
 
                 this.leafletMap.on('dragend', () => {
-                    this.$refs.notifier.addAlert('No longer in region');
+                    // this.$refs.notifier.addAlert('Left Helmond');
                 });
 
             },
