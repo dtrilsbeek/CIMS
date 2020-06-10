@@ -48,23 +48,36 @@ button:hover {
     font-size: 20px;  
     width: 200px;  
     padding: 0 0 0 9px;
+    margin-left: -35px;
 }
 
 .search-img {
     width: 20px;
     height: 20px;
     position: absolute;
-    right: -4px;
+    right: 8px;
     top: 3.5px;
     cursor: pointer;
 }
 
 .teams {
     color: rgb(205, 205, 205);
+    width: 400px;
 }
 
 .team {
     border-bottom: 1px solid rgb(172, 168, 168);  
+}
+
+.team-remove {
+    background: url('../../assets/images/trash-icon.png') no-repeat;
+    background-position: center center;
+    background-size: cover; 
+    width: 20px;    
+    height: 20px;  
+    cursor: pointer;   
+    margin: 5px 3px 0 0;
+    float: right;
 }
 
 .team:last-child {
@@ -76,6 +89,7 @@ button:hover {
     line-height: 30px;
     text-align: left;
     padding-left: 5px;
+    overflow: hidden;
     cursor: pointer;
 }
 
@@ -89,6 +103,7 @@ button:hover {
     line-height: 24px; 
     border-left: 3px solid gray;  
     border-top: 1px solid gray;
+    overflow: hidden;
 }
 
 .unit:hover {
@@ -103,8 +118,8 @@ button:hover {
     width: 20px;    
     height: 20px;  
     cursor: pointer;   
-    position: fixed;  
-    right: 30%;
+    margin: 2px 2px 0 0;
+    float: right;
 }
 
 .unit-remove {
@@ -116,6 +131,6 @@ button:hover {
     width: 20px;    
     height: 20px;  
     cursor: pointer;   
-    position: fixed;  
-    right: 26%;
+    margin: 2px 2px 0 0;
+    float: right;
 }

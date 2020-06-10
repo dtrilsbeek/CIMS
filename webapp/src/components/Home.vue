@@ -6,10 +6,10 @@
           <li @click="switchComponent(0)" :class="{active: componentIndex == 0}"><img src="@/assets/images/event-icon.png" alt="events"><div class="tooltip">Events</div></li>
           <li @click="switchComponent(1)" :class="{active: componentIndex == 1}"><img src="@/assets/images/unit-icon.png" alt="units"><div class="tooltip">Units</div></li>
           <li @click="switchComponent(2)" :class="{active: componentIndex == 2}"><img src="@/assets/images/team-icon.png" alt="teams"><div class="tooltip">Teams</div></li>
-          <li class="relative"><router-link to="/manageteams" class="full-size-link" /><img src="@/assets/images/management-icon.png" alt="team & unit management"><div class="tooltip">Teams & Units</div></li>
+          <li @click="switchComponent(3)" :class="{active: componentIndex == 3}"><img src="@/assets/images/management-icon.png" alt="team"><div class="tooltip">Teams & Units</div></li>
         </ul>
       </aside>
-      <span class="close" @click="$modal.hide('addTopic-modal')">X</span>       
+      <span class="close" v-on:click="hide()">X</span>       
         <component :is="activeComponent" :selectedMarker="selectedMarker" :event="event" @hide="hide()"> </component>
     </modal>
   </div>
@@ -20,6 +20,8 @@ import Event from '@/models/Event.js';
 import SituationMenu from '@/components/SituationMenu.vue'
 import UnitMenu from '@/components/UnitMenu.vue'
 import Teams from '@/components/Teams.vue'
+import TeamManage from '@/components/TeamsManagement.vue';
+import CreateEvent from '@/components/CreateEvent.vue'
 
 
   export default {
@@ -29,14 +31,16 @@ import Teams from '@/components/Teams.vue'
     components: {
       SituationMenu: SituationMenu,
       unitMenu: UnitMenu,
-      teams: Teams
+      teams: Teams,
+      teamManage: TeamManage,
+      createEvent: CreateEvent
     },
     data() {
       return {
         name: "name",
         selectedMarker: false,
         event: new Event(),
-        components: ['situation-menu', 'unit-menu', 'teams'],
+        components: ['situation-menu', 'unit-menu', 'teams', 'team-manage'],
         componentIndex: 0
       }
     },
@@ -47,7 +51,6 @@ import Teams from '@/components/Teams.vue'
       },
 
       show (selectedMarker, latlng) {
-        console.log(selectedMarker);
         if(selectedMarker != null){
           this.selectedMarker = selectedMarker;
           this.event.id = selectedMarker.id;

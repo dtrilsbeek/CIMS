@@ -26,7 +26,20 @@ async function putEvent(event) {
     }
 }
 
+async function addType(type) {
+    const toPost = type.deepCopy(true);
+    try {
+        let res = await axios.post(url, toPost);
+
+        return res.data;        
+    }
+    catch(error) {
+        console.log(error);
+    }
+}
+
 export default {
     addEvent,
-    putEvent
+    putEvent,
+    addType
 }

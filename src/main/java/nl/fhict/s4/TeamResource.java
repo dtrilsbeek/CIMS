@@ -33,7 +33,7 @@ public class TeamResource {
         if(Team.count("name = :name", Parameters.with("name", name)) > 0) {
             //return a conflict response if the team already exists
             return Response.status(409).build();
-        }
+        }   
 
         Team team = new Team();
         team.name = name;
