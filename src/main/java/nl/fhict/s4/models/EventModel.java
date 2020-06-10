@@ -15,7 +15,11 @@ public class EventModel extends PanacheEntityBase {
 	public Long id;
 	public double lat;
 	public double lon;
-	public int type;
+
+	@JoinColumn(nullable = false)
+    @ManyToOne
+	public EventType type;
+
 	public Status status;
 	public String description;
 	public boolean isUpdate;
@@ -24,7 +28,7 @@ public class EventModel extends PanacheEntityBase {
 		status = Status.ACTIVE;
 	}
 
-	public EventModel(double lat, double lon, int type, String description) {
+	public EventModel(double lat, double lon, EventType type, String description) {
 		this.lat = lat;
 		this.lon = lon;
 		this.type = type;
@@ -41,64 +45,5 @@ public class EventModel extends PanacheEntityBase {
 		this.status = model.status;
 		this.isUpdate = false;
 	}
-
-	public void finish() {
-		this.status = Status.FINISHED;
-	}
-
-	/**
-	 * @return the lat
-	 */
-	public double getLat() {
-		return lat;
-	}
-
-	/**
-	 * @return the lon
-	 */
-	public double getLon() {
-		return lon;
-	}
-
-	/**
-	 * @return the type
-	 */
-	public int getType() {
-		return type;
-	}
-
-	/**
-	 * @return the description
-	 */
-	public String getDescription() {
-		return description;
-	}
-
-	/**
-	 * @param lat the lat to set
-	 */
-	public void setLat(double lat) {
-		this.lat = lat;
-	}
-
-	/**
-	 * @param lon the lon to set
-	 */
-	public void setLon(double lon) {
-		this.lon = lon;
-	}
-
-	/**
-	 * @param type the type to set
-	 */
-	public void setType(int type) {
-		this.type = type;
-	}
-
-	/**
-	 * @param description the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
+	
 }

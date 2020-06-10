@@ -70,27 +70,11 @@
                 this.selectedMarker = marker;
             },
 
-            getIconTypeString(type) {
-                switch (type) {
-                    case 1:
-                        return "fireTruck"
-                    case 2:
-                        return "ambulance"
-                    case 3:
-                        return "fire"
-                    case 4:
-                        return "police"
-                    default:
-                        return "ambulance"
-                }
-            },
-
             createEventSource() {
                 this.eventSource = new EventSource(config.getUrl('events', 'stream'));
                 this.eventSource.onmessage = (event) => {
 
                     const data = JSON.parse(event.data);
-                    const type = this.getIconTypeString(data.type);
 
                     if (data.isUpdate) {
                         const marker = this.markers[data.id]
@@ -100,7 +84,7 @@
                             marker.moveTo([data.lat, data.lon], 1500);
                         }
                     } else {
-                        this.markers[data.id] = new CimsMarker(this, data.id, type, data.description, [data.lat, data.lon]);
+                        this.markers[data.id] = new CimsMarker(this, data.id, data.type, data.description, [data.lat, data.lon]);
                     }
                 };
             },

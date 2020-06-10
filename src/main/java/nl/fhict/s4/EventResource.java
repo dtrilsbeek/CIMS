@@ -9,7 +9,8 @@ import io.vertx.mutiny.core.Vertx;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
 import nl.fhict.s4.models.EventModel;
-
+import nl.fhict.s4.models.EventType;
+import nl.fhict.s4.models.Status;
 
 import org.jboss.resteasy.annotations.SseElementType;
 import org.jboss.resteasy.annotations.cache.Cache;
@@ -53,8 +54,9 @@ public class EventResource {
 
 	Multi<EventModel> addTypeFilter(MultivaluedMap<String, String> params, Multi<EventModel> stream) {
 		try {
-			int type = Integer.parseInt(params.getFirst("type"));
-			return stream.transform().byFilteringItemsWith(e -> e.type == type);
+			long typeId = Long.parseLong(params.getFirst("type"));
+
+			return stream.transform().byFilteringItemsWith(e -> e.type.id == typeId);
 		}
 		catch (Exception e) {
 			return stream;
@@ -71,10 +73,10 @@ public class EventResource {
 			return stream
 				.transform()
 				.byFilteringItemsWith(e -> 
-					e.getLat() > sx &&
-					e.getLat() > sy &&
-					e.getLon() < ex &&
-					e.getLon() < ey
+					e.lon > sx &&
+					e.lat > sy &&
+					e.lon < ex &&
+					e.lat < ey
 				);
 		}
 		catch (Exception e) {
@@ -101,12 +103,25 @@ public class EventResource {
 	@POST
 	@Transactional
 	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public EventModel createEvent(EventModel model) {
-		model = new EventModel(model);
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public EventModel createEvent(
+		@FormParam("lat") double lat, 
+		@FormParam("lon") double lon, 
+		@FormParam("typeId") long typeId, 
+		@FormParam("description") String description
+	) {
+		EventType type = EventType.findById(typeId);
+		EventModel model = new EventModel();
+
+		model.lat = lat;
+		model.lon = lon;
+		model.type = type;
+		model.description = description;
+		
 		model.persist();
 
 		if (eventEmitter != null) {
+			model.isUpdate = false;
 			eventEmitter.send(model);
 		}
 
@@ -116,30 +131,33 @@ public class EventResource {
 	@PUT
 	@Transactional
 	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public EventModel updateEvent(EventModel model) {
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public EventModel updateEvent(
+		@FormParam("id") long id,
+		@FormParam("lat") double lat, 
+		@FormParam("lon") double lon, 
+		@FormParam("status") Status status,
+		@FormParam("typeId") long typeId, 
+		@FormParam("description") String description
+	) {
 
-		System.out.println("input "+model.id);
-		EventModel update = EventModel.findById(model.id);
-		System.out.println("output "+update.id);
-
+		EventModel update = EventModel.findById(id);
+		EventType type = EventType.findById(typeId);
+		
 
 		if (update != null) {
-			update.status = model.status;
-			update.description = model.description;
-			update.lat = model.lat;
-			update.lon = model.lon;
-			update.type = model.type;
+			update.status = status;
+			update.description = description;
+			update.lat = lat;
+			update.lon = lon;
+			update.type = type;
 			update.persist();
 
 			update.isUpdate = true;
 			eventEmitter.send(update);
 
-			System.out.println(update.type);
 			return update;
 		}
-
-
 
 		return null;
 	}

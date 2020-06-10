@@ -70,6 +70,7 @@ export default {
             if(this.formHelper.validateForm()){
                 this.unitRestConnector.updateUnit(this.form.name.value, this.form.id.value, this.form.teamId.value).then(() => {
                     this.formHelper.clearForm();
+                    this.$modal.hide('addTopic-modal');
                 }).catch((ex) => {
                     console.log(ex);
                 });
