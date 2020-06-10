@@ -1,23 +1,23 @@
 <template>
-        <ul>
-            <li><h1>Add <span>Situation</span></h1></li>
-            <li><input type="number" class="as-text" v-model="event.lat" placeholder="Input latitude" ></li>
-            <li><input type="number" class="as-text" v-model="event.lon" placeholder="Input longitude" ></li>
+  <ul>
+      <li><h1>Add <span>Situation</span></h1></li>
+      <li><input type="number" class="as-text" v-model="event.lat" step="any" placeholder="Input latitude" ></li>
+      <li><input type="number" class="as-text" v-model="event.lon" step="any" placeholder="Input longitude" ></li>
 
-            <li>
-                <select  class="dropdown">
-                    <option v-for="number in 5" :key="number.number">{{number}}</option>
-                </select>
-            </li>
+      <li>
+          <select  class="dropdown">
+              <option v-for="number in 5" :key="number.number">{{number}}</option>
+          </select>
+      </li>
 
-            <li><textarea  placeholder="Input information"/></li>
+      <li><textarea  placeholder="Input information"/></li>
 
-            <li><button type="button" @click="addEvent()" >Send</button></li>
-            <li><button type="button" @click="putEvent()" :class="{disabled: !selectedMarker}" >
-                <div class="disabled-tooltip">No marker selected</div>
-                Move selected marker
-                </button></li>
-      </ul>
+      <li><button type="button" @click="addEvent()" >Send</button></li>
+      <li><button type="button" @click="putEvent()" :class="{disabled: !selectedMarker}" >
+          <div class="disabled-tooltip">No marker selected</div>
+          Move selected marker
+          </button></li>
+    </ul>
 </template>
 
 <script>
@@ -39,14 +39,6 @@ export default {
     methods: {
       addEvent() {
         ModalDao.addEvent(this.event)
-          .catch(error => {
-            console.log(error);
-          });
-          this.hide();
-      },
-
-      putEvent() {
-        ModalDao.putEvent(this.event)
           .catch(error => {
             console.log(error);
           });

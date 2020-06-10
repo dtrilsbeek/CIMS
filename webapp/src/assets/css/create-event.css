@@ -1,0 +1,32 @@
+ul{
+    padding-top: 8px;
+}
+
+input, textarea{
+    margin: 12px 0;
+}
+ul, ul * {
+    width: 300px;
+    margin: auto;
+}
+
+
+button {
+    width: 48%;
+    display: block;
+    margin-top: 8px;
+    margin-bottom: 12px;
+}
+
+li {
+    font-size: 13px;
+}
+
+select.dropdown{
+    width: 100%;
+    font-size: 16px;
+}
+
+input {
+    margin-bottom: 8px;
+}

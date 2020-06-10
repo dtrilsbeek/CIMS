@@ -1,5 +1,8 @@
 package nl.fhict.s4;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.enterprise.context.RequestScoped;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
@@ -63,8 +66,14 @@ public class UnitResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUnits() {
-        return Response.ok(Unit.listAll()).build();
+    public Response getUnits(@QueryParam("teamId") Long teamId) {
+        if(teamId == null) {
+            return Response.ok(Unit.listAll()).build();
+        }
+        else {
+            Team team = Team.findById(teamId);
+            return Response.ok(Unit.list("team = :team", Parameters.with("team", team))).build();
+        }
     }
 
     @GET

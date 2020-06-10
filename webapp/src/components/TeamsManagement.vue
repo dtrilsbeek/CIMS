@@ -10,15 +10,21 @@
             <img src="@/assets/images/search-icon.png" class="search-img"/>
         </div>
       </div>
+       
 
     <ul class="teams">
         <li v-for="team in teams" :key="team.id" class="team">
 			<details class="dropdown details-reset details-overlay d-inline-block">
-				<summary class="team-name">{{team.name}}</summary>
-                 <ul>
-                    <li v-for="unit in team.units" :key="unit.id" class="unit">{{unit.name}}
-                        <span v-on:click="editUnit(unit)" class="unit-edit"></span>
-                        <span v-on:click="removeUnit(unit)" class="unit-remove"></span>
+				<summary class="team-name">{{team.name}}
+                    <span class="team-remove" v-on:click="removeTeam(team)"/>
+                </summary>
+                 <ul>  
+                    <li v-for="unit in team.units" :key="unit.id" class="unit">
+                        <div>
+                            {{unit.name}}
+                            <span v-on:click="editUnit(unit)" class="unit-edit"></span> 
+                            <span v-on:click="removeUnit(team.id, unit)" class="unit-remove"></span>
+                        </div>
                     </li>
                 </ul>
 			</details>
@@ -29,45 +35,68 @@
 </template>
 
 <script>
-import Unit from '@/components/teams/Unit.js';
-import Team from '@/components/teams/Team.js';
+// import Unit from '@/components/teams/Unit.js';
+// import Team from '@/components/teams/Team.js';
+// import TeamsDao from '@/daos/TeamsDao.js';
+import TeamRestConnector from "./rest/TeamRestConnector";
+import UnitRestConnector from "./rest/UnitRestConnector";
+
 
 export default {
 
     data() {
         return {
-            teams: Array
+            teams: Array,
+            teamRestConnector: new TeamRestConnector(this.$token),
+            unitRestConnector: new UnitRestConnector(this.$token)
         }
     },
 
     mounted() {
-        this.teams = [];
 
-        let t1 = new Team('team1');
-        t1.units = [            
-            new Unit('unit1'),
-            new Unit('unit2'),      
-            new Unit('unit3')            
-        ]
-        this.teams.push(t1);
+            this.loadTeams()
+                .then(teams => {
+                    this.teams = teams;
 
-        let t2 = new Team('team2');
-        t2.units = [            
-            new Unit('unit45'),
-            new Unit('unit46'),      
-            new Unit('unit47')            
-        ]
-        this.teams.push(t2);    
+                    for (let i = 0; i < this.teams.length; i++) {
+
+                        let team = this.teams[i];
+
+                        this.loadTeamUnits(team.id)
+                            .then(units => {
+                                team.units = units;  
+                                this.$forceUpdate();
+                            })                            
+                    }
+                });
     },
 
     methods: {
-        editUnit(unit) {
-            console.log('edit ' + unit.name);  
+
+
+        async loadTeams() {
+            let response = await this.teamRestConnector.getTeams();
+            let teams = response.data;
+            return teams;             
         },
 
-        removeUnit(unit) {
-            console.log('remove ' + unit.name);
-        }
+        async loadTeamUnits(teamId) {
+            let response = await this.unitRestConnector.getUnitsByTeamId(teamId);
+            let units = response.data;
+            return units;
+        },
+
+        editUnit(unit) {
+            console.log(unit);            
+        },
+        removeUnit(teamId, unit) {
+            this.teams[teamId].removeUnit(unit);
+        },
+
+        removeTeam(team) {
+            let index = this.teams.indexOf(team);
+            this.teams.splice(index, 1);
+        },
     }
 
 }

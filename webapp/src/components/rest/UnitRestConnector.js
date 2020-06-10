@@ -17,6 +17,22 @@ class UnitRestConnector extends AuthRestConnector  {
 
 
     /**
+     * Get units by teamId
+     * @param {Number} teamId -> teamId of the units
+     * @returns {Promise} promise of HTTP response
+     */
+    getUnitsByTeamId(teamId){
+        const headers = {
+            // 'Content-Type': this.formUrlEncoded,
+            // 'Authorization': `Bearer ${this.token}`
+        }
+        const promise = Axios.get(`${this.baseUrl}?teamId=${teamId}`, {headers: headers});
+        
+        return promise;
+    }
+
+
+    /**
      * Adds a new team
      * @param {string} name -> name of the new unit
      * @param {Number} teamId -> teamId of the team this new unit belongs to
@@ -31,7 +47,7 @@ class UnitRestConnector extends AuthRestConnector  {
 
         const headers = {
             'Content-Type': this.formUrlEncoded,
-            'Authorization': `Bearer ${this.token}`
+            // 'Authorization': `Bearer ${this.token}`
         }
 
         const promise = Axios.post(this.baseUrl, toPost, {headers: headers});
