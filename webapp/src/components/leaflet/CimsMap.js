@@ -1,4 +1,5 @@
 import L from 'leaflet'
+import CimsBounds from '@/components/leaflet/CimsBounds'
 
 /**
  * Class based on the leaflet map
@@ -24,6 +25,13 @@ export default class CimsMap extends L.Map {
         });
 
         this.addLayer(copyright);
+    }
+
+    getCimsBounds(){
+        const bounds = this.getBounds();
+        const northEast = bounds.getNorthEast();
+        const southWest = bounds.getSouthWest();
+        return new CimsBounds(northEast, southWest, this.getZoom());
     }
 
 }

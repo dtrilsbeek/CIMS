@@ -12,11 +12,16 @@ export default {
         return {
             alerts: [],
             queueSize: 0,
+            lastAlertTimestamp: 0
         }
     },
 
     methods: {
         addAlert(message){
+            if(this.isTimedOut()){
+                return;
+            }
+
             this.queueSize ++;
             this.alerts.push({
                 msg: message,
@@ -29,6 +34,18 @@ export default {
                     this.queueSize = 0;
                 }
             }, 3300);
+        },
+
+        isTimedOut(){
+            let isTimedOut = false;
+            const timestamp = new Date();
+            if(timestamp - this.lastAlertTimestamp > 500){
+                this.lastAlertTimestamp = timestamp;
+            }
+            else{
+                isTimedOut = true;
+            }
+            return isTimedOut;
         }
 
     }

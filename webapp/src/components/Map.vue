@@ -2,11 +2,12 @@
     <div class="grid">
         <region-menu :bus="bus" 
                      v-on:region-bounds="setInitialPosition($event)"
-                     v-on:move-to="moveTo($event)" ref="region">
+                     v-on:move-to="moveTo($event)"
+                     v-on:alert="alert($event)"
+                     ref="region">
                      
         </region-menu>
         <div id="map">
-            <alert-notifier ref="notifier"></alert-notifier>
         </div>
         <div class="map-info">
             <h4>Info</h4>
@@ -17,6 +18,7 @@
             <active-events :bus="bus" v-on:move-to-event="moveToEvent($event)"/>
         </aside>
 
+        <alert-notifier ref="notifier"></alert-notifier>
     </div>
 </template>
 
@@ -84,7 +86,7 @@
             },
 
             createEventSource() {
-                this.eventSource = new EventSource("http://localhost:8083/events/stream");
+                this.eventSource = new EventSource(config.getUrl('events', 'stream'));
                 this.eventSource.onmessage = (event) => {
 
                     const data = JSON.parse(event.data);
@@ -125,7 +127,7 @@
 
 
                 this.leafletMap.on('dragend', () => {
-                    // this.$refs.notifier.addAlert('Left Helmond');
+                    this.$refs.region.checkBounds(this.leafletMap.getCimsBounds());
                 });
 
             },
@@ -151,6 +153,10 @@
             moveToEvent(event) {
                 this.leafletMap.flyTo([event.lat, event.lon], 12);
                 this.markers[event.id].fire('click');
+            },
+
+            alert(message){
+                this.$refs.notifier.addAlert(message);
             }
         }
     }
