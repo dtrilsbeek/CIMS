@@ -57,6 +57,8 @@ import AddEventType from '@/components/AddEventType.vue'
           this.selectedMarker = selectedMarker;
           this.event.id = selectedMarker.id;
           this.event.type = selectedMarker.type;
+          this.event.status = selectedMarker.status;
+          this.event.description = selectedMarker.description;
         }
         this.event.lat = latlng.lat;
         this.event.lon = latlng.lng;
