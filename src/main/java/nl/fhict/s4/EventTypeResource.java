@@ -28,7 +28,7 @@ public class EventTypeResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Transactional
-    public Response addEventType(@FormParam("name") String name, @FormParam("description") String description) {
+    public Response addEventType(@FormParam("name") String name, @FormParam("description") String description,  @FormParam("icon") String icon) {
 
         if(EventType.count("name = :name", Parameters.with("name", name)) > 0) {
             //return a conflict response if the EventType already exists
@@ -38,6 +38,7 @@ public class EventTypeResource {
         EventType eventType = new EventType();
         eventType.name = name;
         eventType.description = description;
+        eventType.icon = icon;
         eventType.persist();
 
         return Response.ok(eventType).build();

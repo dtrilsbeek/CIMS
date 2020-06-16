@@ -2,14 +2,14 @@
 .map-header{
     position: relative;
     height: 50px;
+    width: 100%;
     line-height: 50px;
     font-weight: bold;
     font-size: 24px;
     text-align: center;
-    grid-column: 1/11;
-    grid-row: 1;
     background-color: #efefef;
-    border-bottom: .5px solid #555;
+    border-left: 1px solid #555;
+    border-bottom: 1px solid #555;
 }
 
 .map-header::first-letter{
@@ -33,11 +33,10 @@
 /* Region selection menu */
 .region-menu{
     border: 1px solid #555;
+    border-right: 0;
     margin: 0;
     padding: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    min-width: 25%;
+    width: 100%;
     position: absolute;
     z-index: 2;
     background-color: #efefef;
@@ -63,7 +62,6 @@
 
 .region-menu input{
     display: block;
-    width: 100%;
     font-size: 32px;
     line-height: 32px;
     background-color: transparent;
