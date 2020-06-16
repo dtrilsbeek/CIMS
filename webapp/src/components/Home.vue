@@ -10,7 +10,7 @@
         </ul>
       </aside>
       <span class="close" v-on:click="hide()">X</span>       
-        <component :is="activeComponent" v-on:existing-unit-edit="editUnit($event)" ref="component" :selectedMarker="selectedMarker" :event="event" @hide="hide()"> </component>
+        <component :is="activeComponent" v-on:unit-edit="editUnit($event)" :selectedMarker="selectedMarker" :unit="unit" :event="event" @hide="hide()"> </component>
     </modal>
   </div>
 </template>
@@ -37,6 +37,7 @@ import CreateEvent from '@/components/CreateEvent.vue'
         name: "name",
         selectedMarker: false,
         event: new Event(),
+        unit: false,
         components: ['situation-menu', 'unit-menu', 'teams', 'team-manage'],
         componentIndex: 0
       }
@@ -51,7 +52,7 @@ import CreateEvent from '@/components/CreateEvent.vue'
         if(selectedMarker != null){
           this.selectedMarker = selectedMarker;
           this.event.id = selectedMarker.id;
-          this.event.type = selectedMarker.type;
+          this.event.type = selectedMarker.type;  
         }
         this.event.lat = latlng.lat;
         this.event.lon = latlng.lng;
@@ -61,8 +62,8 @@ import CreateEvent from '@/components/CreateEvent.vue'
       },
 
       editUnit(unit) {
-        this.switchComponent(1);
-        this.$root.$emit('edit-unit', unit)    
+        this.unit = unit;
+        this.switchComponent(1); 
       },
 
       hide () {
@@ -72,14 +73,14 @@ import CreateEvent from '@/components/CreateEvent.vue'
         // console.log(event.params.foo);
       },
       beforeClose() {
-        console.log('this will be called before the modal closes');
+        
       }
     },
 
     computed: {
       activeComponent() {
         return this.components[this.componentIndex];
-      }
+      },
     }
   }
 </script>

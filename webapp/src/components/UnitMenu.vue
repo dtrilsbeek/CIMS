@@ -1,6 +1,6 @@
 <template>
   <div class="full-size">
-      <edit-unit v-if="isEditing" @toggle="toggleMode()" :selected-marker="selectedMarker"></edit-unit>
+      <edit-unit v-if="isEditing" @toggle="toggleMode()" :selected-marker="selectedMarker" :unit="unit" ></edit-unit>
       <create-unit v-else @toggle="toggleMode()"></create-unit>
   </div>
 </template>
@@ -14,7 +14,10 @@ export default {
         selectedMarker: {
             type: [Object, Boolean],
             required: true
-        }
+        },
+        unit: {
+            type: [Object, Boolean]
+        },
     },
 
     components:{

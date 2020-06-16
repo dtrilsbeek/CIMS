@@ -24,10 +24,10 @@ public class UnitResource {
 
         Unit unit = Unit.findById(id);
         if(unit == null) {
-            return Response.noContent().build();
+            return Response.status(404).build();
         }
         unit.delete();
-        return Response.ok(unit).build();
+        return Response.noContent().build();
     }
 
     @POST

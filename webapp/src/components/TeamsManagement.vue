@@ -16,14 +16,14 @@
         <li v-for="team in teams" :key="team.id" class="team">
 			<details class="dropdown details-reset details-overlay d-inline-block">
 				<summary class="team-name">{{team.name}}
-                    <span class="team-remove" v-on:click="removeTeam(team.id)"/>
+                    <span class="team-remove" v-on:click="removeTeam(team)"/>
                 </summary>
                  <ul>  
                     <li v-for="unit in team.units" :key="unit.id" class="unit">
                         <div>
                             {{unit.name}}
                             <span v-on:click="editUnit(unit)" class="unit-edit"></span> 
-                            <span v-on:click="removeUnit(unit.id)" class="unit-remove"></span>
+                            <span v-on:click="removeUnit(unit)" class="unit-remove"></span>
                         </div>
                     </li>
                 </ul>
@@ -35,9 +35,6 @@
 </template>
 
 <script>
-// import Unit from '@/components/teams/Unit.js';
-// import Team from '@/components/teams/Team.js';
-// import TeamsDao from '@/daos/TeamsDao.js';
 import TeamRestConnector from "./rest/TeamRestConnector";
 import UnitRestConnector from "./rest/UnitRestConnector";
 
@@ -85,25 +82,33 @@ export default {
             return units;
         },
 
-        editUnit(unit) {
-
-            this.$emit("existing-unit-edit", unit);
-            //goto edit unit page
-            // this.unitRestConnector.updateUnit(unit.name, unit.id, unit.team.id)
-            // .catch(ex => {
-            //     console.log(ex);    
-            // });            
+        editUnit(unit) {  
+            this.$emit("unit-edit", unit);        
         },
 
-        removeUnit(unitId) {
-            this.unitRestConnector.removeUnit(unitId)
+        removeUnit(unit) { 
+            this.unitRestConnector.removeUnit(unit.id)
+            .then(() => {
+
+                let team = this.teams.find(x => x.id = unit.team.id);
+                let index = team.units.indexOf(unit);
+                team.units.splice(index, 1);
+
+                this.$forceUpdate();
+            })
             .catch(ex => {
                 console.log(ex);    
             });
         },
 
-        removeTeam(teamId) {
-            this.teamRestConnector.removeTeam(teamId)
+        removeTeam(team) {
+            
+            this.teamRestConnector.removeTeam(team.id)
+            .then(() => {
+
+                let index = this.teams.indexOf(team);
+                this.teams.splice(index, 1);
+            })
             .catch(ex => {
                 console.log(ex);    
             });
