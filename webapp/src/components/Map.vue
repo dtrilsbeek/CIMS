@@ -1,12 +1,23 @@
 <template>
     <div class="grid">
-        <region-menu :bus="bus" 
-                     v-on:region-bounds="setInitialPosition($event)"
-                     v-on:move-to="moveTo($event)"
-                     v-on:alert="alert($event)"
-                     ref="region">
-                     
-        </region-menu>
+
+        <div class="logo-nav">
+            CIMS
+        </div>
+        <div class="tabs-nav">
+
+        </div>
+
+        <div class="region-menu-nav">
+            <region-menu :bus="bus"
+                         v-on:region-bounds="setInitialPosition($event)"
+                         v-on:move-to="moveTo($event)"
+                         v-on:alert="alert($event)"
+                         ref="region">
+
+            </region-menu>
+        </div>
+
         <div id="map">
         </div>
         <div class="map-info">
@@ -14,7 +25,7 @@
         </div>
 
         <aside class="info">
-            <menu-modal :bus="bus" ref="modal" />  
+            <menu-modal :bus="bus" ref="modal"/>
             <active-events :bus="bus" v-on:move-to-event="moveToEvent($event)"/>
         </aside>
 
@@ -118,12 +129,12 @@
 
             showUserInstruction(lat, lon) {
                 var imageUrl = '/userInstruction.png';
-                var imageBounds = [[lat-0.05, lon-0.14], [lat + 0.05, lon + 0.14]];
+                var imageBounds = [[lat - 0.05, lon - 0.14], [lat + 0.05, lon + 0.14]];
                 var overlay = L.imageOverlay(imageUrl, imageBounds);
                 overlay.addTo(this.leafletMap);
-                setTimeout(function() {
+                setTimeout(function () {
                     overlay.getElement().classList.add('fadeout')
-                    setTimeout(function() {
+                    setTimeout(function () {
                         overlay.remove(this.leafletMap);
                     }, 800);
                 }, 3000)
@@ -139,7 +150,7 @@
                 this.markers[event.id].fire('click');
             },
 
-            alert(message){
+            alert(message) {
                 this.$refs.notifier.addAlert(message);
             }
         }

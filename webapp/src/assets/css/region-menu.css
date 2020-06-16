@@ -2,14 +2,14 @@
 .map-header{
     position: relative;
     height: 50px;
+    width: 100%;
     line-height: 50px;
     font-weight: bold;
     font-size: 24px;
     text-align: center;
-    grid-column: 1/11;
-    grid-row: 1;
     background-color: #efefef;
-    border-bottom: .5px solid #555;
+    border-left: 1px solid #555;
+    border-bottom: 1px solid #555;
 }
 
 .map-header::first-letter{

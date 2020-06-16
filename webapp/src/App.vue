@@ -1,27 +1,18 @@
 <template>
-  <div id="app">
-    <header class="header">
-        <h1>cims</h1>
-        <div id="nav">
-      | <router-link to="/">Home</router-link> |
-      <router-link to="/map">map</router-link> |
-      <router-link to="/teams">teams</router-link> |
-      <router-link to="/units">units</router-link> |
-    </div>  
-    </header> 
-    <main>
-      <router-view></router-view>
-    </main>
-  </div>
+    <div id="app">
+        <Map/>
+    </div>
 </template>
 
 <script>
+    import Map from "@/components/Map";
 
-export default {
-  name: 'App',
-  components: {
-  }
-}
+    export default {
+        name: 'App',
+        components: {
+            Map,
+        }
+    }
 </script>
 
 
