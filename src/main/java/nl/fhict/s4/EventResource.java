@@ -9,8 +9,8 @@ import io.vertx.mutiny.core.Vertx;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
 import nl.fhict.s4.models.EventModel;
+import nl.fhict.s4.models.EventStatus;
 import nl.fhict.s4.models.EventType;
-import nl.fhict.s4.models.Status;
 
 import org.jboss.resteasy.annotations.SseElementType;
 import org.jboss.resteasy.annotations.cache.Cache;
@@ -22,7 +22,9 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.Response.Status;
 
 
 
@@ -104,15 +106,19 @@ public class EventResource {
 	@Transactional
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public EventModel createEvent(
+	public Response createEvent(
 		@FormParam("lat") double lat, 
 		@FormParam("lon") double lon, 
 		@FormParam("typeId") long typeId, 
 		@FormParam("description") String description
 	) {
 		EventType type = EventType.findById(typeId);
-		EventModel model = new EventModel();
 
+		if(type == null) {
+			return Response.status(Status.BAD_REQUEST).build();
+		}
+
+		EventModel model = new EventModel();
 		model.lat = lat;
 		model.lon = lon;
 		model.type = type;
@@ -125,18 +131,18 @@ public class EventResource {
 			eventEmitter.send(model);
 		}
 
-		return model;
+		return Response.ok(model).build();
 	}
 
 	@PUT
 	@Transactional
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public EventModel updateEvent(
+	public Response updateEvent(
 		@FormParam("id") long id,
 		@FormParam("lat") double lat, 
 		@FormParam("lon") double lon, 
-		@FormParam("status") Status status,
+		@FormParam("status") EventStatus status,
 		@FormParam("typeId") long typeId, 
 		@FormParam("description") String description
 	) {
@@ -144,22 +150,27 @@ public class EventResource {
 		EventModel update = EventModel.findById(id);
 		EventType type = EventType.findById(typeId);
 		
-
-		if (update != null) {
-			update.status = status;
-			update.description = description;
-			update.lat = lat;
-			update.lon = lon;
-			update.type = type;
-			update.persist();
-
-			update.isUpdate = true;
-			eventEmitter.send(update);
-
-			return update;
+		if(update == null) {
+			return Response.status(Status.NOT_FOUND).build();
 		}
 
-		return null;
+		if(type == null) {
+			return Response.status(Status.BAD_REQUEST).build();
+		}
+
+
+		update.status = status;
+		update.description = description;
+		update.lat = lat;
+		update.lon = lon;
+		update.type = type;
+		update.persist();
+
+		update.isUpdate = true;
+		eventEmitter.send(update);
+
+		return Response.ok(update).build();
+
 	}
 
 	@GET

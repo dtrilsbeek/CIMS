@@ -1,8 +1,7 @@
 package nl.fhict.s4.models;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import jdk.jfr.Event;
+
 
 import javax.persistence.*;
 
@@ -20,12 +19,12 @@ public class EventModel extends PanacheEntityBase {
     @ManyToOne
 	public EventType type;
 
-	public Status status;
+	public EventStatus status;
 	public String description;
 	public boolean isUpdate;
 
 	public EventModel() {
-		status = Status.ACTIVE;
+		status = EventStatus.ACTIVE;
 	}
 
 	public EventModel(double lat, double lon, EventType type, String description) {
@@ -33,7 +32,7 @@ public class EventModel extends PanacheEntityBase {
 		this.lon = lon;
 		this.type = type;
 		this.description = description;
-		this.status = Status.ACTIVE;
+		this.status = EventStatus.ACTIVE;
 	}
 
 	public EventModel(EventModel model) {

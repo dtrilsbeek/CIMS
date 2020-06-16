@@ -5,6 +5,7 @@ import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import io.quarkus.panache.common.Parameters;
 import nl.fhict.s4.models.Team;
@@ -20,10 +21,10 @@ public class TeamResource {
 
         Team team = Team.findById(id);
         if(team == null) {
-            return Response.noContent().build();
+            return Response.status(Status.NOT_FOUND).build();
         }
         team.delete();
-        return Response.ok(team).build();
+        return Response.noContent().build();
     }
 
 
@@ -35,7 +36,7 @@ public class TeamResource {
 
         if(Team.count("name = :name", Parameters.with("name", name)) > 0) {
             //return a conflict response if the team already exists
-            return Response.status(409).build();
+            return Response.status(Status.CONFLICT).build();
         }   
 
         Team team = new Team();
@@ -55,9 +56,12 @@ public class TeamResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
     public Response getTeamById(@PathParam("id") Long id) {
-        //TODO: HANDLE NULL?
-        //TODO: STATUS AND RETURN VALUE OF DELETE?
         Team team = Team.findById(id);
+
+        if(team == null) {
+            return Response.status(Status.NOT_FOUND).build();
+        }
+
         return Response.ok(team).build();
     }
 
