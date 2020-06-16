@@ -59,7 +59,7 @@ export default class CimsMarker extends MovingMarker {
      * @param {Array<Number>} start lat longs
      * @param {Array<Number>} [destination] lat longs
      */
-    constructor(map, id, type, description, start, destination = start){
+    constructor(map, id, type, description, status, start, destination = start){
         super([start, start], 1000, {
             icon:  L.icon({
                 iconUrl: type.icon, //Imgur for now, because can't find path to assets
@@ -74,7 +74,7 @@ export default class CimsMarker extends MovingMarker {
         this.type = type;
         this.description = description;
         this.destination = destination;
-        this.isActive = false;
+        this.status = status;
 
         this.on('click', () => {
             this.map.setSelectedMarker(this);

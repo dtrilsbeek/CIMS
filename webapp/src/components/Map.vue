@@ -80,11 +80,12 @@
                         const marker = this.markers[data.id]
                         if (marker) {
                             marker.type = data.type;
+                            marker.status = data.status;
                             marker.description = data.description;
                             marker.moveTo([data.lat, data.lon], 1500);
                         }
                     } else {
-                        this.markers[data.id] = new CimsMarker(this, data.id, data.type, data.description, [data.lat, data.lon]);
+                        this.markers[data.id] = new CimsMarker(this, data.id, data.type, data.description, data.status, [data.lat, data.lon]);
                     }
                 };
             },

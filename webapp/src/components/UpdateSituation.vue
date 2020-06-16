@@ -8,9 +8,8 @@
             <input type="number" class="as-text"  step="any" placeholder="Input longitude" :class="{error: !form.lon.isValid}" v-model="form.lon.value" />
         
             <select v-model="form.status.value" class="dropdown" :class="{error: !form.status.isValid}">
-                <option value="" disabled selected>Selecteer een status</option>
-                <option value="ACTIVE"  selected>actief</option>
-                <option value="FINISHED"  selected>afgerond</option>
+                <option value="ACTIVE" selected>actief</option>
+                <option value="FINISHED">afgerond</option>
             </select>
             
             <textarea  v-model="form.description.value" placeholder="Input information" :class="{error: !form.description.isValid}" />
@@ -50,11 +49,13 @@ export default {
     },
     created() {
         if(this.event.type !== undefined) {
-            this.formHelper     = new FormHelper(this.form);
-            this.id             = this.event.id;
-            this.typeId         = this.event.type.id;
-            this.form.lat.value = this.event.lat;
-            this.form.lon.value = this.event.lon;
+            this.formHelper                 = new FormHelper(this.form);
+            this.id                         = this.event.id;
+            this.typeId                     = this.event.type.id;
+            this.form.status.value          = this.event.status;
+            this.form.description.value     = this.event.description;
+            this.form.lat.value             = this.event.lat;
+            this.form.lon.value             = this.event.lon;
         }
     },
     props:{
