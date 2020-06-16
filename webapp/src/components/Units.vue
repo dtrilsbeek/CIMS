@@ -16,10 +16,11 @@
                             {{team.name}}
                         </option>
                     </select>
+
+                    <button class="submit-form clickable" @click="submit">
+                        Add
+                    </button>
                 </form>
-            <button class="submit-form clickable" @click="submit">
-                Add
-            </button>
             <h4 class="create-edit-toggle clickable" @click="toEdit()">Edit instead</h4>
     </div>
 </template>
@@ -64,6 +65,7 @@ export default {
             if(this.formHelper.validateForm()){
                 this.unitRestConnector.addUnit(this.form.name.value, this.form.teamid.value).then(() => {
                     this.formHelper.clearForm();
+                    this.$modal.hide('addTopic-modal');
                 });
             }
         },
@@ -84,3 +86,9 @@ export default {
 </script>
 
 <style src="@/assets/css/form.css" scoped></style>
+<style scoped>
+    form {
+        width: 33%;
+        min-width: 400px;
+    }
+</style>

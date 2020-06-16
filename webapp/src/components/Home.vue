@@ -7,7 +7,6 @@
           <li @click="switchComponent(1)" :class="{active: componentIndex == 1}"><img src="@/assets/images/unit-icon.png" alt="units"><div class="tooltip">Units</div></li>
           <li @click="switchComponent(2)" :class="{active: componentIndex == 2}"><img src="@/assets/images/team-icon.png" alt="teams"><div class="tooltip">Teams</div></li>
           <li @click="switchComponent(3)" :class="{active: componentIndex == 3}"><img src="@/assets/images/management-icon.png" alt="team"><div class="tooltip">Teams & Units</div></li>
-          <!-- <li @click="switchComponent(4)" :class="{active: componentIndex == 4}"><img src="@/assets/images/management-icon.png" alt="type"><div class="tooltip">Type</div></li> -->
         </ul>
       </aside>
       <span class="close" v-on:click="hide()">X</span>       
@@ -19,7 +18,7 @@
 <script>
 
 import Event from '@/models/Event.js';
-import CreateSituation from '@/components/CreateSituation.vue'
+import SituationMenu from '@/components/SituationMenu.vue'
 import UnitMenu from '@/components/UnitMenu.vue'
 import Teams from '@/components/Teams.vue'
 import TeamManage from '@/components/TeamsManagement.vue';
@@ -27,7 +26,7 @@ import CreateEvent from '@/components/CreateEvent.vue'
 
   export default {
     components: {
-      createSituation: CreateSituation,
+      SituationMenu: SituationMenu,
       unitMenu: UnitMenu,
       teams: Teams,
       teamManage: TeamManage,
@@ -38,7 +37,7 @@ import CreateEvent from '@/components/CreateEvent.vue'
         name: "name",
         selectedMarker: false,
         event: new Event(),
-        components: ['create-situation', 'unit-menu', 'teams', 'team-manage', 'create-event'],
+        components: ['situation-menu', 'unit-menu', 'teams', 'team-manage'],
         componentIndex: 0
       }
     },
@@ -52,6 +51,7 @@ import CreateEvent from '@/components/CreateEvent.vue'
         if(selectedMarker != null){
           this.selectedMarker = selectedMarker;
           this.event.id = selectedMarker.id;
+          this.event.type = selectedMarker.type;
         }
         this.event.lat = latlng.lat;
         this.event.lon = latlng.lng;

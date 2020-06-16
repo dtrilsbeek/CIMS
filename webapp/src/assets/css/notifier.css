@@ -1,0 +1,73 @@
+.alert {
+    bottom: 0;
+    background-color: #333;
+    margin-top: 8px;
+    left: 50px;
+    box-sizing: border-box;
+    padding: 18px 42px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    color: white;
+    min-width: 80px;
+    position: relative;
+    z-index: 999;
+    text-align: center;
+    font-weight: bold;
+    animation-name: alert;
+    animation-duration: 3.3s;
+    animation-fill-mode: forwards;
+    user-select: none;
+    animation-timing-function: linear;
+    font-size: 16px;
+  }
+  
+  .timer{
+    height: 5px;
+    background-color: silver;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    animation-name: shrink;
+    animation-duration: 3s;
+    animation-fill-mode: forwards;
+    animation-timing-function: linear;
+    
+  }
+  
+  .alert-holder{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+  
+  
+  @keyframes alert {
+    0% {
+    }
+  
+    10%{
+      transform: translateY(-30%);
+    }
+  
+    90%{
+      opacity: 1;
+      transform: translateY(-30%);
+    }
+  
+    100% {
+      opacity: 0;
+      transform: translateY(-30%);
+    }
+  }
+  
+  @keyframes shrink{
+    0% {
+      width: 100%;
+    }
+  
+    100%{
+      width: 0%;
+    }
+  }

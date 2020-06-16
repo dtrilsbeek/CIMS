@@ -1,8 +1,14 @@
 <template>
     <div class="grid">
-        <region-menu :bus="bus" v-on:region-bounds="setInitialPosition($event)"
-                     v-on:move-to="moveTo($event)"></region-menu>
-        <div id="map"></div>
+        <region-menu :bus="bus" 
+                     v-on:region-bounds="setInitialPosition($event)"
+                     v-on:move-to="moveTo($event)"
+                     v-on:alert="alert($event)"
+                     ref="region">
+                     
+        </region-menu>
+        <div id="map">
+        </div>
         <div class="map-info">
             <h4>Info</h4>
         </div>
@@ -12,25 +18,28 @@
             <active-events :bus="bus" v-on:move-to-event="moveToEvent($event)"/>
         </aside>
 
+        <alert-notifier ref="notifier"></alert-notifier>
     </div>
 </template>
 
 <script>
-import Vue from 'vue';
 
-import CimsMap from '@/components/leaflet/CimsMap'
-import CimsMarker from '@/components/leaflet/CimsMarker'
-import CimsRectangle from '@/components/leaflet/CimsRectangle';
-// Css for loading the map smoothly
-import 'leaflet/dist/leaflet.css'
-import Home from './Home.vue'
-import RegionMenu from '@/components/RegionMenu'
-import ActiveEvents from './ActiveEvents'
-import config from '@/components/rest/RestConfig'
-import L from "leaflet";
+    import CimsMap from '@/components/leaflet/CimsMap'
+    import CimsMarker from '@/components/leaflet/CimsMarker'
+    import CimsRectangle from '@/components/leaflet/CimsRectangle'
+    import AlertNotifier from '@/components/Notifier'
+    // Css for loading the map smoothly
+    import 'leaflet/dist/leaflet.css'
+    import Home from './Home.vue'
+    import RegionMenu from '@/components/RegionMenu'
+    import ActiveEvents from './ActiveEvents'
+    import Vue from 'vue';
+    import config from '@/components/rest/RestConfig'
+    import L from "leaflet";
 
     export default {
         components: {
+            alertNotifier: AlertNotifier,
             menuModal: Home,
             regionMenu: RegionMenu,
             activeEvents: ActiveEvents
@@ -62,27 +71,11 @@ import L from "leaflet";
                 this.selectedMarker = marker;
             },
 
-            getIconTypeString(type) {
-                switch (type) {
-                    case 1:
-                        return "fireTruck"
-                    case 2:
-                        return "ambulance"
-                    case 3:
-                        return "fire"
-                    case 4:
-                        return "police"
-                    default:
-                        return "ambulance"
-                }
-            },
-
             createEventSource() {
-                this.eventSource = new EventSource("http://localhost:8083/events/stream");
+                this.eventSource = new EventSource(config.getUrl('events', 'stream'));
                 this.eventSource.onmessage = (event) => {
 
                     const data = JSON.parse(event.data);
-                    const type = this.getIconTypeString(data.type);
 
                     if (data.isUpdate) {
                         const marker = this.markers[data.id]
@@ -92,7 +85,7 @@ import L from "leaflet";
                             marker.moveTo([data.lat, data.lon], 1500);
                         }
                     } else {
-                        this.markers[data.id] = new CimsMarker(this, data.id, type, data.description, [data.lat, data.lon]);
+                        this.markers[data.id] = new CimsMarker(this, data.id, data.type, data.description, [data.lat, data.lon]);
                     }
                 };
             },
@@ -115,7 +108,13 @@ import L from "leaflet";
                 this.leafletMap.on('click', (e) => {
                     let selectedMarker = this.selectedMarker || null;
                     this.$refs.modal.show(selectedMarker, e.latlng);
-            }); 
+                });
+
+
+                this.leafletMap.on('dragend', () => {
+                    this.$refs.region.checkBounds(this.leafletMap.getCimsBounds());
+                });
+
             },
 
             showUserInstruction(lat, lon) {
@@ -139,6 +138,10 @@ import L from "leaflet";
             moveToEvent(event) {
                 this.leafletMap.flyTo([event.lat, event.lon], 12);
                 this.markers[event.id].fire('click');
+            },
+
+            alert(message){
+                this.$refs.notifier.addAlert(message);
             }
         }
     }
