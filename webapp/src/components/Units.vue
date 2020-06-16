@@ -17,7 +17,7 @@
                         </option>
                     </select>
 
-                    <button class="submit-form clickable" @click="submit">
+                    <button class="submit-form clickable" type="button" @click="submit">
                         Add
                     </button>
                 </form>

@@ -9,7 +9,7 @@
                         <option v-for="team in teams" :key="team.name" :value="team.id">{{ team.name }}</option>
                     </select>
                 </form>
-            <button class="clickable capitalize-block" @click="submit" :class="{disabled: !selectedMarker}">
+            <button class="clickable capitalize-block" type="button" @click="submit" :class="{disabled: !selectedMarker}">
                 update
                 <div class="disabled-tooltip">No marker selected</div>
             </button>

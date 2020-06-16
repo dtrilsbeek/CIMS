@@ -1,8 +1,9 @@
 <template>
     <div class="wrapper">
-            <h1 class="capitalize-block">Create a <span class="capitalize-inline">team</span></h1>
+            <h1 class="capitalize-block">Create a <span class="capitalize-inline">type</span></h1>
             <form>
                 <input type="text" placeholder="name" :class="{error: !form.name.isValid}" v-model="form.name.value" />
+                <textarea placeholder="description" :class="{error: !form.description.isValid}"  v-model="form.description.value" />
                 <button class="submit-form clickable" type="button" @click="submit">Add</button>
             </form> 
     </div>
@@ -12,19 +13,20 @@
 import FormField from '@/components/formvalidation/FormField'
 import {isFilledIn} from '@/components/formvalidation/FormValidation'
 import FormHelper from '@/components/formvalidation/FormHelper'
-import TeamRestConnector from '@/components/rest/TeamRestConnector'
+import TypeRestConnector from '@/components/rest/TypeRestConnector'
 
 export default {
     data(){
         return {
             form: {
-                name: new FormField(isFilledIn())
+                name: new FormField(isFilledIn()),
+                description: new FormField(isFilledIn())
             },
             /**
              * @type {FormHelper}
              */
             formHelper: null,
-            restConnector: new TeamRestConnector(this.$token)
+            restConnector: new TypeRestConnector(this.$token)
         }
     },
 
@@ -35,7 +37,7 @@ export default {
     methods: {
         submit(){
             if(this.formHelper.validateForm()){
-                const result = this.restConnector.addTeam(this.form.name.value);
+                const result = this.restConnector.addType(this.form.name.value, this.form.description.value);
                 result.then(() => {
                     this.formHelper.clearForm();
                     this.$modal.hide('addTopic-modal');

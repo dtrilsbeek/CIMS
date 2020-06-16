@@ -6,7 +6,8 @@
           <li @click="switchComponent(0)" :class="{active: componentIndex == 0}"><img src="@/assets/images/event-icon.png" alt="events"><div class="tooltip">Events</div></li>
           <li @click="switchComponent(1)" :class="{active: componentIndex == 1}"><img src="@/assets/images/unit-icon.png" alt="units"><div class="tooltip">Units</div></li>
           <li @click="switchComponent(2)" :class="{active: componentIndex == 2}"><img src="@/assets/images/team-icon.png" alt="teams"><div class="tooltip">Teams</div></li>
-          <li @click="switchComponent(3)" :class="{active: componentIndex == 3}"><img src="@/assets/images/management-icon.png" alt="team"><div class="tooltip">Teams & Units</div></li>
+          <li @click="switchComponent(3)" :class="{active: componentIndex == 3}"><img src="@/assets/images/management-icon.png" alt="management"><div class="tooltip">Teams & Units</div></li>
+          <li @click="switchComponent(4)" :class="{active: componentIndex == 4}"><img src="@/assets/images/management-icon.png" alt="type"><div class="tooltip">types</div></li>
         </ul>
       </aside>
       <span class="close" v-on:click="hide()">X</span>       
@@ -21,8 +22,8 @@ import SituationMenu from '@/components/SituationMenu.vue'
 import UnitMenu from '@/components/UnitMenu.vue'
 import Teams from '@/components/Teams.vue'
 import TeamManage from '@/components/TeamsManagement.vue';
-import CreateEvent from '@/components/CreateEvent.vue'
-
+import CreateEvent from '@/components/CreateEvent.vue';
+import AddEventType from '@/components/AddEventType.vue'
 
   export default {
     props: {
@@ -33,14 +34,15 @@ import CreateEvent from '@/components/CreateEvent.vue'
       unitMenu: UnitMenu,
       teams: Teams,
       teamManage: TeamManage,
-      createEvent: CreateEvent
+      createEvent: CreateEvent,
+      addEventType: AddEventType
     },
     data() {
       return {
         name: "name",
         selectedMarker: false,
         event: new Event(),
-        components: ['situation-menu', 'unit-menu', 'teams', 'team-manage'],
+        components: ['situation-menu', 'unit-menu', 'teams', 'team-manage', 'add-event-type'],
         componentIndex: 0
       }
     },
