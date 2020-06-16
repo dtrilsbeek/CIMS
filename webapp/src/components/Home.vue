@@ -11,12 +11,13 @@
         </ul>
       </aside>
       <span class="close" v-on:click="hide()">X</span>       
-        <component :is="activeComponent" :selectedMarker="selectedMarker" :event="event" @hide="hide()"> </component>
+        <component :is="activeComponent" v-on:existing-unit-edit="editUnit($event)" ref="component" :selectedMarker="selectedMarker" :event="event" @hide="hide()"> </component>
     </modal>
   </div>
 </template>
 
 <script>
+
 import Event from '@/models/Event.js';
 import CreateSituation from '@/components/CreateSituation.vue'
 import UnitMenu from '@/components/UnitMenu.vue'
@@ -24,11 +25,7 @@ import Teams from '@/components/Teams.vue'
 import TeamManage from '@/components/TeamsManagement.vue';
 import CreateEvent from '@/components/CreateEvent.vue'
 
-
   export default {
-    props: {
-        bus: Object
-    },
     components: {
       createSituation: CreateSituation,
       unitMenu: UnitMenu,
@@ -62,6 +59,12 @@ import CreateEvent from '@/components/CreateEvent.vue'
         this.$modal.show('addTopic-modal');
         //params can be added with ", { foo: 'bar' })"
       },
+
+      editUnit(unit) {
+        this.switchComponent(1);
+        this.$root.$emit('edit-unit', unit)    
+      },
+
       hide () {
         this.$modal.hide('addTopic-modal');
       },

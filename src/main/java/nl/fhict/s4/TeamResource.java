@@ -16,11 +16,14 @@ public class TeamResource {
     @DELETE
     @Path("{id}")
     @Transactional
-    public Response deleteTeam(@PathParam("id") long id) {
-        //TODO: HANDLE NULL?
-        //TODO: STATUS AND RETURN VALUE OF DELETE?
-        Team.findById(id).delete();
-        return Response.noContent().build();
+    public Response deleteTeam(@PathParam("id") Long id) {
+
+        Team team = Team.findById(id);
+        if(team == null) {
+            return Response.noContent().build();
+        }
+        team.delete();
+        return Response.ok(team).build();
     }
 
 

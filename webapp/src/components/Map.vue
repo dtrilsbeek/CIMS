@@ -8,7 +8,7 @@
         </div>
 
         <aside class="info">
-            <menu-modal :bus="bus" ref="modal" />  
+            <menu-modal ref="modal" />  
             <active-events :bus="bus" v-on:move-to-event="moveToEvent($event)"/>
         </aside>
 
@@ -16,17 +16,18 @@
 </template>
 
 <script>
-    import CimsMap from '@/components/leaflet/CimsMap'
-    import CimsMarker from '@/components/leaflet/CimsMarker'
-    import CimsRectangle from '@/components/leaflet/CimsRectangle';
-    // Css for loading the map smoothly
-    import 'leaflet/dist/leaflet.css'
-    import Home from './Home.vue'
-    import RegionMenu from '@/components/RegionMenu'
-    import ActiveEvents from './ActiveEvents'
-    import Vue from 'vue';
-    import config from '@/components/rest/RestConfig'
-    import L from "leaflet";
+import Vue from 'vue';
+
+import CimsMap from '@/components/leaflet/CimsMap'
+import CimsMarker from '@/components/leaflet/CimsMarker'
+import CimsRectangle from '@/components/leaflet/CimsRectangle';
+// Css for loading the map smoothly
+import 'leaflet/dist/leaflet.css'
+import Home from './Home.vue'
+import RegionMenu from '@/components/RegionMenu'
+import ActiveEvents from './ActiveEvents'
+import config from '@/components/rest/RestConfig'
+import L from "leaflet";
 
     export default {
         components: {

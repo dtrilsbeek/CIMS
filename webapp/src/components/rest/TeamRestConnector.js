@@ -32,6 +32,20 @@ class TeamRestConnector extends AuthRestConnector {
         return promise;
     }
 
+     /**
+     * Removes an existing team
+     * @param {number} id of the to be deleted team
+     * @returns {Promise} promise of HTTP response
+     */
+    removeTeam(teamId) {
+   
+        const headers = {
+            'Authorization': `Bearer ${this.token}`
+        }
+        const promise = Axios.delete(`${this.baseUrl}/${teamId}`, {headers: headers});
+        return promise;
+    }
+
 
     /**
      * @returns {Promise} return a promise with all available teams as data

@@ -16,14 +16,18 @@ import nl.fhict.s4.models.Unit;
 @Path("units")
 @RequestScoped
 public class UnitResource {
+    
     @DELETE
     @Path("{id}")
     @Transactional
     public Response deleteUnit(@PathParam("id") Long id) {
-        //TODO: HANDLE NULL?
-        //TODO: STATUS AND RETURN VALUE OF DELETE?
-        Unit.findById(id).delete();
-        return Response.noContent().build();
+
+        Unit unit = Unit.findById(id);
+        if(unit == null) {
+            return Response.noContent().build();
+        }
+        unit.delete();
+        return Response.ok(unit).build();
     }
 
     @POST

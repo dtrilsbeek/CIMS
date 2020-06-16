@@ -16,14 +16,14 @@
         <li v-for="team in teams" :key="team.id" class="team">
 			<details class="dropdown details-reset details-overlay d-inline-block">
 				<summary class="team-name">{{team.name}}
-                    <span class="team-remove" v-on:click="removeTeam(team)"/>
+                    <span class="team-remove" v-on:click="removeTeam(team.id)"/>
                 </summary>
                  <ul>  
                     <li v-for="unit in team.units" :key="unit.id" class="unit">
                         <div>
                             {{unit.name}}
                             <span v-on:click="editUnit(unit)" class="unit-edit"></span> 
-                            <span v-on:click="removeUnit(team.id, unit)" class="unit-remove"></span>
+                            <span v-on:click="removeUnit(unit.id)" class="unit-remove"></span>
                         </div>
                     </li>
                 </ul>
@@ -54,25 +54,24 @@ export default {
 
     mounted() {
 
-            this.loadTeams()
-                .then(teams => {
-                    this.teams = teams;
+        this.loadTeams()
+            .then(teams => {
+                this.teams = teams;
 
-                    for (let i = 0; i < this.teams.length; i++) {
+                for (let i = 0; i < this.teams.length; i++) {
 
-                        let team = this.teams[i];
+                    let team = this.teams[i];
 
-                        this.loadTeamUnits(team.id)
-                            .then(units => {
-                                team.units = units;  
-                                this.$forceUpdate();
-                            })                            
-                    }
-                });
-    },
+                    this.loadTeamUnits(team.id)
+                        .then(units => {
+                            team.units = units;  
+                            this.$forceUpdate();
+                        })                            
+                }
+            });
+    },  
 
     methods: {
-
 
         async loadTeams() {
             let response = await this.teamRestConnector.getTeams();
@@ -87,15 +86,27 @@ export default {
         },
 
         editUnit(unit) {
-            console.log(unit);            
-        },
-        removeUnit(teamId, unit) {
-            this.teams[teamId].removeUnit(unit);
+
+            this.$emit("existing-unit-edit", unit);
+            //goto edit unit page
+            // this.unitRestConnector.updateUnit(unit.name, unit.id, unit.team.id)
+            // .catch(ex => {
+            //     console.log(ex);    
+            // });            
         },
 
-        removeTeam(team) {
-            let index = this.teams.indexOf(team);
-            this.teams.splice(index, 1);
+        removeUnit(unitId) {
+            this.unitRestConnector.removeUnit(unitId)
+            .catch(ex => {
+                console.log(ex);    
+            });
+        },
+
+        removeTeam(teamId) {
+            this.teamRestConnector.removeTeam(teamId)
+            .catch(ex => {
+                console.log(ex);    
+            });
         },
     }
 

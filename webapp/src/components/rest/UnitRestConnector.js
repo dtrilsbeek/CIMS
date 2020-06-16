@@ -55,6 +55,20 @@ class UnitRestConnector extends AuthRestConnector  {
     }
 
     /**
+     * Removes an existing unit
+     * @param {number} id of the to be deleted unit
+     * @returns {Promise} promise of HTTP response
+     */
+    removeUnit(unitId) {
+   
+        const headers = {
+            'Authorization': `Bearer ${this.token}`
+        }
+        const promise = Axios.delete(`${this.baseUrl}/${unitId}`, {headers: headers});
+        return promise;
+    }
+
+    /**
      * 
      * @param {String} name 
      * @param {Number} unitId 

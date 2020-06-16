@@ -2,11 +2,11 @@
     <div class="wrapper">
             <h1 class="capitalize-block">Edit a <span class="capitalize-inline">unit</span></h1>
                 <form>
-                    <input type="hidden" placeholder="id" class="as-text" :class="{error: !form.name.isValid}" v-model="form.id.value" />     
-                    <input type="text" placeholder="name" :class="{error: !form.name.isValid}" v-model="form.name.value" />
+                    <input ref="id" type="hidden" placeholder="id" class="as-text" :class="{error: !form.name.isValid}" v-model="form.id.value" />     
+                    <input ref="name" type="text" placeholder="name" :class="{error: !form.name.isValid}" v-model="form.name.value" />
                     <select class="dropdown" v-model="form.teamId.value" :class="{error: !form.teamId.isValid}">
                         <option value="" disabled selected>Select a team</option>
-                        <option v-for="team in teams" :key="team.name" :value="team.id">{{ team.name }}</option>
+                        <option v-for="team in teams" :key="team.name" ref="teamId" :value="team.id">{{ team.name }}</option>
                     </select>
                 </form>
             <button class="clickable capitalize-block" @click="submit" :class="{disabled: !selectedMarker}">
@@ -56,12 +56,17 @@ export default {
     },
 
     mounted(){
+
         if(this.selectedMarker != null){
             this.form.id.value = this.selectedMarker.id;
         }
         this.formHelper = new FormHelper(this.form);
         this.teamRestConnector.getTeams().then((response) => {
             this.teams = response.data;
+        });
+
+        this.$root.$on('edit-unit', unit => {
+            this.modifyExistingUnit(unit);
         });
     },
 
@@ -78,8 +83,16 @@ export default {
 
         toCreate(){
             this.$emit('toggle');
+        },
+
+        modifyExistingUnit(unit) {
+            let refs = this.$refs;
+            
+            refs.id.value = unit.id;
+            refs.name.value = unit.name;
+            refs.teamId = unit.team.id;
         }
-    }
+    },
 }
 </script>
 
