@@ -21,10 +21,11 @@ class TypeRestConnector extends AuthRestConnector  {
      * @param {Number} teamId -> teamId of the team this new unit belongs to
      * @returns {Promise} promise of HTTP response
      */
-    addType(name, description){
+    addType(name, description, icon){
         const toPost = this.toFormUrlEncoded({
             name: name,
-            description: description
+            description: description,
+            icon: icon
         });
 
 
@@ -43,11 +44,12 @@ class TypeRestConnector extends AuthRestConnector  {
      * @param {Number} unitId 
      * @param {Number} teamId 
      */
-    updateType(name, typeId, description){
+    updateType(name, typeId, description, icon){
         const data = this.toFormUrlEncoded({
             name: name,
             typeId: typeId,
-            description: description
+            description: description,
+            icon: icon
         });
 
         const headers = {

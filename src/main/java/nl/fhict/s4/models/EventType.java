@@ -8,6 +8,7 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 public class EventType extends PanacheEntity {
     public String name;
     public String description;
+    public String icon;
 
     public EventType() {
         

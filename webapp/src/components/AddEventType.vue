@@ -3,6 +3,7 @@
             <h1 class="capitalize-block">Create a <span class="capitalize-inline">type</span></h1>
             <form>
                 <input type="text" placeholder="name" :class="{error: !form.name.isValid}" v-model="form.name.value" />
+                <input type="text" placeholder="icon url" :class="{error: !form.icon.isValid}" v-model="form.icon.value" />
                 <textarea placeholder="description" :class="{error: !form.description.isValid}"  v-model="form.description.value" />
                 <button class="submit-form clickable" type="button" @click="submit">Add</button>
             </form> 
@@ -20,6 +21,7 @@ export default {
         return {
             form: {
                 name: new FormField(isFilledIn()),
+                icon: new FormField(isFilledIn()),
                 description: new FormField(isFilledIn())
             },
             /**
@@ -37,7 +39,7 @@ export default {
     methods: {
         submit(){
             if(this.formHelper.validateForm()){
-                const result = this.restConnector.addType(this.form.name.value, this.form.description.value);
+                const result = this.restConnector.addType(this.form.name.value, this.form.description.value, this.form.icon.value);
                 result.then(() => {
                     this.formHelper.clearForm();
                     this.$modal.hide('addTopic-modal');
