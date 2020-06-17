@@ -1,7 +1,14 @@
 <template>
-    <div class="map-header capitalize-inline" :class="{'left-region': regionMenu.leftRegion }">{{ regionMenu.currentRegion.name }}
-            <img src="@/assets/images/edit-icon.png" class="region-button"
-                v-on:click="toggleMenu()"/>
+    <div class="map-header clickable" :class="{'left-region': regionMenu.leftRegion }">
+                <span class="full-size-link" v-on:click="toggleMenu()"></span> 
+                <div class="region-title capitalize-inline">
+                    {{ regionMenu.currentRegion.name }}
+                    <span class="arrow-down" :class="{
+                        'arrow-active': regionMenu.isActive,
+                        'left-region' : regionMenu.leftRegion
+                        }"></span>
+                </div>
+
             <section class="region-menu" v-if="regionMenu.isActive" style="z-index: 1000;">
                 <div class="search-bar">
                     <img class="search-icon" src="@/assets/images/search-icon.png" />
