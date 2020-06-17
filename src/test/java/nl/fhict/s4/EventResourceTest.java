@@ -1,51 +1,49 @@
 package nl.fhict.s4;
 
-import io.quarkus.test.common.QuarkusTestResource;
+
 import io.quarkus.test.junit.QuarkusTest;
-import io.restassured.http.ContentType;
-import io.restassured.response.Response;
+import io.smallrye.mutiny.Multi;
 import nl.fhict.s4.models.EventModel;
+import nl.fhict.s4.models.EventStatus;
 import nl.fhict.s4.models.EventType;
+import nl.fhict.s4.services.EventService;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.awaitility.Awaitility.await;
-
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
-import javax.json.bind.JsonbConfig;
-import javax.transaction.Transactional;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.sse.SseEventSource;
-
-
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import static io.restassured.RestAssured.given;
+import static org.awaitility.Awaitility.await;
+
+import javax.inject.Inject;
+import javax.transaction.Transactional;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+
+import org.eclipse.microprofile.reactive.messaging.Channel;
+import org.reactivestreams.Publisher;
 
 @QuarkusTest
-//@QuarkusTestResource(KafkaResource.class)
+@Transactional
 public class EventResourceTest {
+
+	@Inject EventService eventService;
+
 
 	EventType type;
 	EventModel event;
-	Jsonb jsonb;
+
 
 	@BeforeEach
-	@Transactional
 	public void initDB() {
-		jsonb = JsonbBuilder.create(new JsonbConfig());
 		type = new EventType();
 		type.name = "ambulance";
+		type.icon = "icon";
 		type.description = "ambulance";
 		type.persist();
 
@@ -55,78 +53,55 @@ public class EventResourceTest {
 		event.lat = 43.220011;
 		event.description = "Test Event";
 		event.persist();
-
-		System.out.println(event.id);
 	}
 
 	@AfterEach
-	@Transactional
 	public void resetDB() {
 		EventModel.deleteAll();
 		EventType.deleteAll();
 	}
 
-	// @Test
-	// public void testAddEvent() {
-	// 	event = new EventModel();
-	// 	event.type = type;
-	// 	event.lon = 52.22349;
-	// 	event.lat = 43.220011;
-	// 	event.description = "Test Event 2";
+	@Test
+	public void testAddEvent() {
 
-	// 	EventModel result = given()
-	// 			.when()
-	// 			.body(jsonb.toJson(event))
-	// 			.contentType(ContentType.JSON)
-	// 			.post("/events").then().statusCode(200)
-	// 			.contentType(ContentType.JSON)
-	// 			.extract()
-	// 			.response()
-	// 			.jsonPath()
-	// 			.getObject("$", EventModel.class);
+		Response result = eventService.createEvent(50.0, 5.0, type.id, "event");
+        EventModel resultValue = (EventModel)result.getEntity();
+        
 
-	// 	assertNotNull(result.id);
-	// }
+        assertEquals(Status.OK.getStatusCode(), result.getStatus());
+		assertEquals(50.0, resultValue.lat);
+		assertEquals(5.0, resultValue.lon);
+		assertEquals(type.id, resultValue.type.id);
+        assertEquals("event", resultValue.description);
+		assertNotNull(resultValue.id);
+	}
 
 	@Test
 	public void testUpdateEvent() {
-		event = new EventModel();
-		event.id = 2L;
-		event.type = type;
-		event.lon = 52.22349;
-		event.lat = 43.220011;
-		event.description = "Test Event 5";
+		EventType type2 = new EventType();
+		type2.name = "firetruck";
+		type2.description = "firetruck";
+		type2.icon = "firetruckIcon";
+		type2.persist();
 
-		String result = given()
-				.when()
-				.body(jsonb.toJson(event))
-				.contentType(ContentType.JSON)
-				.put("/events").then().statusCode(200)
-				.contentType(ContentType.JSON)
-				.extract()
-				.response().asString();
+		Response result = eventService.updateEvent(event.id, 25.0, 35.0, EventStatus.FINISHED, type2.id, "firetruck");
+		EventModel resultValue = (EventModel)result.getEntity();
+        
 
-		EventModel resultEvent = jsonb.fromJson(result, EventModel.class);
-
-		assertEquals(5, resultEvent.type);
+        assertEquals(Status.OK.getStatusCode(), result.getStatus());
+		assertEquals(25.0, resultValue.lat);
+		assertEquals(35.0, resultValue.lon);
+		assertEquals(type2.id, resultValue.type.id);
+        assertEquals("firetruck", resultValue.description);
+		assertEquals(event.id, resultValue.id);
 	}
-
-	// private static final String PRICES_SSE_ENDPOINT = "http://localhost:8081/events/stream";
 
 	// @Test
 	// void testPricesEventStream() {
-	// 	Client client = ClientBuilder.newClient();
-	// 	WebTarget target = client.target(PRICES_SSE_ENDPOINT);
+	// 	List<EventModel> received = new CopyOnWriteArrayList<>();
 
-	// 	List<String> received = new CopyOnWriteArrayList<>();
+	// 	Multi<EventModel> result = eventService.events(null).onItem().invoke(e -> received.add(e));
 
-	// 	SseEventSource source = SseEventSource.target(target).build();
-	// 	source.register(inboundSseEvent -> {
-	// 		received.add(inboundSseEvent.readData());
-	// 	});
-	// 	source.open();
-	// 	await().atMost(100000, MILLISECONDS).until(() -> received.size() == 3);
-	// 	source.close();
+	// 	await().atMost(100000, MILLISECONDS).until(() -> received.size() == 1);
 	// }
-
 }

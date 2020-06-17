@@ -1,9 +1,6 @@
-package nl.fhict.s4;
+package nl.fhict.s4.services;
 
-import javax.enterprise.context.RequestScoped;
-import javax.transaction.Transactional;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
@@ -11,14 +8,10 @@ import io.quarkus.panache.common.Parameters;
 import nl.fhict.s4.models.Team;
 import nl.fhict.s4.models.Unit;
 
-@Path("units")
-@RequestScoped
-public class UnitResource {
+@ApplicationScoped
+public class UnitService {
     
-    @DELETE
-    @Path("{id}")
-    @Transactional
-    public Response deleteUnit(@PathParam("id") Long id) {
+    public Response deleteUnit(Long id) {
 
         Unit unit = Unit.findById(id);
         if(unit == null) {
@@ -28,11 +21,7 @@ public class UnitResource {
         return Response.noContent().build();
     }
 
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Transactional
-    public Response addUnit(@FormParam("name") String name, @FormParam("teamId") Long teamId) {
+    public Response addUnit(String name, Long teamId) {
 
         if(Unit.count("name = :name", Parameters.with("name", name)) > 0) {
             //return a conflict response if there is a unit with the same name
@@ -48,11 +37,7 @@ public class UnitResource {
         return Response.ok(unit).build();
     }
 
-    @PUT
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Transactional
-    public Response updateUnit(@FormParam("name") String name, @FormParam("teamId") Long teamId, @FormParam("unitId") Long unitId){
+    public Response updateUnit(String name, Long teamId,Long unitId){
         Unit unit = Unit.findById(unitId);
         Team team = Team.findById(teamId);
 
@@ -70,9 +55,7 @@ public class UnitResource {
         
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getUnits(@QueryParam("teamId") Long teamId) {
+    public Response getUnits(Long teamId) {
         if(teamId == null) {
             return Response.ok(Unit.listAll()).build();
         }
@@ -82,10 +65,7 @@ public class UnitResource {
         }
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("{id}")
-    public Response getUnitById(@PathParam("id") Long id) {
+    public Response getUnitById(Long id) {
         //TODO: STATUS AND RETURN VALUE OF DELETE?
         Response response = Response.noContent().build();
         Unit unit = Unit.findById(id);
@@ -94,5 +74,4 @@ public class UnitResource {
         }
         return response;
     }
-
 }

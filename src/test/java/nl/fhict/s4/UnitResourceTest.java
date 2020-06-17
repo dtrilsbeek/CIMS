@@ -1,12 +1,16 @@
 package nl.fhict.s4;
 
-import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.List;
+
+import javax.inject.Inject;
 import javax.transaction.Transactional;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import io.quarkus.test.junit.QuarkusTest;
-import io.restassured.http.ContentType;
+
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,10 +19,14 @@ import org.junit.jupiter.api.Test;
 
 import nl.fhict.s4.models.Team;
 import nl.fhict.s4.models.Unit;
+import nl.fhict.s4.services.UnitService;
 
 @QuarkusTest
 @Transactional
 public class UnitResourceTest {
+
+    @Inject UnitService unitService;
+
     Team team1;
     Unit unit1;
     Unit unit2;
@@ -48,78 +56,56 @@ public class UnitResourceTest {
 
     @Test
     void testGetAllUnits() {
-        int typeCount = given()
-            .when()
-            .get("/units")
-            .then()
-            .statusCode(200)
-            .contentType(ContentType.JSON)
-            .extract()
-            .response()
-            .jsonPath()
-            .getList("$")
-            .size();
-        assertEquals(typeCount, 2);
+        Response result = unitService.getUnits(null);
+        List<?> resultValue = (List<?>)result.getEntity();
+        
+
+        assertEquals(Status.OK.getStatusCode(), result.getStatus());
+        assertEquals(2, resultValue.size());
     }
 
     @Test
     void testGetUnitById() {
-        Unit result = given()
-            .when()
-            .get("/units/" + unit1.id)
-            .then()
-            .statusCode(200)
-            .contentType(ContentType.JSON)
-            .extract()
-            .response()
-            .jsonPath()
-            .getObject("$", Unit.class);
-        assertEquals(result.name, "unit1");
+        Response result = unitService.getUnitById(unit1.id);
+        Unit resultValue = (Unit)result.getEntity();
+        
+        
+        assertEquals(Status.OK.getStatusCode(), result.getStatus());
+        assertEquals(resultValue.name, "unit1");
     }
 
     @Test
     void testAddUnit() {
-        Unit result = given()
-            .when()
-            .urlEncodingEnabled(true)
-            .param("name", "unit3")
-            .param("teamId", team1.id)
-            .post("/units").then()
-            .statusCode(200)
-            .contentType(ContentType.JSON)
-            .extract()
-            .response()
-            .jsonPath()
-            .getObject("$", Unit.class);
-        assertEquals(result.name, "unit3");
+        Response result = unitService.addUnit("unit3", team1.id);
+        Unit resultValue = (Unit)result.getEntity();
+        
+
+        assertEquals(Status.OK.getStatusCode(), result.getStatus());
+        assertEquals(resultValue.team.name, "team1");
+        assertEquals(resultValue.name, "unit3");
     }
 
     @Test
     void testAddUnitNameExists() {
-        given()
-            .when()
-            .urlEncodingEnabled(true)
-            .param("name", "unit1")
-            .param("teamId", team1.id)
-            .post("/units/").then()
-            .statusCode(409);
+        Response result = unitService.addUnit("unit1", team1.id);
+
+        
+        assertEquals(Status.CONFLICT.getStatusCode(), result.getStatus());
     }
 
     @Test
     void testAddUnitInvalidTeamId() {
-        given()
-            .when()
-            .urlEncodingEnabled(true)
-            .param("name", "unit3")
-            .param("teamId", 1234567)
-            .post("/units/").then()
-            .statusCode(409);
+        Response result = unitService.addUnit("unit3", (long)1234567);
+          
+        
+        assertEquals(Status.BAD_REQUEST.getStatusCode(), result.getStatus());
     }
 
     @Test
     void testDeleteUnit() {
-        given().delete("/units/" + unit1.id)
-            .then()
-            .statusCode(204);
+        Response result = unitService.deleteUnit(unit1.id);
+          
+        
+        assertEquals(Status.NO_CONTENT.getStatusCode(), result.getStatus());
     }
 }
