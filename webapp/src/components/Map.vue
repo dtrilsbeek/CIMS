@@ -137,6 +137,7 @@
                             this.overlay.getElement().classList.add('fadeout')
                                 setTimeout(() => {
                                     this.overlay.remove(this.leafletMap);
+                                    this.overlay = null;
                                 }, 400);
                         }, 800); 
                     }
