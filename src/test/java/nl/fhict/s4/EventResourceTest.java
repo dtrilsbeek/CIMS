@@ -1,8 +1,10 @@
 package nl.fhict.s4;
 
 
+import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
-import io.smallrye.mutiny.Multi;
+import io.smallrye.reactive.messaging.connectors.InMemoryConnector;
+
 import nl.fhict.s4.models.EventModel;
 import nl.fhict.s4.models.EventStatus;
 import nl.fhict.s4.models.EventType;
@@ -12,28 +14,24 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
-import static org.awaitility.Awaitility.await;
-
+import javax.enterprise.inject.Any;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.eclipse.microprofile.reactive.messaging.Channel;
-import org.reactivestreams.Publisher;
+
 
 @QuarkusTest
+@QuarkusTestResource(KafkaResource.class)
 @Transactional
 public class EventResourceTest {
 
 	@Inject EventService eventService;
-
+	@Inject @Any InMemoryConnector connector;
 
 	EventType type;
 	EventModel event;
@@ -95,13 +93,4 @@ public class EventResourceTest {
         assertEquals("firetruck", resultValue.description);
 		assertEquals(event.id, resultValue.id);
 	}
-
-	// @Test
-	// void testPricesEventStream() {
-	// 	List<EventModel> received = new CopyOnWriteArrayList<>();
-
-	// 	Multi<EventModel> result = eventService.events(null).onItem().invoke(e -> received.add(e));
-
-	// 	await().atMost(100000, MILLISECONDS).until(() -> received.size() == 1);
-	// }
 }

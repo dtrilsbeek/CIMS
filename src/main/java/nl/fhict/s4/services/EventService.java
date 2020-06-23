@@ -140,6 +140,11 @@ public class EventService {
     }
     
     public Multi<EventModel> events(UriInfo ui) {
+
+		if(ui == null) {
+			return eventBroadcast;
+		}
+
 		var queryParams = ui.getQueryParameters();
 		var stream = eventBroadcast;
 
