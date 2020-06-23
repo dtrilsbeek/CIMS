@@ -69,6 +69,7 @@
                 // fontys: [51.451069, 5.4772183],
                 eventSource: null,
                 overlay: null,
+                regionRectangle: null
             }
         },
 
@@ -154,7 +155,10 @@
 
             moveTo(bounds) {
                 this.leafletMap.flyToBounds(bounds);
-                new CimsRectangle(bounds, 'blue', 1).addTo(this.leafletMap);
+                if(this.regionRectangle) {
+                    this.regionRectangle.remove(this.leafletMap);
+                }
+                this.regionRectangle = new CimsRectangle(bounds, 'blue', 1).addTo(this.leafletMap);
                 this.bus.$emit("retrieve-by-bounds", bounds);
             },
             moveToEvent(event) {
@@ -163,7 +167,13 @@
             },
 
             alert(message) {
-                this.$refs.notifier.addAlert(message);
+                this.$refs.notifier.addAlert(message);                
+                if(message.includes('Left')) {
+                    this.regionRectangle.remove(this.leafletMap);
+                }
+                else if(message.includes('Entered')) {
+                    this.regionRectangle.addTo(this.leafletMap);
+                }
             }
         }
     }
