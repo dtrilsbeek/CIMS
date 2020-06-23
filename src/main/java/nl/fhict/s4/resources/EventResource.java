@@ -1,5 +1,6 @@
 package nl.fhict.s4.resources;
 
+import io.quarkus.security.Authenticated;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 
@@ -41,6 +42,7 @@ public class EventResource {
 
 
 	@POST
+	@Authenticated
 	@Transactional
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -55,6 +57,7 @@ public class EventResource {
 	}
 
 	@PUT
+	@Authenticated
 	@Transactional
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)

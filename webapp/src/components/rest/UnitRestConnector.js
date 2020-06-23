@@ -22,11 +22,8 @@ class UnitRestConnector extends AuthRestConnector  {
      * @returns {Promise} promise of HTTP response
      */
     getUnitsByTeamId(teamId){
-        const headers = {
-            // 'Content-Type': this.formUrlEncoded,
-            // 'Authorization': `Bearer ${this.token}`
-        }
-        const promise = Axios.get(`${this.baseUrl}?teamId=${teamId}`, {headers: headers});
+
+        const promise = Axios.get(`${this.baseUrl}?teamId=${teamId}`);
         
         return promise;
     }
@@ -47,7 +44,7 @@ class UnitRestConnector extends AuthRestConnector  {
 
         const headers = {
             'Content-Type': this.formUrlEncoded,
-            // 'Authorization': `Bearer ${this.token}`
+            'Authorization': `Bearer ${this.token}`
         }
 
         const promise = Axios.post(this.baseUrl, toPost, {headers: headers});
@@ -83,7 +80,7 @@ class UnitRestConnector extends AuthRestConnector  {
 
         const headers = {
             'Content-Type': this.formUrlEncoded,
-            // 'Authorization': `Bearer ${this.token}`
+            'Authorization': `Bearer ${this.token}`
         }
 
         const result = Axios.put(Config.getUrl('units'), data, {headers: headers});

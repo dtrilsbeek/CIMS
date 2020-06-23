@@ -29,7 +29,6 @@ import SituationMenu from '@/components/SituationMenu.vue'
 import UnitMenu from '@/components/UnitMenu.vue'
 import Teams from '@/components/Teams.vue'
 import TeamManage from '@/components/TeamsManagement.vue';
-import CreateEvent from '@/components/CreateEvent.vue';
 import AddEventType from '@/components/AddEventType.vue'
 
   export default {
@@ -38,7 +37,6 @@ import AddEventType from '@/components/AddEventType.vue'
       unitMenu: UnitMenu,
       teams: Teams,
       teamManage: TeamManage,
-      createEvent: CreateEvent,
       addEventType: AddEventType
     },
     data() {

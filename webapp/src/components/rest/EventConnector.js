@@ -32,7 +32,8 @@ class EventRestConnector extends AuthRestConnector  {
         });
 
         const headers = {
-            'Content-Type': this.formUrlEncoded
+            'Content-Type': this.formUrlEncoded,
+            'Authorization': `Bearer ${this.token}`
         }
 
         const promise = Axios.post(this.baseUrl, toPost, {headers: headers});
@@ -58,7 +59,8 @@ class EventRestConnector extends AuthRestConnector  {
         });
 
         const headers = {
-            'Content-Type': this.formUrlEncoded
+            'Content-Type': this.formUrlEncoded,
+            'Authorization': `Bearer ${this.token}`
         }
 
         const result = Axios.put(this.baseUrl, data, {headers: headers});

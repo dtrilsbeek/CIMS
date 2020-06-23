@@ -7,6 +7,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import io.quarkus.security.Authenticated;
 import nl.fhict.s4.services.UnitService;
 
 @Path("units")
@@ -16,6 +17,7 @@ public class UnitResource {
     @Inject UnitService unitService;
 
     @DELETE
+    @Authenticated
     @Path("{id}")
     @Transactional
     public Response deleteUnit(@PathParam("id") Long id) {
@@ -23,6 +25,7 @@ public class UnitResource {
     }
 
     @POST
+    @Authenticated
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Transactional
@@ -31,6 +34,7 @@ public class UnitResource {
     }
 
     @PUT
+    @Authenticated
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Transactional

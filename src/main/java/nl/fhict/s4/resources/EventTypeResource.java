@@ -7,6 +7,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import io.quarkus.security.Authenticated;
 import nl.fhict.s4.services.EventTypeService;
 
 @Path("types")
@@ -17,6 +18,7 @@ public class EventTypeResource {
     @Inject EventTypeService eventTypeService;
 
     @DELETE
+    @Authenticated
     @Path("{id}")
     @Transactional
     public Response deleteEventType(@PathParam("id") long id) {
@@ -25,6 +27,7 @@ public class EventTypeResource {
 
 
     @POST
+    @Authenticated
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Transactional

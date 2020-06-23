@@ -7,9 +7,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-
-
-
+import io.quarkus.security.Authenticated;
 import nl.fhict.s4.services.TeamService;
 
 @Path("teams")
@@ -19,6 +17,7 @@ public class TeamResource {
     @Inject TeamService teamService;
 
     @DELETE
+    @Authenticated
     @Path("{id}")
     @Transactional
     public Response deleteTeam(@PathParam("id") Long id) {
@@ -27,6 +26,7 @@ public class TeamResource {
 
 
     @POST
+    @Authenticated
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Transactional
