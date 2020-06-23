@@ -107,7 +107,7 @@ public class EventService {
 	}
 
 
-    private Multi<EventModel> addTypeFilter(MultivaluedMap<String, String> params, Multi<EventModel> stream) {
+    public static Multi<EventModel> addTypeFilter(MultivaluedMap<String, String> params, Multi<EventModel> stream) {
 		try {
 			long typeId = Long.parseLong(params.getFirst("type"));
 
@@ -118,7 +118,7 @@ public class EventService {
 		}	
 	}
 
-	private Multi<EventModel> addRegionFilter(MultivaluedMap<String, String> params, Multi<EventModel> stream) {
+	public static Multi<EventModel> addRegionFilter(MultivaluedMap<String, String> params, Multi<EventModel> stream) {
 		try {
 			double sx = Double.parseDouble(params.getFirst("sx"));
 			double sy = Double.parseDouble(params.getFirst("sy"));
