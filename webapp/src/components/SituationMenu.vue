@@ -27,8 +27,9 @@ export default {
     },
 
     data(){
+        // Set default to updating, when no marker is selected
         return {
-            isEditing: true
+            isEditing: (this.selectedMarker != false)
         }
     },
 
