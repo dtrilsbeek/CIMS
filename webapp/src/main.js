@@ -39,11 +39,11 @@ keycloak.init({ onLoad: initOptions.onLoad }).then(auth => {
   }).$mount('#app')
 
   Vue.prototype.$token = keycloak.token;
-  Vue.prototype.$refreshToken = keycloak.refreshToken;
 
   setInterval(() =>{
     keycloak.updateToken(70).then(refreshed => {
       if (refreshed) {
+        Vue.prototype.$token = keycloak.token;
         console.log('Token refreshed');
       }
     }).catch(()=>{

@@ -1,12 +1,12 @@
 import Config from '@/components/rest/RestConfig'
 import Axios from 'axios'
-import AuthRestConnector from '@/components/rest/AuthRestConnector';
+import RestConnector from '@/components/rest/RestConnector';
 
 
 /**
  * Makes REST http-requests to the Units resource
  */
-class UnitRestConnector extends AuthRestConnector  {
+class UnitRestConnector extends RestConnector  {
 
     constructor(token){
         super(token);
@@ -33,9 +33,10 @@ class UnitRestConnector extends AuthRestConnector  {
      * Adds a new team
      * @param {string} name -> name of the new unit
      * @param {Number} teamId -> teamId of the team this new unit belongs to
+     * @param {string} token the auth token
      * @returns {Promise} promise of HTTP response
      */
-    addUnit(name, teamId){
+    addUnit(name, teamId, token){
         const toPost = this.toFormUrlEncoded({
             name: name,
             teamId: teamId
@@ -44,7 +45,7 @@ class UnitRestConnector extends AuthRestConnector  {
 
         const headers = {
             'Content-Type': this.formUrlEncoded,
-            'Authorization': `Bearer ${this.token}`
+            'Authorization': `Bearer ${token}`
         }
 
         const promise = Axios.post(this.baseUrl, toPost, {headers: headers});
@@ -54,12 +55,13 @@ class UnitRestConnector extends AuthRestConnector  {
     /**
      * Removes an existing unit
      * @param {number} id of the to be deleted unit
+     * @param {string} token the auth token
      * @returns {Promise} promise of HTTP response
      */
-    removeUnit(unitId) {
+    removeUnit(unitId, token) {
    
         const headers = {
-            'Authorization': `Bearer ${this.token}`
+            'Authorization': `Bearer ${token}`
         }
         const promise = Axios.delete(`${this.baseUrl}/${unitId}`, {headers: headers});
         return promise;
@@ -69,9 +71,10 @@ class UnitRestConnector extends AuthRestConnector  {
      * 
      * @param {String} name 
      * @param {Number} unitId 
-     * @param {Number} teamId 
+     * @param {Number} teamId
+     * @param {string} token the auth token 
      */
-    updateUnit(name, unitId, teamId){
+    updateUnit(name, unitId, teamId, token){
         const data = this.toFormUrlEncoded({
             name: name,
             teamId: teamId,
@@ -80,7 +83,7 @@ class UnitRestConnector extends AuthRestConnector  {
 
         const headers = {
             'Content-Type': this.formUrlEncoded,
-            'Authorization': `Bearer ${this.token}`
+            'Authorization': `Bearer ${token}`
         }
 
         const result = Axios.put(Config.getUrl('units'), data, {headers: headers});

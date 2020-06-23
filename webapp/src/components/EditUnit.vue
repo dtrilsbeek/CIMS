@@ -44,7 +44,7 @@ export default {
             /**
              * @type {UnitRestConnector}
              */
-            unitRestConnector: new UnitRestConnector(this.$token)
+            unitRestConnector: new UnitRestConnector()
         }
     },
 
@@ -81,9 +81,9 @@ export default {
         submit(){
             if(this.formHelper.validateForm()){
                 const name = this.form.name.value;
-                this.unitRestConnector.updateUnit(name, this.form.id.value, this.form.teamId.value).then(() => {
+                this.unitRestConnector.updateUnit(name, this.form.id.value, this.form.teamId.value, this.$token).then(() => {
                     this.formHelper.clearForm();
-                    this.$$emit('alert', `Unit ${name} updated`);
+                    this.$emit('alert', `Unit ${name} updated`);
                     this.$modal.hide('addTopic-modal');
                 }).catch((ex) => {
                     console.log(ex);

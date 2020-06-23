@@ -44,7 +44,7 @@ export default {
             description: new FormField(isFilledIn())
         },
         formHelper: null,
-        eventRestConnector: new EventRestConnector(this.$token),
+        eventRestConnector: new EventRestConnector(),
       }
     },
     created() {
@@ -80,7 +80,7 @@ export default {
                 const status      = this.form.status.value;
                 const description = this.form.description.value;
 
-                this.eventRestConnector.updateEvent(id, lat, lon, typeId, status, description);
+                this.eventRestConnector.updateEvent(id, lat, lon, typeId, status, description, this.$token);
                 this.formHelper.clearForm();
                 this.hide();
             }

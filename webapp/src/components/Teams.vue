@@ -24,7 +24,7 @@ export default {
              * @type {FormHelper}
              */
             formHelper: null,
-            restConnector: new TeamRestConnector(this.$token)
+            restConnector: new TeamRestConnector()
         }
     },
 
@@ -36,7 +36,7 @@ export default {
         submit(){
             if(this.formHelper.validateForm()){
                 const name = this.form.name.value;
-                const result = this.restConnector.addTeam(name);
+                const result = this.restConnector.addTeam(name, this.$token);
                 result.then(() => {
                     this.formHelper.clearForm();
                     this.$emit('alert', `Team ${name} added`);

@@ -43,8 +43,8 @@ export default {
              * @type {FormHelper}
              */
             formHelper: null,
-            unitRestConnector: new UnitRestConnector(this.$token),
-            teamRestConnector: new TeamRestConnector(this.$token),
+            unitRestConnector: new UnitRestConnector(),
+            teamRestConnector: new TeamRestConnector(),
 
             listOfTeams: [],
 
@@ -64,7 +64,7 @@ export default {
         submit(){
             if(this.formHelper.validateForm()){
                 const name = this.form.name.value;
-                this.unitRestConnector.addUnit(name, this.form.teamid.value).then(() => {
+                this.unitRestConnector.addUnit(name, this.form.teamid.value, this.$token).then(() => {
                     this.formHelper.clearForm();
                     this.$emit('alert', `Unit ${name} added`);
                     this.$modal.hide('addTopic-modal');

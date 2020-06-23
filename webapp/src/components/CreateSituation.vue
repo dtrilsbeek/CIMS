@@ -38,8 +38,8 @@ export default {
           description: new FormField(isFilledIn())
         },
         formHelper: null,
-        typeRestConnector: new TypeRestConnector(this.$token),
-        eventRestConnector: new EventRestConnector(this.$token),
+        typeRestConnector: new TypeRestConnector(),
+        eventRestConnector: new EventRestConnector(),
         types: [],
       }
     },
@@ -75,7 +75,7 @@ export default {
           const typeId = this.form.typeId.value;
           const description = this.form.description.value;
 
-          this.eventRestConnector.addEvent(lat, lon, typeId, description);
+          this.eventRestConnector.addEvent(lat, lon, typeId, description, this.$token);
 
           this.formHelper.clearForm();
           this.$emit('alert', 'Situation added');

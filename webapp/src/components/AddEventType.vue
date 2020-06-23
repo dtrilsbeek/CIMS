@@ -28,7 +28,7 @@ export default {
              * @type {FormHelper}
              */
             formHelper: null,
-            restConnector: new TypeRestConnector(this.$token)
+            restConnector: new TypeRestConnector()
         }
     },
 
@@ -40,7 +40,7 @@ export default {
         submit(){
             if(this.formHelper.validateForm()){
                 const name = this.form.name.value;
-                const result = this.restConnector.addType(name, this.form.description.value, this.form.icon.value);
+                const result = this.restConnector.addType(name, this.form.description.value, this.form.icon.value, this.$token);
                 result.then(() => {
                     this.formHelper.clearForm();
                     this.$emit('alert', `Event type ${name} added`);

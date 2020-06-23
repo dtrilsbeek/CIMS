@@ -42,8 +42,8 @@ export default {
     data() {
         return {
             teams: Array,
-            teamRestConnector: new TeamRestConnector(this.$token),
-            unitRestConnector: new UnitRestConnector(this.$token)
+            teamRestConnector: new TeamRestConnector(),
+            unitRestConnector: new UnitRestConnector()
         }
     },
 
@@ -85,7 +85,7 @@ export default {
         },
 
         removeUnit(unit) { 
-            this.unitRestConnector.removeUnit(unit.id)
+            this.unitRestConnector.removeUnit(unit.id, this.$token)
             .then(() => {
 
                 let team = this.teams.find(x => x.id = unit.team.id);
@@ -101,7 +101,7 @@ export default {
 
         removeTeam(team) {
             
-            this.teamRestConnector.removeTeam(team.id)
+            this.teamRestConnector.removeTeam(team.id, this.$token)
             .then(() => {
 
                 let index = this.teams.indexOf(team);
