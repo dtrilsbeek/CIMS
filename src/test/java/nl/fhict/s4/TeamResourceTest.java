@@ -1,12 +1,16 @@
 package nl.fhict.s4;
 
-import static io.restassured.RestAssured.given;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.List;
+
+import javax.inject.Inject;
 import javax.transaction.Transactional;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import io.quarkus.test.junit.QuarkusTest;
-import io.restassured.http.ContentType;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,11 +18,14 @@ import org.junit.jupiter.api.Test;
 
 
 import nl.fhict.s4.models.Team;
+import nl.fhict.s4.services.TeamService;
 
 @QuarkusTest
 @Transactional
 public class TeamResourceTest {
 
+    @Inject TeamService teamService;
+    
     Team team1;
 
     @BeforeEach
@@ -35,69 +42,48 @@ public class TeamResourceTest {
 
     @Test
     void testGetAllTeams() {
-        int typeCount = given()
-        .when()
-            .get("/teams")
-        .then()
-            .statusCode(200)
-            .contentType(ContentType.JSON)
-            .extract()
-            .response()
-            .jsonPath()
-            .getList("$")
-            .size();
+        Response result = teamService.getTeams();
+        List<?> resultValue = (List<?>)result.getEntity();
+        
 
-        assertEquals(typeCount, 1);    
+        assertEquals(Status.OK.getStatusCode(), result.getStatus());
+        assertEquals(1, resultValue.size()); 
     }
 
     @Test
     void testGetTeamById() {
-        Team result = given()
-        .when()
-            .get("/teams/" + team1.id)
-        .then()
-            .statusCode(200)
-            .contentType(ContentType.JSON)
-            .extract()
-            .response()
-            .jsonPath()
-            .getObject("$", Team.class);
-
-        assertEquals(result.name, "team1");
+        Response result = teamService.getTeamById(team1.id);
+        Team resultValue = (Team)result.getEntity();
+        
+        
+        assertEquals(Status.OK.getStatusCode(), result.getStatus());
+        assertEquals(resultValue.name, "team1");
     }
 
     @Test
     void testAddTeam() {
-        Team result = given()
-        .when()
-        .urlEncodingEnabled(true)
-        .param("name", "team2")
-        .post("/teams").then()
-        .statusCode(200)
-            .contentType(ContentType.JSON)
-            .extract()
-            .response()
-            .jsonPath()
-            .getObject("$", Team.class);
+        Response result = teamService.addTeam("team2");
+        Team resultValue = (Team)result.getEntity();
+        
 
-            assertEquals(result.name, "team2");
+        assertEquals(Status.OK.getStatusCode(), result.getStatus());
+        assertEquals(resultValue.name, "team2");
     }
 
     @Test
     public void addTeamNameExists() {
-        given()
-            .when()
-            .urlEncodingEnabled(true)
-            .param("name", "team1")
-            .post("/teams/").then()
-            .statusCode(409);
+        Response result = teamService.addTeam(team1.name);
+        
+
+        assertEquals(Status.CONFLICT.getStatusCode(), result.getStatus());
     }
 
     @Test
     void testDeleteTeam() {
-        given().delete("/teams/" + team1.id)
-        .then()
-            .statusCode(204);
+        Response result = teamService.deleteTeam(team1.id);
+
+        
+        assertEquals(Status.NO_CONTENT.getStatusCode(), result.getStatus());
     }
 
 }

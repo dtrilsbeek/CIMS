@@ -38,6 +38,7 @@
     import CimsMap from '@/components/leaflet/CimsMap'
     import CimsMarker from '@/components/leaflet/CimsMarker'
     import CimsRectangle from '@/components/leaflet/CimsRectangle'
+    import CimsImageOverlay from '@/components/leaflet/CimsImageOverlay';
     import AlertNotifier from '@/components/Notifier'
     // Css for loading the map smoothly
     import 'leaflet/dist/leaflet.css'
@@ -46,7 +47,6 @@
     import ActiveEvents from './ActiveEvents'
     import Vue from 'vue';
     import config from '@/components/rest/RestConfig'
-    import L from "leaflet";
 
     export default {
         components: {
@@ -65,6 +65,7 @@
                 initialPosition: null,
                 // fontys: [51.451069, 5.4772183],
                 eventSource: null,
+                overlay: null,
             }
         },
 
@@ -117,29 +118,35 @@
 
                 this.leafletMap = new CimsMap(this.initialPosition, 13);
                 this.showUserInstruction(lat, lon);
-                this.leafletMap.on('click', (e) => {
-                    let selectedMarker = this.selectedMarker || null;
-                    this.$refs.modal.show(selectedMarker, e.latlng);
-                });
-
 
                 this.leafletMap.on('dragend', () => {
                     this.$refs.region.checkBounds(this.leafletMap.getCimsBounds());
                 });
-
             },
 
             showUserInstruction(lat, lon) {
                 var imageUrl = '/userInstruction.png';
                 var imageBounds = [[lat - 0.05, lon - 0.14], [lat + 0.05, lon + 0.14]];
-                var overlay = L.imageOverlay(imageUrl, imageBounds);
-                overlay.addTo(this.leafletMap);
-                setTimeout(function () {
-                    overlay.getElement().classList.add('fadeout')
-                    setTimeout(function () {
-                        overlay.remove(this.leafletMap);
-                    }, 800);
-                }, 3000)
+                this.overlay = new CimsImageOverlay(imageUrl, imageBounds);
+                this.overlay.addTo(this.leafletMap);
+
+                this.leafletMap.on('click', (e) => {
+              
+                    if(this.overlay) {
+                        setTimeout(() => {
+                            this.overlay.getElement().classList.add('fadeout')
+                                setTimeout(() => {
+                                    this.overlay.remove(this.leafletMap);
+                                    this.overlay = null;
+                                }, 400);
+                        }, 800); 
+                    }
+                    else {    
+                        let selectedMarker = this.selectedMarker || null;
+                        this.$refs.modal.show(selectedMarker, e.latlng);
+                    }
+                });
+
             },
 
             moveTo(bounds) {

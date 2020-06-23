@@ -1,11 +1,8 @@
 package nl.fhict.s4.models;
 
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
