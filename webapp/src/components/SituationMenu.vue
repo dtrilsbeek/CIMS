@@ -1,7 +1,18 @@
 <template>
   <div class="full-size">
-      <update-situation v-if="isEditing" @toggle="toggleMode()" :selected-marker="selectedMarker" :event="event"></update-situation>
-      <create-situation v-else @toggle="toggleMode()" :selected-marker="selectedMarker" :event="event"></create-situation>
+      <update-situation 
+            v-if="isEditing" 
+            @toggle="toggleMode()" 
+            :selected-marker="selectedMarker" 
+            :event="event"
+            v-on:alert="alert($event)">
+      </update-situation>
+      <create-situation 
+            v-else @toggle="toggleMode()" 
+            :selected-marker="selectedMarker" 
+            :event="event"
+            v-on:alert="alert($event)">
+      </create-situation>
   </div>
 </template>
 
@@ -36,6 +47,10 @@ export default {
     methods: {
         toggleMode(){
             this.isEditing =  ! this.isEditing;
+        },
+
+        alert(message){
+            this.$emit('alert', message);
         }
     }
 }

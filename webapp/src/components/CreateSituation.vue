@@ -78,6 +78,7 @@ export default {
           this.eventRestConnector.addEvent(lat, lon, typeId, description);
 
           this.formHelper.clearForm();
+          this.$emit('alert', 'Situation added');
           this.hide();
         }
       },

@@ -1,7 +1,15 @@
 <template>
   <div class="full-size">
-      <edit-unit v-if="isEditing" @toggle="toggleMode()" :selected-marker="selectedMarker" :unit="unit" ></edit-unit>
-      <create-unit v-else @toggle="toggleMode()"></create-unit>
+      <edit-unit 
+            v-if="isEditing" 
+            @toggle="toggleMode()" 
+            :selected-marker="selectedMarker" 
+            :unit="unit" 
+            v-on:alert="alert($event)"
+            ></edit-unit>
+      <create-unit 
+            v-else @toggle="toggleMode()"
+            v-on:alert="alert($event)"></create-unit>
   </div>
 </template>
 
@@ -34,6 +42,10 @@ export default {
     methods: {
         toggleMode(){
             this.isEditing =  ! this.isEditing;
+        },
+
+        alert(message){
+            this.$emit('alert', message);
         }
     }
 }

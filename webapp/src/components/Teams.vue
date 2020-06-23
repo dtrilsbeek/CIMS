@@ -35,9 +35,11 @@ export default {
     methods: {
         submit(){
             if(this.formHelper.validateForm()){
-                const result = this.restConnector.addTeam(this.form.name.value);
+                const name = this.form.name.value;
+                const result = this.restConnector.addTeam(name);
                 result.then(() => {
                     this.formHelper.clearForm();
+                    this.$emit('alert', `Team ${name} added`);
                     this.$modal.hide('addTopic-modal');
                 });
             }

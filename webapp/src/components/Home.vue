@@ -11,7 +11,13 @@
         </ul>
       </aside>
       <span class="close" v-on:click="hide()">X</span>       
-        <component :is="activeComponent" v-on:unit-edit="editUnit($event)" :selectedMarker="selectedMarker" :unit="unit" :event="event" @hide="hide()"> </component>
+        <component 
+                  :is="activeComponent" 
+                  v-on:unit-edit="editUnit($event)" 
+                  v-on:alert="alert($event)" 
+                  :selectedMarker="selectedMarker" 
+                  :unit="unit" 
+                  :event="event" @hide="hide()"> </component>
     </modal>
   </div>
 </template>
@@ -49,6 +55,10 @@ import AddEventType from '@/components/AddEventType.vue'
     methods: {
       switchComponent(index){
         this.componentIndex = index; 
+      },
+
+      alert(message){
+        this.$emit('alert', message);
       },
 
       show (selectedMarker, latlng) {

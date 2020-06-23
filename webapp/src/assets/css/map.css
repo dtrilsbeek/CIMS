@@ -100,7 +100,8 @@
 }
 
 #map .active {
-    box-shadow: rgba(216, 81, 81, 0.8) 0 0 0 5px;
+    border: 5px solid rgba(216, 81, 81, .8);
+    padding: 5px;
     border-radius: 50%;
 }
 
@@ -111,6 +112,11 @@
     -ms-animation: fadein 1s; /* Internet Explorer */
     -o-animation: fadein 1s; /* Opera < 12.1 */
     animation: fadein 1s;
+}
+
+/* To keep width and height of the image in proportion */
+.leaflet-marker-icon{
+    width: auto !important;
 }
 
 .fadeout {

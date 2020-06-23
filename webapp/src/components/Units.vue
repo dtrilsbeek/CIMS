@@ -63,8 +63,10 @@ export default {
     methods: {
         submit(){
             if(this.formHelper.validateForm()){
-                this.unitRestConnector.addUnit(this.form.name.value, this.form.teamid.value).then(() => {
+                const name = this.form.name.value;
+                this.unitRestConnector.addUnit(name, this.form.teamid.value).then(() => {
                     this.formHelper.clearForm();
+                    this.$emit('alert', `Unit ${name} added`);
                     this.$modal.hide('addTopic-modal');
                 });
             }

@@ -81,7 +81,6 @@ export default {
                 const description = this.form.description.value;
 
                 this.eventRestConnector.updateEvent(id, lat, lon, typeId, status, description);
-
                 this.formHelper.clearForm();
                 this.hide();
             }

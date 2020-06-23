@@ -39,9 +39,11 @@ export default {
     methods: {
         submit(){
             if(this.formHelper.validateForm()){
-                const result = this.restConnector.addType(this.form.name.value, this.form.description.value, this.form.icon.value);
+                const name = this.form.name.value;
+                const result = this.restConnector.addType(name, this.form.description.value, this.form.icon.value);
                 result.then(() => {
                     this.formHelper.clearForm();
+                    this.$emit('alert', `Event type ${name} added`);
                     this.$modal.hide('addTopic-modal');
                 });
             }

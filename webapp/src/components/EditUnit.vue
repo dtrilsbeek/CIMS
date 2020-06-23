@@ -80,8 +80,10 @@ export default {
     methods: {
         submit(){
             if(this.formHelper.validateForm()){
-                this.unitRestConnector.updateUnit(this.form.name.value, this.form.id.value, this.form.teamId.value).then(() => {
+                const name = this.form.name.value;
+                this.unitRestConnector.updateUnit(name, this.form.id.value, this.form.teamId.value).then(() => {
                     this.formHelper.clearForm();
+                    this.$$emit('alert', `Unit ${name} updated`);
                     this.$modal.hide('addTopic-modal');
                 }).catch((ex) => {
                     console.log(ex);

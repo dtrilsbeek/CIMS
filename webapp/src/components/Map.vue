@@ -25,7 +25,10 @@
         </div>
 
         <aside class="info">
-            <menu-modal :bus="bus" ref="modal"/>
+            <menu-modal 
+                v-on:alert="alert($event)"
+                :bus="bus" 
+                ref="modal"/>
             <active-events :bus="bus" v-on:move-to-event="moveToEvent($event)"/>
         </aside>
 
