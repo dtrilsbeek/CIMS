@@ -12,7 +12,7 @@
       </div>
        
 
-    <ul class="teams">
+    <ul v-if="teams.length" class="teams">
         <li v-for="team in teams" :key="team.id" class="team">
 			<details class="dropdown details-reset details-overlay d-inline-block">
 				<summary class="team-name">{{team.name}}
@@ -30,14 +30,12 @@
 			</details>
 		</li>
     </ul>
-  
   </div>
 </template>
 
 <script>
 import TeamRestConnector from "./rest/TeamRestConnector";
 import UnitRestConnector from "./rest/UnitRestConnector";
-
 
 export default {
 
