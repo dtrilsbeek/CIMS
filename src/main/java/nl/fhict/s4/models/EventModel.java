@@ -1,8 +1,7 @@
 package nl.fhict.s4.models;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import jdk.jfr.Event;
+
 
 import javax.persistence.*;
 
@@ -15,21 +14,25 @@ public class EventModel extends PanacheEntityBase {
 	public Long id;
 	public double lat;
 	public double lon;
-	public int type;
-	public Status status;
+
+	@JoinColumn(nullable = false)
+    @ManyToOne
+	public EventType type;
+
+	public EventStatus status;
 	public String description;
-	public Action action;
+	public boolean isUpdate;
 
 	public EventModel() {
-		status = Status.ACTIVE;
+		status = EventStatus.ACTIVE;
 	}
 
-	public EventModel(double lat, double lon, int type, String description) {
+	public EventModel(double lat, double lon, EventType type, String description) {
 		this.lat = lat;
 		this.lon = lon;
 		this.type = type;
 		this.description = description;
-		this.status = Status.ACTIVE;
+		this.status = EventStatus.ACTIVE;
 	}
 
 	public EventModel(EventModel model) {
@@ -39,67 +42,7 @@ public class EventModel extends PanacheEntityBase {
 		this.type = model.type;
 		this.description = model.description;
 		this.status = model.status;
-//		this.updateId = model.updateId;
-		this.action = model.action;
+		this.isUpdate = false;
 	}
-
-	public void finish() {
-		this.status = Status.FINISHED;
-	}
-
-	/**
-	 * @return the lat
-	 */
-	public double getLat() {
-		return lat;
-	}
-
-	/**
-	 * @return the lon
-	 */
-	public double getLon() {
-		return lon;
-	}
-
-	/**
-	 * @return the type
-	 */
-	public int getType() {
-		return type;
-	}
-
-	/**
-	 * @return the description
-	 */
-	public String getDescription() {
-		return description;
-	}
-
-	/**
-	 * @param lat the lat to set
-	 */
-	public void setLat(double lat) {
-		this.lat = lat;
-	}
-
-	/**
-	 * @param lon the lon to set
-	 */
-	public void setLon(double lon) {
-		this.lon = lon;
-	}
-
-	/**
-	 * @param type the type to set
-	 */
-	public void setType(int type) {
-		this.type = type;
-	}
-
-	/**
-	 * @param description the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
+	
 }

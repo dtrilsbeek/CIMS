@@ -1,103 +1,184 @@
 <template>
-  <div class="grid">
-      <region-menu v-on:move-to="moveTo($event)"></region-menu>
-      <div id="map"></div>
-      <ul class="map-info">
-          <li>Info</li>
-          <li>Nieuws</li>
-      </ul>
-      <aside class="info">info
-          <home/>
-      </aside>
+    <div class="grid">
 
-  </div>
+        <div class="logo-nav">
+            CIMS
+        </div>
+        <div class="tabs-nav">
+
+        </div>
+
+        <div class="region-menu-nav">
+            <region-menu :bus="bus"
+                         v-on:region-bounds="setInitialPosition($event)"
+                         v-on:move-to="moveTo($event)"
+                         v-on:alert="alert($event)"
+                         ref="region">
+
+            </region-menu>
+        </div>
+
+        <div id="map">
+        </div>
+        <div class="map-info">
+            <h4>Info</h4>
+        </div>
+
+        <aside class="info">
+            <menu-modal 
+                v-on:alert="alert($event)"
+                :bus="bus" 
+                ref="modal"/>
+            <active-events :bus="bus" v-on:move-to-event="moveToEvent($event)"/>
+        </aside>
+
+        <alert-notifier ref="notifier"></alert-notifier>
+    </div>
 </template>
 
 <script>
-import CimsMap from '@/components/leaflet/CimsMap'
-import CimsMarker from '@/components/leaflet/CimsMarker'
 
-// Css for loading the map smoothly
-import 'leaflet/dist/leaflet.css'
-// import EventStream from "./stream/EventStream"; 
-import Home from './Home.vue'
-import RegionMenu from '@/components/RegionMenu'
+    import CimsMap from '@/components/leaflet/CimsMap'
+    import CimsMarker from '@/components/leaflet/CimsMarker'
+    import CimsRectangle from '@/components/leaflet/CimsRectangle'
+    import CimsImageOverlay from '@/components/leaflet/CimsImageOverlay';
+    import AlertNotifier from '@/components/Notifier'
+    // Css for loading the map smoothly
+    import 'leaflet/dist/leaflet.css'
+    import Home from './Home.vue'
+    import RegionMenu from '@/components/RegionMenu'
+    import ActiveEvents from './ActiveEvents'
+    import Vue from 'vue';
+    import config from '@/components/rest/RestConfig'
 
-export default {
-    components: {
-        home: Home,
-        regionMenu: RegionMenu
-    },
-    data(){
-        return{
-            // eventStream: null,
-            map: null,
-            markers: [],
-            fontys: [51.451069, 5.4772183],
-            eventSource: null
-        }
-    },
+    export default {
+        components: {
+            alertNotifier: AlertNotifier,
+            menuModal: Home,
+            regionMenu: RegionMenu,
+            activeEvents: ActiveEvents
+        },
+        data() {
+            return {
+                // eventStream: null,
+                streamUrl: config.getUrl('events', 'stream'),
+                bus: new Vue(),
+                leafletMap: null,
+                markers: [],
+                initialPosition: null,
+                // fontys: [51.451069, 5.4772183],
+                eventSource: null,
+                overlay: null,
+                regionRectangle: null
+            }
+        },
 
-    mounted(){
+        mounted() {
+            this.bus.$emit("retrieve-current-region-bounds");
+            this.createEventSource();
+        },
 
-        // this.eventStream = new EventStream();
-        this.map = new CimsMap(this.fontys, 25);
-        // this.addMarker();
+        methods: {
 
-        //this.markers.push(new CimsMarker(0, 'ambulance', 'description', this.fontys).addTo(this.map));
-        
-        this.map.on('click', (e) => {
-           this.$root.$refs.home.show(e.latlng);
-        })
+            setSelectedMarker(marker) {
+                if (this.selectedMarker) {
+                    this.selectedMarker.getElement().classList.remove('active');
+                }
+                this.selectedMarker = marker;
+            },
 
-        //this.eventStream = new EventStream();
-        this.eventSource = new EventSource("http://localhost:8083/events/stream");
-        this.eventSource.onmessage = (event) => {
-            
-            const data = JSON.parse(event.data);
+            createEventSource() {
+                this.eventSource = new EventSource(config.getUrl('events', 'stream'));
+                this.eventSource.onmessage = (event) => {
 
-            console.log(data);
+                    const data = JSON.parse(event.data);
 
-            if(data.type === 1) {
-                const marker = this.markers.find(m => m.id === data.id);
-                if(marker != undefined) {
-                    marker.moveTo([data.lat, data.lon], 500);
+                    if (data.isUpdate) {
+                        const marker = this.markers[data.id]
+                        if (marker) {
+                            marker.type = data.type;
+                            marker.status = data.status;
+                            marker.description = data.description;
+                            marker.moveTo([data.lat, data.lon], 1500);
+                        }
+                    } else {
+                        this.markers[data.id] = new CimsMarker(this, data.id, data.type, data.description, data.status, [data.lat, data.lon]);
+                    }
+                };
+            },
+
+            setInitialPosition(bounds) {
+                //convert to number
+                let numberBounds = [
+                    Array.from(bounds[0], x => +x),
+                    Array.from(bounds[1], x => +x)
+                ]
+
+                //avg middle position of region bounds
+                let lat = (numberBounds[0][0] + numberBounds[1][0]) / 2;
+                let lon = (numberBounds[0][1] + numberBounds[1][1]) / 2;
+
+                this.initialPosition = [lat, lon];
+
+                this.leafletMap = new CimsMap(this.initialPosition, 13);
+                this.showUserInstruction(lat, lon);
+
+                this.leafletMap.on('dragend', () => {
+                    this.$refs.region.checkBounds(this.leafletMap.getCimsBounds());
+                });
+            },
+
+            showUserInstruction(lat, lon) {
+                var imageUrl = '/userInstruction.png';
+                var imageBounds = [[lat - 0.05, lon - 0.14], [lat + 0.05, lon + 0.14]];
+                this.overlay = new CimsImageOverlay(imageUrl, imageBounds);
+                this.overlay.addTo(this.leafletMap);
+
+                this.leafletMap.on('click', (e) => {
+              
+                    if(this.overlay) {
+                        setTimeout(() => {
+                            this.overlay.getElement().classList.add('fadeout')
+                                setTimeout(() => {
+                                    this.overlay.remove(this.leafletMap);
+                                    this.overlay = null;
+                                }, 400);
+                        }, 800); 
+                    }
+                    else {    
+                        let selectedMarker = this.selectedMarker || null;
+                        this.$refs.modal.show(selectedMarker, e.latlng);
+                    }
+                });
+
+            },
+
+            moveTo(bounds) {
+                this.leafletMap.flyToBounds(bounds);
+                if(this.regionRectangle) {
+                    this.regionRectangle.remove(this.leafletMap);
+                }
+                this.regionRectangle = new CimsRectangle(bounds, 'blue', 1).addTo(this.leafletMap);
+                this.bus.$emit("retrieve-by-bounds", bounds);
+            },
+            moveToEvent(event) {
+                this.leafletMap.flyTo([event.lat, event.lon], 12);
+                this.markers[event.id].fire('click');
+            },
+
+            alert(message) {
+                this.$refs.notifier.addAlert(message);                
+                if(message.includes('Left')) {
+                    this.regionRectangle.remove(this.leafletMap);
+                }
+                else if(message.includes('Entered')) {
+                    this.regionRectangle.addTo(this.leafletMap);
                 }
             }
-            else {
-                const marker = new CimsMarker(data.id, 'ambulance', data.description, [data.lat, data.lon]);
-                    
-                this.addMarkerStream(marker);
-            }
-   
-          
-        };
-
-        // this.eventStream.readStream(this.addMarkerStream);
-    },
-
-    created() {
-         this.$root.$refs.map = this;
-    },
-
-    methods: {
-        addMarker(markerInfo){
-            this.markers.push(new CimsMarker(this.markers.length, 'ambulance', markerInfo.description, [markerInfo.lat, markerInfo.lon]).addTo(this.map));
-        },
-
-        addMarkerStream(marker){
-            this.markers.push(marker.addTo(this.map));
-        },
-
-        moveTo(bounds){
-            console.log(bounds);
-            this.map.flyToBounds(bounds);
         }
-
     }
-}
 </script>
 
 <!--suppress HtmlUnknownTarget -->
-<style src="@/assets/css/map.css" scoped>
+<style src="@/assets/css/map.css">
 </style>

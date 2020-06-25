@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: formvalidation/FormValidation.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: formvalidation/FormValidation.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
+    File that holds all the methods for validating a form.
+    Methods that are needed for the form should be imported
+*/
+
+
+/**
+ * Adds an error if the value is empty
+ * @param {String} customError custom error message, overrides default message
+ */
+export function isFilledIn(customError){
+    return (input) => {
+        const value = input.value;
+        if(value == null || value == ""){
+            addToErrors(input, "This field is required", customError);
+        }
+    }
+}
+
+/**
+ * Adds an error if the values is not an email
+ * @param {String} customError custom error message, overrides default message
+ */
+export function isEmail(customError){
+    return (input) => {
+        const value = input.value;
+        const regex = /\S+@\S+\.\S+/;
+
+        if(! regex.test(value)){
+            addToErrors(input, 'This needs to be a valid email', customError);
+        }
+    }
+}
+
+/**
+ * Adds an error if the values are not the same
+ * @param {String} sameAs value that the input will be compared to
+ * @param {String} customError custom error message, overrides default message
+ */
+export function isSameAs(sameAs, customError){
+    return (input) => {
+        const value = input.value;
+        const valueOfOther = input.otherValues[sameAs];
+        if(value !== valueOfOther){
+            addToErrors(input, `${value} is not the same is ${sameAs}`, customError)
+        }
+    }
+}
+
+/**
+ * Adds an error if the value does not atleast have the minimum length
+ * @param {Number} minLength the mininum length the input has to be 
+ * @param {String} customError custom error message, overrides default message
+ */
+export function minLength(minLength, customError){
+    return (input) => {
+        const value = input.value;
+        if(value.length &lt; minLength){
+            addToErrors(input, `Requires a minimum length of ${length}`, customError);
+        }
+    }
+}
+
+/**
+ * Adds an error if the values is longer than the maximum length
+ * @param {Number} maxLength the maximum length that the input should not exceed
+ * @param {String} customError custom error message, overrides default message
+ */
+export function maxLength(maxLength, customError){
+    return (input) => {
+        const value = input.value;
+        if(value.length > maxLength){
+            addToErrors(input, `Exceeds the maximum length of ${length}`, customError);
+        }
+    }
+}
+
+/**
+ * Adds an error if the value is not a number
+ * @param {String} customError custom error message, overrides default message
+ */
+export function isPositiveInt(customError){
+    return (input) => {
+        if(! Number.isInteger(input)){
+            addToErrors(input, `${input} is not a valid Integer`, customError)
+        }
+        else if(input &lt; 0){
+            addToErrors(input, `${input} is not a positive number`, customError);
+        }
+    }
+}
+
+/**
+ * @private
+ * Adds the error message to the formField
+ * @param {Object} input the form field will get the error
+ * @param {String} errorMsg the default error message
+ * @param {String} customError custom error message, overrides default message
+ */
+function addToErrors(input, errorMsg, customError){
+        const error = customError || errorMsg;
+        input.errors.push(error);
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="FormField.html">FormField</a></li><li><a href="FormHelper.html">FormHelper</a></li><li><a href="module.exports.html">exports</a></li><li><a href="RestConfig.html">RestConfig</a></li><li><a href="TeamRestConnector.html">TeamRestConnector</a></li><li><a href="UnitRestConnector.html">UnitRestConnector</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_updateLine">_updateLine</a></li><li><a href="global.html#bindPopupInfo">bindPopupInfo</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isFilledIn">isFilledIn</a></li><li><a href="global.html#isPositiveInt">isPositiveInt</a></li><li><a href="global.html#isSameAs">isSameAs</a></li><li><a href="global.html#maxLength">maxLength</a></li><li><a href="global.html#minLength">minLength</a></li><li><a href="global.html#moveTo">moveTo</a></li><li><a href="global.html#setOnClick">setOnClick</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Wed May 27 2020 14:42:17 GMT+0200 (W. Europe Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -2,14 +2,26 @@
 .map-header{
     position: relative;
     height: 50px;
+    width: 100%;
     line-height: 50px;
     font-weight: bold;
     font-size: 24px;
     text-align: center;
-    grid-column: 1/11;
-    grid-row: 1;
     background-color: #efefef;
-    border-bottom: .5px solid #555;
+    border-left: 1px solid #555;
+    border-bottom: 1px solid #555;
+    transition-duration: 0.2s;
+}
+
+.map-header  * {
+    user-select: none;
+}
+
+
+
+.map-header:hover{
+    color: #111;
+    background-color: #dfdfdf;
 }
 
 .map-header::first-letter{
@@ -33,11 +45,10 @@
 /* Region selection menu */
 .region-menu{
     border: 1px solid #555;
+    border-right: 0;
     margin: 0;
     padding: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 25%;
+    width: 100%;
     position: absolute;
     z-index: 2;
     background-color: #efefef;
@@ -45,26 +56,43 @@
 }
 
 /* Input field */
+.search-bar{
+    border-bottom: 1px solid #555;
+    position: relative;
+}
+
+.search-icon{
+    position: absolute;
+    height: auto;
+    width: 6%;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 4%;
+}
+
 .region-menu input{
-    margin: 0 auto;
     display: block;
-    width: 100%;
     font-size: 32px;
     line-height: 32px;
     background-color: transparent;
     border: none;
+    width: 78%;
+    margin: 0 auto;
+    padding-right: 8px;
     text-align: center;
-    border-bottom: 1px solid #555;
-    font-weight: bold;
+    font-weight: 500;
 }
 
 .region-menu input:focus{
     outline: none;
 }
+.region-menu input::placeholder{
+    font-style: italic;
+}
 
 .region-menu input:focus::placeholder {
     color: transparent;
-  }
+}
 
 /* Filtered region list */
 .region-menu ul{
@@ -92,3 +120,45 @@
     background-color: #dfdfdf;
     cursor: pointer;
 }
+
+
+.left-region{
+    color: silver;
+}
+
+
+.arrow-down {
+    position: absolute;
+    width: 0; 
+    height: 0; 
+    right: 10px;
+    margin-top: 2px;
+    top: 50%;
+    transform: translateY(-50%) translateX(200%);
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #333;
+    transition-property: transform, border-color;
+    transition-duration: 0.3s, 0.2s;
+  }
+
+  .arrow-down.left-region{
+    border-top-color: silver;
+    transition-duration: 0;
+  }
+
+  .map-header:hover .region-title .arrow-down{
+    border-top-color: #111;
+  }
+
+  .arrow-active{
+      transform-origin: center;
+      transform: translateY(-50%) translateX(200%) rotate(180deg);
+      transition-duration: .2s;
+      transition-duration: 0.3s;
+  }
+
+  .region-title{
+      position: relative;
+      display: inline-block;
+  }

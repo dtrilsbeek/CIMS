@@ -1,83 +1,84 @@
 <template>
   <div>
-
-    <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
-
-    <modal :width="400" :height="500" name="addTopic-modal" class="modal" @before-open='beforeOpen()' @before-close='beforeClose()'>       
-      <ul>
-        <li><h1>Add situation</h1></li>
-        <li><input type="number" v-model="id" placeholder="Input id"  /></li>
-        <li><input type="number" v-model="lat" placeholder="Input latitude" readonly /></li>
-        <li><input type="number" v-model="lon" placeholder="Input longitude" readonly /></li>
-        <li><select v-model="type"><option v-for="number in 5" :key="number.number">{{number}}</option></select></li>
-
-        <li><textarea v-model="description" placeholder="Input information"/></li>
-
-        <li><button type="button" @click="JSONpost(getMessage())">Send</button></li>
-
-      </ul>
+    <modal :width="400" :height="500" name="addTopic-modal" class="modal" @before-open='beforeOpen()' @before-close='beforeClose()'>
+      <aside class="side-bar">
+        <ul>
+          <li @click="switchComponent(0)" :class="{active: componentIndex == 0}"><img src="@/assets/images/event-icon.png" alt="events"><div class="tooltip">Events</div></li>
+          <li @click="switchComponent(1)" :class="{active: componentIndex == 1}"><img src="@/assets/images/unit-icon.png" alt="units"><div class="tooltip">Units</div></li>
+          <li @click="switchComponent(2)" :class="{active: componentIndex == 2}"><img src="@/assets/images/team-icon.png" alt="teams"><div class="tooltip">Teams</div></li>
+          <li @click="switchComponent(3)" :class="{active: componentIndex == 3}"><img src="@/assets/images/management-icon.png" alt="management"><div class="tooltip">Teams & Units</div></li>
+          <li @click="switchComponent(4)" :class="{active: componentIndex == 4}"><img src="@/assets/images/eventtype-icon.png" alt="type"><div class="tooltip">types</div></li>
+        </ul>
+      </aside>
+      <span class="close" v-on:click="hide()">X</span>       
+        <component 
+                  :is="activeComponent" 
+                  v-on:unit-edit="editUnit($event)" 
+                  v-on:alert="alert($event)" 
+                  :selectedMarker="selectedMarker" 
+                  :unit="unit" 
+                  :event="event" @hide="hide()"> </component>
     </modal>
   </div>
 </template>
 
 <script>
-  import axios from 'axios'
-  export default {
-    name: 'Home',
-    props: {
-    },
 
-    data: function() {
+import Event from '@/models/Event.js';
+import SituationMenu from '@/components/SituationMenu.vue'
+import UnitMenu from '@/components/UnitMenu.vue'
+import Teams from '@/components/Teams.vue'
+import TeamManage from '@/components/TeamsManagement.vue';
+import AddEventType from '@/components/AddEventType.vue'
+
+  export default {
+    components: {
+      SituationMenu: SituationMenu,
+      unitMenu: UnitMenu,
+      teams: Teams,
+      teamManage: TeamManage,
+      addEventType: AddEventType
+    },
+    data() {
       return {
-        id: null,
-        lat: 0,
-        lon: 0,
-        type: 0,
-        description: "",
+        name: "name",
+        selectedMarker: false,
+        event: new Event(),
+        unit: false,
+        components: ['situation-menu', 'unit-menu', 'teams', 'team-manage', 'add-event-type'],
+        componentIndex: 0
       }
     },
-
-    mounted: function () {
-    },
-
-    created() {
-      this.$root.$refs.home = this;
-    },
-
+    
     methods: {
-      getMessage: function () {
-        return {
-          id: isNaN(parseInt(this.id)) ? null : parseInt(this.id),
-          lat: parseFloat(this.lat),
-          lon: parseFloat(this.lon),
-          type: parseInt(this.type),
-          description: this.description
-        };
+      switchComponent(index){
+        this.componentIndex = index; 
       },
 
-      // Pushes posts to the server when called.
-      JSONpost(message) {
-
-        console.log(message);
-        // console.log("test");
-
-        // this should match the port in src/main/resources/application.properties
-        axios.post(`http://localhost:8083/events`, message)
-                .then(response => this.response = response.data)
-                .catch(error => {
-                  alert("error!"),
-                  console.log(error)
-                  this.response = error
-                });
-        this.hide();
+      alert(message){
+        this.$emit('alert', message);
       },
-      show (latlng) {
-        this.lat = latlng.lat;
-        this.lon = latlng.lng;
-        
+
+      show (selectedMarker, latlng) {
+        if(selectedMarker != null){
+          this.selectedMarker = selectedMarker;
+          this.event.id = selectedMarker.id;
+          this.event.type = selectedMarker.type;
+          this.event.status = selectedMarker.status;
+          this.event.description = selectedMarker.description;
+        }
+        this.event.lat = latlng.lat;
+        this.event.lon = latlng.lng;
+
         this.$modal.show('addTopic-modal');
         //params can be added with ", { foo: 'bar' })"
       },
+
+      editUnit(unit) {
+        this.unit = unit;
+        this.switchComponent(1); 
+      },
+
       hide () {
         this.$modal.hide('addTopic-modal');
       },
@@ -85,13 +86,20 @@
         // console.log(event.params.foo);
       },
       beforeClose() {
-        console.log('this will be called before the modal closes');
+        
       }
+    },
+
+    computed: {
+      activeComponent() {
+        return this.components[this.componentIndex];
+      },
     }
   }
 </script>
 
 <style src="@/assets/css/home.css" scoped></style>
+
 
 
 <!-- post request naar quarkus: localhost:xxxx/events -->

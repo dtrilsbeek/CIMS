@@ -1,16 +1,18 @@
 <template>
-  <div id="app">
-    <router-view></router-view>
-  </div>
+    <div id="app">
+        <Map/>
+    </div>
 </template>
 
 <script>
+    import Map from "@/components/Map";
 
-export default {
-  name: 'App',
-  components: {
-  }
-}
+    export default {
+        name: 'App',
+        components: {
+            Map,
+        }
+    }
 </script>
 
 

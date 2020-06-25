@@ -1,0 +1,184 @@
+
+input.error, select.error, textarea.error{
+    border-color:#D8000C;
+}
+
+
+form > *, .wrapper > *{
+    display: block;
+    margin: 0 auto;
+}
+
+.wrapper button {
+    margin-top: 42px;
+}
+
+button{
+    background-color: #555555;
+    color: white;
+    border: none;
+    width: 146px;
+    padding: 10px 0;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bolder;
+    cursor: pointer;
+    transition-duration: .3s;
+    width: 80%;
+    border-radius: 3px;
+}
+
+.dropdown{
+    margin-top: 8px; 
+    border-radius: 3px;
+  
+    box-sizing: border-box;
+    padding: 8px 0;
+    font-size: 1em;
+    border: 1.5px solid #555;
+    width: 80%;
+}
+
+button:hover {
+    background-color: #444444;
+}
+
+
+.wrapper{
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.form-container{
+    border: 1px solid silver;
+    position: absolute;
+    top: 12%;
+    left: 50%;
+    transform: translateX(-50%);
+    min-height: 40%;
+    background-color: #efefef;
+    padding: 20px;
+    width: 25%;
+    border-radius: 20px;
+}
+
+span{
+    font-weight: bolder;
+}
+
+input{
+    box-sizing: border-box;
+    border: 1.5px solid #555;
+    margin-top: 8px;
+    display: block;
+    width: 80%;
+    height: 30px;
+    padding: 18px 4px 18px 8px;
+    border-radius: 3px;
+    font-size: 1em;
+}
+
+.flexbox-container{
+    display: flex;
+    width: 80%;
+    justify-content: space-between;
+}
+
+.flexbox-container > input{
+    width: 48%;
+}
+
+h1{
+    text-align: center;
+    font-size: 32px;
+    color: #333;
+}
+
+.wrapper h1{
+    padding: 12px 0 16px 0;
+}
+
+.create-edit-toggle{
+    position: absolute;
+    bottom: 8px;
+    text-decoration: underline;
+    left: 50%;
+    transform: translateX(-50%);
+    transition-duration: 0.05s;
+}
+
+
+.create-edit-toggle:hover{
+    color: #222;
+}
+
+input.as-text::-webkit-outer-spin-button,
+input.as-text::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input.as-text[type=number] {
+    -moz-appearance: textfield;
+}
+
+
+textarea {
+    border-radius: 3px;
+    border: 2px solid #444;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    resize: none;
+    height: 80px;
+    margin-top: 4px;
+    width: 80%;
+    font-size: 1em;
+}
+
+
+.disabled{
+    position: relative;
+    color: #777777;
+    background-color: #AAAAAA;
+}
+
+.disabled:hover{
+    color: #777777;
+    background-color: #AAAAAA;
+    cursor: not-allowed;
+}
+
+body .wrapper .disabled, .disabled:focus{
+    border: none !important;
+}
+
+
+.disabled-tooltip{
+    display: none;
+    background-color: #333;
+    color: white;
+    -moz-border-top-colors: 100%;
+    position: absolute;
+    padding: 2px 0;
+    top:100%;
+    box-shadow: 2px 2px 2px 2px silver;
+}
+
+.disabled:hover .disabled-tooltip{
+    display: block;
+    width: 100%;
+}
+
+ .disabled-tooltip::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    transform: rotate(180deg);
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #333 transparent transparent transparent;
+  }

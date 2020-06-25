@@ -1,4 +1,5 @@
 import L from 'leaflet'
+import CimsBounds from '@/components/leaflet/CimsBounds'
 
 /**
  * Class based on the leaflet map
@@ -10,7 +11,7 @@ export default class CimsMap extends L.Map {
         super('map', {
             center: view,
             zoom: zoom + 1,
-            preferCanvas: true
+            preferCanvas: true,
         });
         this.initLayer();
         this.setZoom(zoom); // Changing zoom immediately to prevent map a bug where the map doesn't load entirely
@@ -18,12 +19,19 @@ export default class CimsMap extends L.Map {
 
     initLayer(){
         const tileUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-        const layer = new L.TileLayer(tileUrl,
+        const copyright = new L.TileLayer(tileUrl,
         {
             attribution: 'Maps © <a href="www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         });
 
-        this.addLayer(layer);
+        this.addLayer(copyright);
+    }
+
+    getCimsBounds(){
+        const bounds = this.getBounds();
+        const northEast = bounds.getNorthEast();
+        const southWest = bounds.getSouthWest();
+        return new CimsBounds(northEast, southWest, this.getZoom());
     }
 
 }

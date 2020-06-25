@@ -1,0 +1,75 @@
+on:
+    push:
+        branches:
+            - master
+            - integration
+            - develop
+
+jobs:
+    build-test:
+        name: Run Tests
+        runs-on: ubuntu-latest
+        # Service containers to run with `container-job`
+        services:
+            # Label used to access the service container
+            postgres:
+                # Docker Hub image
+                image: postgres
+                # Provide the password for postgres
+                env:
+                    POSTGRES_DB: cims_dev
+                    POSTGRES_USER: cims_dev
+                    POSTGRES_PASSWORD: password
+                # Set health checks to wait until postgres has started
+                options: >-
+                    --health-cmd pg_isready
+                    --health-interval 10s
+                    --health-timeout 5s
+                    --health-retries 5
+                ports:
+                  - 5432:5432
+
+            # keycloak:
+            #     image: jboss/keycloak:9.0.3
+
+            #     volumes:
+            #         - "/realm-export.json:/tmp/realm-export.json"
+
+            #     ports:
+            #         - "8180:8080"
+
+            #     options: >-
+            #         --health-cmd "curl --fail http://localhost:8180/auth || exit 1"
+            #         --health-interval 30s
+            #         --health-timeout 5s
+            #         --health-retries 10
+            #         --health-start-period 1m
+
+            #     env:
+            #         KEYCLOAK_USER: admin
+            #         KEYCLOAK_PASSWORD: admin
+            #         DB_VENDOR: H2
+            #         KEYCLOAK_IMPORT: /tmp/realm-export.json
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v1
+            - name: Setup Java 11
+              uses: actions/setup-java@v1
+              with:
+                  java-version: '11'
+            - name: Test
+              if: success()
+              run: mvn clean test
+#            - name: Package
+#              if: success()
+#              run: ./mvnw package
+#            - name: Build Docker Image
+#              if: success()
+#              run: ./mvnw fabric8:build
+#            - name: Push Docker Image
+#              if: success()
+#              run: ./mvnw fabric8:push
+#              env:
+#                  DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
+#                  DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}

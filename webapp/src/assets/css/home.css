@@ -1,51 +1,83 @@
-h1 {
-    font-size: 25px;
-    margin: 2px 2px 2px 2px;
-    text-align: center;
+/* X - button in the modal to close */
+.close{
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    font-weight: bolder;
+    z-index: 2;
 }
 
-div {
-    display: flex;
-    justify-content: center;
-}
-
-input {
-    padding-left: 4px;
-    box-shadow: .2em .2em 0 0 rgba(0, 0, 0, 0.28);
-    margin: 0 0 8px 0;
-}
-
-select {
-    padding-left: 4px;
-}
-
-ul, ul * {
-    width: 300px;
-    margin: auto;
-}
-
-textarea {
-    resize: none;
-    height: 80px;
-    margin-top: 4px;
-    box-shadow: .2em .2em 0 0 rgba(0, 0, 0, 0.28);
-}
-
-button {  
-    background-color: #555555;
-    color: white;
-    border: none;
-    width: 146px;
-    padding: 10px 0;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 6px 2px;
+.close:hover{
     cursor: pointer;
-    transition-duration: .5s;
+    color: #bb0000;
 }
 
-button:hover {
-    background-color: #444444;
+
+.side-bar{
+    border-radius: 4px;
+    width: 65px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: -80px;
 }
+
+
+/* Navigation bar next to modal*/
+.side-bar ul li{
+    position: relative;
+    padding: 2px 0;
+    display: block;
+    text-align: center;
+    color: white;
+    font-size: 50px;
+    border-bottom: 1px solid silver;
+    background-color: rgba(0,0,0, .6);
+    transition-duration: .2s;
+}
+
+.side-bar ul li:first-child{
+    border-radius: 4px 4px 0 0;
+}
+
+.side-bar ul li:last-child{
+    border-radius: 0 0 4px 4px;
+}
+
+.side-bar ul li:hover{
+    cursor: pointer;
+    background-color: rgba(0,0,0, .8);
+}
+
+.side-bar ul li.active{
+    background-color: rgba(0,0,0, .8);
+}
+
+.side-bar ul li img{
+    width: 50%;
+    height: auto;
+}
+
+
+/* Tooltips when hovering on the menu */
+.side-bar ul li .tooltip{
+    display: none;
+    position: absolute;
+    background-color: rgba(0,0,0, .8);
+    color: white;
+    text-align: center;
+    padding: 6px 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+    min-width: 120%;
+    top: 50%;
+    left: 100%;
+    transform: translateY(-50%);
+    border-left: 1px solid silver;
+}
+
+.side-bar ul li:hover .tooltip, .side-bar ul li.active .tooltip{
+    display: block;
+}
+
+
